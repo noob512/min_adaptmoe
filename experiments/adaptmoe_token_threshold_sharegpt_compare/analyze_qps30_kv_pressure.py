@@ -241,7 +241,7 @@ def main():
     fixed, dynamic = rows
     lines = ['# QPS=30：固定K2与动态KV的排队、抢占复跑', '',
              '**动态扩容消除了本轮KV分配失败，但没有消除排队；固定K2也未发生抢占。** 两次重复均得到同样的调度原因分类。', '',
-             '沿用同一ShareGPT P1024/O16、128请求，SHA256=1b03241857edd421138f62cfc8144e9a455627069abb760ea1dfba70bd93d151；DeepSeek-V2-Lite-Chat BF16、TRITON_MLA、C128、8192-token预算、PARK≤16/RESUME≥128、混合调度、eager、无Graph、无prefix cache。提供QPS仅30，计划到达i/30。固定→动态→动态→固定，共4个新进程、512次请求，全部成功返回。', '',
+             '沿用同一ShareGPT P1024/O16、128请求，SHA256=fed1428ffe8d2fe7a4608b626041f31b81f22071876e330b495e3db3b8376a43；DeepSeek-V2-Lite-Chat BF16、TRITON_MLA、C128、8192-token预算、PARK≤16/RESUME≥128、混合调度、eager、无Graph、无prefix cache。提供QPS仅30，计划到达i/30。固定→动态→动态→固定，共4个新进程、512次请求，全部成功返回。', '',
              '固定组使用同一managed池，GPU容量锁定K2/cold11；动态组同样从K2/cold11开始，自适应K2/K4/K6并配对cold11/17/23。两臂均预留6GiB VA，固定组GPU目标仅4313块，离线尾部8630块未被当作可分配GPU容量。两组新增相同的只读观测，未改变现有调度、分配或升档策略。控制器wall为包含同步等待的实测区间，不等于纯CPU时间。', '',
              '## 性能结果（两个进程均值）', '',
              '| 配置 | 实际QPS | TTFT mean s | TPOT mean ms | E2E mean s | 总时长s |',

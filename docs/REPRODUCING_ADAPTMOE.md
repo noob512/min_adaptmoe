@@ -1,8 +1,7 @@
 # Build and reproduce
 
-Run commands from the artifact root. This package contains one canonical
-four-arm mixed-scheduling comparison and its dependencies. It does not include
-historical performance measurements or claim to regenerate every paper figure.
+Run commands from the repository root. The main experiment compares four
+mechanisms under mixed scheduling using a frozen ShareGPT trace.
 
 ## Environment and vLLM
 
@@ -20,19 +19,19 @@ cd workloads/vllm/vllm
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements/build.txt
-VLLM_VERSION_OVERRIDE=0.0.0+review python -m pip install --no-build-isolation -e .
+VLLM_VERSION_OVERRIDE=0.0.0+adaptmoe python -m pip install --no-build-isolation -e .
 python -m pip install pytest matplotlib
 cd ../../..
 workloads/vllm/vllm/.venv/bin/python -c 'import vllm; print(vllm.__file__)'
 ```
 
-Use this source tree, rather than a separate PyPI vLLM installation. The
-version override supports this source snapshot without original Git history.
+Use this source tree so the installed vLLM includes the AdaptMoE changes. The
+version override also supports builds from a source archive.
 
 ## Driver and allocator
 
 Install matching kernel headers and compiler tools. The driver helper obtains
-the checksum-pinned official NVIDIA source, overlays the reviewed UVM tree and
+the checksum-pinned official NVIDIA source, overlays the AdaptMoE UVM tree and
 builds modules without installing or loading them:
 
 ```bash
@@ -63,7 +62,7 @@ python3 -m pytest -q \
   experiments/uvm_static_alias_original_va/test_kernel_error_guards.py
 ```
 
-`make check` checks source syntax, explicit identity/path residue, the frozen
+`make check` checks source syntax, portable paths, the frozen
 request hash and nested expert plans. `make inputs` prepares QPS=1 and QPS=20
 inputs under a new `.build/prepared-inputs` directory, without vLLM imports,
 model weights, the complete dataset or GPU access. Choose a fresh `OUTPUT`
@@ -115,8 +114,8 @@ this distinction. Native offloads 2.56% more main weight bytes than Adapt K1;
 this granularity difference prevents a strict pure-transport attribution.
 
 Fixture SHA-256:
-`1b03241857edd421138f62cfc8144e9a455627069abb760ea1dfba70bd93d151`.
-Only local-path metadata was sanitized; all 128 request records are unchanged.
+`fed1428ffe8d2fe7a4608b626041f31b81f22071876e330b495e3db3b8376a43`.
+The fixture includes all 128 frozen prompt strings and token-ID sequences.
 ShareGPT V3 source SHA-256:
 `35f0e213ce091ed9b9af2a1f0755e9d39f9ccec34ab281cd4ca60d70f6479ba4`.
 The model snapshot used to prepare the fixture was
@@ -139,6 +138,5 @@ cleanup. It compares complete outputs and first tokens. `ok_with_output_drift`
 means execution passed with numerical output differences; it is not a strict
 equivalence result. One process per arm provides no confidence interval.
 
-The static checks and build report for this source preparation are recorded
-in [ARTIFACT_VALIDATION.md](ARTIFACT_VALIDATION.md). No GPU performance result
-is synthesized by the preparation tools.
+See [VALIDATION.md](VALIDATION.md) for source checks, build results and the
+scope of the validation.

@@ -420,7 +420,7 @@
     "prompt_tokens": 1024,
     "protocol_id": "deepseek-p1024-n128-dynamic-kv-20261024",
     "requests": 128,
-    "review_metadata_note": "Local filesystem provenance removed; request order, prompt strings and token IDs are unchanged.",
+    "fixture_note": "Frozen request records include prompt text, token IDs and source dataset indices.",
     "schema_version": 1,
     "selection_frozen_before_measurement": true,
     "source_dataset_sha256": "35f0e213ce091ed9b9af2a1f0755e9d39f9ccec34ab281cd4ca60d70f6479ba4",

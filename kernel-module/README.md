@@ -1,4 +1,4 @@
-# Reviewed UVM overlay
+# UVM driver
 
 `nvidia-module/kernel-open/nvidia-uvm/` contains the complete modified UVM
 source. The surrounding NVIDIA driver is obtained at build time from the
@@ -12,7 +12,7 @@ official NVIDIA source repository:
 bash scripts/build_driver.sh
 ```
 
-This downloads and verifies the upstream archive, overlays the reviewed UVM
+This downloads and verifies the upstream archive, overlays the AdaptMoE UVM
 directory, and builds all modules in `.build/nvidia-595.71.05`. It does not
 install or load them. Matching kernel headers, the compiler, and NVIDIA base
 driver are required. To build against a particular header tree, pass
@@ -23,6 +23,6 @@ same archive. `DRIVER_BUILD_DIR` selects a different, new build directory;
 set `CUSTOM_UVM` accordingly when running the model comparison.
 
 The source tree includes both NVIDIA licenses in `nvidia-module/COPYING` and
-the original per-file notices. Unmodified base-driver sources and generated
-dependency files are omitted from the review distribution. The build receipt
+the original per-file notices. The repository stores UVM sources as an overlay;
+base-driver sources are supplied by the pinned upstream archive. The build receipt
 records the upstream revision, archive checksum, and every overlaid UVM hash.

@@ -45,7 +45,7 @@ vllm = "vllm.entrypoints.cli.main:main"
 lora_filesystem_resolver = "vllm.plugins.lora_resolvers.filesystem_resolver:register_filesystem_resolver"
 
 [tool.setuptools_scm]
-fallback_version = "0.0.0+review"
+fallback_version = "0.0.0+adaptmoe"
 # no extra settings needed, presence enables setuptools-scm
 
 [tool.setuptools.packages.find]

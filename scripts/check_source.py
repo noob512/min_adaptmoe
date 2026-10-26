@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""CPU-only integrity, portability, and explicit identity checks for this artifact."""
+"""Check source syntax, portability, frozen inputs and expert plans without a GPU."""
 
 from __future__ import annotations
 
@@ -12,19 +12,13 @@ import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURE = ROOT / "experiments/adaptmoe_token_threshold_sharegpt_compare/inputs/sharegpt_deepseek_p1024_n128_20261024.json"
-FIXTURE_SHA = "1b03241857edd421138f62cfc8144e9a455627069abb760ea1dfba70bd93d151"
+FIXTURE_SHA = "fed1428ffe8d2fe7a4608b626041f31b81f22071876e330b495e3db3b8376a43"
 SKIP = {".git", ".build", ".deps", ".venv", "__pycache__", ".pytest_cache", "artifacts"}
 
 
 def main() -> None:
     paths = [p for p in ROOT.rglob("*") if p.is_file() and not (set(p.relative_to(ROOT).parts) & SKIP)]
     problems: list[str] = []
-    # Match known private provenance without publishing the identifiers.
-    forbidden_digests = {
-        "eabee6796a0bf74a4a6b1e73252506387c58645493bd9b647e15f404dbb913ca",
-        "81815caa07192a85a55bd040d774d0eddbad8b80d1a393ad35bf07b45c1b9ae6",
-        "662c65e07a2d76e1c0990d9eaa25417f215852069d3b766c9b2f774b435cce91",
-    }
     local_home = re.compile(r"/(?:home|Users)/[^/\s\"']+")
     private_key = re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----")
     python_files = 0
@@ -38,12 +32,8 @@ def main() -> None:
         except UnicodeDecodeError:
             problems.append(f"Unexpected binary: {relative}")
             continue
-        tokens = set(re.findall(r"[a-z0-9_-]+", text.lower()))
-        if local_home.search(text) or any(
-            hashlib.sha256(token.encode()).hexdigest() in forbidden_digests
-            for token in tokens
-        ):
-            problems.append(f"Explicit local or author identifier: {relative}")
+        if local_home.search(text):
+            problems.append(f"Hardcoded home directory: {relative}")
         if private_key.search(text):
             problems.append(f"Private key marker: {relative}")
         if path.suffix == ".py":
@@ -74,7 +64,7 @@ def main() -> None:
         raise SystemExit("\n".join(problems))
     print(json.dumps({"status": "ok", "source_files": len(paths), "python_syntax_checked": python_files,
                       "requests": 128, "prompt_tokens": 1024, "fixture_sha256": FIXTURE_SHA,
-                      "explicit_identity_matches": 0, "nested_expert_plans": True}, indent=2))
+                      "local_path_matches": 0, "nested_expert_plans": True}, indent=2))
 
 
 if __name__ == "__main__":

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fetch a pinned NVIDIA source tree and overlay the reviewed UVM sources."""
+"""Fetch a pinned NVIDIA source tree and overlay the AdaptMoE UVM sources."""
 
 from __future__ import annotations
 
@@ -37,7 +37,7 @@ def main() -> None:
         parser.error(f"Output exists; choose a fresh directory: {output}")
     overlay = ROOT / "kernel-module/nvidia-module/kernel-open/nvidia-uvm"
     if not (overlay / "uvm_va_block.c").is_file():
-        parser.error("Reviewed UVM overlay is missing")
+        parser.error("AdaptMoE UVM overlay is missing")
     with tempfile.TemporaryDirectory(prefix="adaptmoe-driver-") as temporary:
         staging = Path(temporary)
         archive_path = args.source_archive
@@ -65,7 +65,7 @@ def main() -> None:
                 for path in sorted(overlay.rglob("*")) if path.is_file()
             },
         }
-        (upstream / "review_build_receipt.json").write_text(json.dumps(receipt, indent=2) + "\n")
+        (upstream / "uvm_build_receipt.json").write_text(json.dumps(receipt, indent=2) + "\n")
         output.parent.mkdir(parents=True, exist_ok=True)
         shutil.move(str(upstream), str(output))
     print(output)

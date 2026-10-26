@@ -1,4 +1,4 @@
-# AdaptMoE: reviewer artifact
+# AdaptMoE
 
 AdaptMoE is a single-GPU research prototype for memory-constrained MoE
 inference. It extends vLLM v1 and NVIDIA UVM to preserve expert parameter
@@ -18,14 +18,14 @@ The [four-arm experiment](experiments/adaptmoe_token_threshold_sharegpt_compare/
 compares Native UVA, Native Copy, fixed-KV AdaptMoE and dynamic-KV AdaptMoE
 on the same frozen ShareGPT requests.
 
-| Directory | Review content |
+| Directory | Contents |
 |---|---|
 | `kernel-module/` | Modified UVM sources and pinned upstream build instructions |
 | `workloads/vllm/vllm/` | Runtime, CUDA sources, build metadata and allocator |
 | `experiments/adaptmoe_token_threshold_sharegpt_compare/` | Canonical mixed-scheduling experiment, verifier and frozen trace |
-| Other retained `experiments/` directories | Shared runner dependencies and low-level alias probes |
+| Other `experiments/` directories | Shared runners and low-level alias probes |
 | `tests/` | Focused controller, queue, plan and ioctl regression tests |
-| `scripts/` | CPU artifact check and driver assembly/build helpers |
+| `scripts/` | Source checks and driver assembly/build helpers |
 
 ```bash
 # Standard-library checks; no model, CUDA installation or GPU required.
@@ -33,19 +33,15 @@ make check
 make inputs
 ```
 
-The documented mixed-scheduling configuration uses eager execution with CUDA
-Graph disabled. The separate Prefill/Decode Graph implementation remains in
-the runtime; it has different scheduling constraints and is not the protocol
-of this comparison. This artifact is a focused implementation and reproducible
-experiment, rather than a reproduction package for every paper figure.
+The mixed-scheduling experiment uses eager execution with CUDA Graph disabled.
+The runtime also supports a separate Prefill/Decode Graph mode with different
+scheduling constraints; see the project guide for supported configurations.
 
-This source snapshot contains no original Git history or project remote.
-Model weights, the complete source dataset, historical performance results,
-profiler captures and compiled artifacts are excluded. The frozen request
-payload and expert plans needed by the documented experiment are included.
-New measurements are written to a fresh output directory. Source checks and
-successful requests alone do not establish output equivalence or speedups;
-inspect the verifier's output comparisons.
+Model weights and the complete ShareGPT source dataset are supplied separately.
+The frozen request payload and expert plans are included. Each experiment writes
+its measurements to a fresh output directory and reports output consistency
+alongside performance metrics. See the reproduction guide for the workload,
+memory budgets and measurement definitions.
 
 Third-party license and copyright notices are retained: the root
 [LICENSE](LICENSE), vLLM's [Apache license](workloads/vllm/vllm/LICENSE), and

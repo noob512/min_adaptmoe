@@ -178,7 +178,7 @@ sha256sum "${COMPARE_RUNNER}" "${COMPARE_VERIFY}" "${FROZEN_ENV}" "${ADAPT_NAMES
 if git -C "${REPO_ROOT}" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   git -C "${REPO_ROOT}" status --short >"${run_root}/git_status.txt"
 else
-  printf 'Source snapshot without Git history\n' >"${run_root}/git_status.txt"
+  printf 'Git metadata unavailable\n' >"${run_root}/git_status.txt"
 fi
 printf 'ordinal\tsample\tarm\tdirectory\treturncode\n' \
   >"${run_root}/execution_status.tsv"

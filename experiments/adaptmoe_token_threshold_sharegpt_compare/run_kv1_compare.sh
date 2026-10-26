@@ -57,7 +57,7 @@ protocol = {
     'fixture_sha256': hashlib.sha256(fixture.read_bytes()).hexdigest(),
     'capacity_certificate': json.loads((root / f'qps{rates[0]}/inputs/capacity_certificate.json').read_text()),
 }
-assert protocol['fixture_sha256'] == '1b03241857edd421138f62cfc8144e9a455627069abb760ea1dfba70bd93d151'
+assert protocol['fixture_sha256'] == 'fed1428ffe8d2fe7a4608b626041f31b81f22071876e330b495e3db3b8376a43'
 (root / 'sweep_protocol.json').write_text(json.dumps(protocol, indent=2) + '\n')
 PY
 if [[ "${compare_prepare}" == 1 ]]; then

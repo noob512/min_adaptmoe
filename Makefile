@@ -3,7 +3,7 @@ OUTPUT ?= .build/prepared-inputs
 
 .PHONY: check inputs driver allocator test
 check:
-	python3 scripts/check_artifact.py
+	python3 scripts/check_source.py
 
 inputs:
 	PREPARE_ONLY=1 VLLM_PY=/usr/bin/python3 bash experiments/adaptmoe_token_threshold_sharegpt_compare/run_kv1_compare.sh "$(OUTPUT)" 1 20

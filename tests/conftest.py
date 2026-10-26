@@ -1,4 +1,4 @@
-"""Use the reviewed source with the compiled dependencies installed by the user."""
+"""Load the project source with the installed runtime dependencies."""
 from pathlib import Path
 import sys
 
