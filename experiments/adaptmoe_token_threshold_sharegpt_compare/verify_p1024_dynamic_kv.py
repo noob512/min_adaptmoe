@@ -6,7 +6,7 @@ import statistics
 from pathlib import Path
 from verify_dynamic_kv_p512 import verify as base_verify
 
-FIXTURE_SHA='1b03241857edd421138f62cfc8144e9a455627069abb760ea1dfba70bd93d151'
+FIXTURE_SHA='fed1428ffe8d2fe7a4608b626041f31b81f22071876e330b495e3db3b8376a43'
 TARGETS={4313:'K2',8629:'K4',12943:'K6'}
 
 

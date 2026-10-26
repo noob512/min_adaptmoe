@@ -17,7 +17,7 @@ Runtime paths below are relative to `workloads/vllm/vllm/`.
 | Capacity controller and pending grow/shrink | `vllm/v1/engine/core.py` |
 | KV free/backup/offline queues and physical ranges | `vllm/v1/core/block_pool.py`, `uvm_kv_runtime_policy.py` |
 | Mixed scheduling and optional phase cohorts | `vllm/v1/core/sched/scheduler.py` |
-| Dual views, backing ownership and publication | `kernel-module/nvidia-module/kernel-open/nvidia-uvm/uvm_va_block.c`, `uvm_mmu.c` (relative to artifact root) |
+| Dual views, backing ownership and publication | `kernel-module/nvidia-module/kernel-open/nvidia-uvm/uvm_va_block.c`, `uvm_mmu.c` (relative to repository root) |
 | Driver transactions | `uvm_ioctl.h` in that driver directory, and `uvm_static_alias.py` |
 
 ## Stable addresses and the access controller

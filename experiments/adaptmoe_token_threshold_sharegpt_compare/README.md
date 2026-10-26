@@ -38,7 +38,7 @@ The entry point runs four vLLM arms; it does not run KTransformers.
 
 The frozen input is in `inputs/sharegpt_deepseek_p1024_n128_20261024.json`.
 Its SHA-256 is
-`1b03241857edd421138f62cfc8144e9a455627069abb760ea1dfba70bd93d151`.
+`fed1428ffe8d2fe7a4608b626041f31b81f22071876e330b495e3db3b8376a43`.
 The ShareGPT V3 source SHA-256 is
 `35f0e213ce091ed9b9af2a1f0755e9d39f9ccec34ab281cd4ca60d70f6479ba4`.
 The original model snapshot was
