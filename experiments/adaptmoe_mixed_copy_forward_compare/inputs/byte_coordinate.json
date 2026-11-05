@@ -1,0 +1,17 @@
+{
+  "schema": "adaptmoe_mixed_copy_forward_byte_coordinate_v1",
+  "comparison_scope": "near_equal_hbm_and_bytes_not_equal_expert_coordinates",
+  "adaptmoe": {
+    "selected_expert_slices": 286,
+    "selected_parameter_names": 52,
+    "bytes_per_forward": 4948230144
+  },
+  "native_vllm": {
+    "selected_complete_parameters": 9,
+    "w13_parameter_bytes": 738197504,
+    "w2_parameter_bytes": 369098752,
+    "bytes_per_forward": 4798283776
+  },
+  "native_minus_adaptmoe_bytes": -149946368,
+  "absolute_difference_over_adaptmoe": 0.030303030303030304
+}

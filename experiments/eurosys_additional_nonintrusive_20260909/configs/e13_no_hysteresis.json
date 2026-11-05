@@ -1,0 +1,424 @@
+{
+  "analysis": {
+    "best_fixed_rule": "lexicographic: failures/rejections ascending, successes descending, request throughput descending, e2e p99 ascending",
+    "latency_percentile_method": "linear interpolation over pooled request samples",
+    "primary_metric": "successful_request_throughput_per_second",
+    "variation": "mean, sample standard deviation, minimum, and maximum across independent cold-process repeats"
+  },
+  "arms": [
+    {
+      "initial_tier": "k4",
+      "name": "adaptive",
+      "strategy": "adaptive"
+    },
+    {
+      "initial_tier": "k2",
+      "name": "fixed_k2",
+      "strategy": "fixed"
+    },
+    {
+      "initial_tier": "k4",
+      "name": "fixed_k4",
+      "strategy": "fixed"
+    },
+    {
+      "initial_tier": "k6",
+      "name": "fixed_k6",
+      "strategy": "fixed"
+    },
+    {
+      "initial_tier": "k4",
+      "name": "adaptive_no_hysteresis",
+      "strategy": "adaptive"
+    }
+  ],
+  "base_expert_plan": "experiments/vllm_uvm_e10_multilevel_pressure/inputs/formal_k2_k4_k6_k8_k10/cold70.json",
+  "description": "Adaptive physical KV/expert tiers versus initialization-only fixed tiers; externally derived Auto-No-Hysteresis qualification",
+  "exact_parameter_names": "experiments/vllm_uvm_large_kv_multilevel/inputs/exact_parameter_names.txt",
+  "experiment": "E13",
+  "external_derivation": {
+    "base_config": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/e13/config.json",
+    "base_sha256": "b5ac2b4d21ca2055865384d05f0197265fb99dba6d11c9e4680d672da7cfb4fc",
+    "changes": {
+      "added_arm": "adaptive_no_hysteresis",
+      "runtime.low_pressure_streak": 1,
+      "runtime.minimum_residency_steps": 0
+    }
+  },
+  "fixtures": {
+    "long": "experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/qwen3_30b_a3b_fp8/evaluation_long_generation.json",
+    "medium": "experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/qwen3_30b_a3b_fp8/evaluation_medium_context.json",
+    "ordinary": "experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/qwen3_30b_a3b_fp8/evaluation_ordinary_chat.json",
+    "rag": "experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/qwen3_30b_a3b_fp8/evaluation_rag_summary.json",
+    "short": "experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/qwen3_30b_a3b_fp8/evaluation_short_dialogue.json"
+  },
+  "model": "/home/ubuntu/.cache/huggingface/hub/models--Qwen--Qwen3-30B-A3B-FP8/snapshots/d206ba732169f29bb77fbf80fc2c4b81d4d30782",
+  "plan_classes": "experiments/eurosys_moe_offload_evaluation/e13/plan_classes_k2_k4_k6.json",
+  "profiles": {
+    "capacity": {
+      "scenario_names": [
+        "capacity_envelope"
+      ],
+      "seeds": [
+        20260901,
+        20260917,
+        20260929
+      ]
+    },
+    "formal": {
+      "scenario_names": [
+        "low_pressure",
+        "high_pressure",
+        "dynamic_mixed",
+        "burst_recovery"
+      ],
+      "seeds": [
+        20260901,
+        20260917,
+        20260929
+      ]
+    },
+    "qualification": {
+      "scenario_names": [
+        "low_pressure",
+        "high_pressure",
+        "dynamic_mixed",
+        "burst_recovery"
+      ],
+      "seeds": [
+        20260901
+      ]
+    }
+  },
+  "runtime": {
+    "attention_backend": "TRITON_ATTN",
+    "backup_reserve_blocks": 16,
+    "cpu_offload_gb": 30.0,
+    "cudagraph_capture_sizes": [],
+    "execution_mode": "eager",
+    "gpu_memory_utilization": 0.97,
+    "grow_factor": 2,
+    "high_watermark": 0.8,
+    "kv_block_bytes": 1572864,
+    "kv_block_tokens": 16,
+    "kv_cache_memory_bytes": 8589410304,
+    "low_pressure_streak": 1,
+    "max_model_len": 8448,
+    "max_num_batched_tokens": 8192,
+    "max_num_seqs": 10,
+    "minimum_residency_steps": 0,
+    "phase_mode": "prefill_remote_decode",
+    "safety_blocks": 16,
+    "scheduler_boundary_resize": true,
+    "shrink_divisor": 2,
+    "synchronized_tier_steps": true
+  },
+  "scenarios": [
+    {
+      "description": "Short prompts, one request at a time, with a low closed-loop arrival rate",
+      "epochs": [
+        {
+          "arrival_gap_ms": 250,
+          "cohorts": [
+            {
+              "after_engine_steps": 0,
+              "batch_size": 1,
+              "output_tokens": 32,
+              "workload": "short"
+            }
+          ],
+          "label": "low-01"
+        },
+        {
+          "arrival_gap_ms": 250,
+          "cohorts": [
+            {
+              "after_engine_steps": 0,
+              "batch_size": 1,
+              "output_tokens": 32,
+              "workload": "short"
+            }
+          ],
+          "label": "low-02"
+        },
+        {
+          "arrival_gap_ms": 250,
+          "cohorts": [
+            {
+              "after_engine_steps": 0,
+              "batch_size": 1,
+              "output_tokens": 32,
+              "workload": "short"
+            }
+          ],
+          "label": "low-03"
+        },
+        {
+          "arrival_gap_ms": 250,
+          "cohorts": [
+            {
+              "after_engine_steps": 0,
+              "batch_size": 1,
+              "output_tokens": 32,
+              "workload": "short"
+            }
+          ],
+          "label": "low-04"
+        }
+      ],
+      "name": "low_pressure"
+    },
+    {
+      "description": "Six concurrent 8K prompts; predicted demand requires the K6 tier",
+      "epochs": [
+        {
+          "arrival_gap_ms": 0,
+          "cohorts": [
+            {
+              "after_engine_steps": 0,
+              "batch_size": 6,
+              "output_tokens": 16,
+              "workload": "rag"
+            }
+          ],
+          "label": "high-rag-b6"
+        }
+      ],
+      "name": "high_pressure"
+    },
+    {
+      "description": "Overlapping short, ordinary, medium, and RAG cohorts admitted at changing engine-step rates",
+      "epochs": [
+        {
+          "arrival_gap_ms": 100,
+          "cohorts": [
+            {
+              "after_engine_steps": 0,
+              "batch_size": 2,
+              "output_tokens": 256,
+              "workload": "ordinary"
+            },
+            {
+              "after_engine_steps": 4,
+              "batch_size": 2,
+              "output_tokens": 64,
+              "workload": "short"
+            },
+            {
+              "after_engine_steps": 8,
+              "batch_size": 2,
+              "output_tokens": 64,
+              "workload": "medium"
+            },
+            {
+              "after_engine_steps": 12,
+              "batch_size": 4,
+              "output_tokens": 16,
+              "workload": "rag"
+            }
+          ],
+          "label": "mixed-overlap"
+        }
+      ],
+      "name": "dynamic_mixed"
+    },
+    {
+      "description": "Low pressure, an overlapping RAG burst, then enough low-pressure work to observe recovery and oscillation",
+      "epochs": [
+        {
+          "arrival_gap_ms": 200,
+          "cohorts": [
+            {
+              "after_engine_steps": 0,
+              "batch_size": 1,
+              "output_tokens": 32,
+              "workload": "short"
+            }
+          ],
+          "label": "recovery-low-01"
+        },
+        {
+          "arrival_gap_ms": 200,
+          "cohorts": [
+            {
+              "after_engine_steps": 0,
+              "batch_size": 1,
+              "output_tokens": 32,
+              "workload": "short"
+            }
+          ],
+          "label": "recovery-low-02"
+        },
+        {
+          "arrival_gap_ms": 0,
+          "cohorts": [
+            {
+              "after_engine_steps": 0,
+              "batch_size": 1,
+              "output_tokens": 256,
+              "workload": "short"
+            },
+            {
+              "after_engine_steps": 4,
+              "batch_size": 5,
+              "output_tokens": 16,
+              "workload": "rag"
+            }
+          ],
+          "label": "burst-overlap"
+        },
+        {
+          "arrival_gap_ms": 100,
+          "cohorts": [
+            {
+              "after_engine_steps": 0,
+              "batch_size": 1,
+              "output_tokens": 32,
+              "workload": "short"
+            }
+          ],
+          "label": "recovery-low-03"
+        },
+        {
+          "arrival_gap_ms": 100,
+          "cohorts": [
+            {
+              "after_engine_steps": 0,
+              "batch_size": 1,
+              "output_tokens": 32,
+              "workload": "short"
+            }
+          ],
+          "label": "recovery-low-04"
+        },
+        {
+          "arrival_gap_ms": 100,
+          "cohorts": [
+            {
+              "after_engine_steps": 0,
+              "batch_size": 1,
+              "output_tokens": 32,
+              "workload": "short"
+            }
+          ],
+          "label": "recovery-low-05"
+        },
+        {
+          "arrival_gap_ms": 100,
+          "cohorts": [
+            {
+              "after_engine_steps": 0,
+              "batch_size": 1,
+              "output_tokens": 32,
+              "workload": "short"
+            }
+          ],
+          "label": "recovery-low-06"
+        }
+      ],
+      "name": "burst_recovery"
+    },
+    {
+      "description": "Maximum immediately resident 8K-context concurrency; excess requests remain queued rather than being relabeled as OOM",
+      "epochs": [
+        {
+          "arrival_gap_ms": 100,
+          "cohorts": [
+            {
+              "after_engine_steps": 0,
+              "batch_size": 2,
+              "output_tokens": 16,
+              "workload": "rag"
+            }
+          ],
+          "label": "rag-b2"
+        },
+        {
+          "arrival_gap_ms": 100,
+          "cohorts": [
+            {
+              "after_engine_steps": 0,
+              "batch_size": 5,
+              "output_tokens": 16,
+              "workload": "rag"
+            }
+          ],
+          "label": "rag-b5"
+        },
+        {
+          "arrival_gap_ms": 100,
+          "cohorts": [
+            {
+              "after_engine_steps": 0,
+              "batch_size": 6,
+              "output_tokens": 16,
+              "workload": "rag"
+            }
+          ],
+          "label": "rag-b6"
+        },
+        {
+          "arrival_gap_ms": 100,
+          "cohorts": [
+            {
+              "after_engine_steps": 0,
+              "batch_size": 7,
+              "output_tokens": 16,
+              "workload": "rag"
+            }
+          ],
+          "label": "rag-b7"
+        },
+        {
+          "arrival_gap_ms": 100,
+          "cohorts": [
+            {
+              "after_engine_steps": 0,
+              "batch_size": 8,
+              "output_tokens": 16,
+              "workload": "rag"
+            }
+          ],
+          "label": "rag-b8"
+        },
+        {
+          "arrival_gap_ms": 100,
+          "cohorts": [
+            {
+              "after_engine_steps": 0,
+              "batch_size": 10,
+              "output_tokens": 16,
+              "workload": "rag"
+            }
+          ],
+          "label": "rag-b10"
+        }
+      ],
+      "name": "capacity_envelope"
+    }
+  ],
+  "schema": "eurosys_e13_kv_adaptive_protocol_v1",
+  "tiers": [
+    {
+      "expert_offload_bytes": 15854469120,
+      "name": "k2",
+      "nominal_kv_gib": 2,
+      "plan_class": "cold70",
+      "target_blocks": 1364
+    },
+    {
+      "expert_offload_bytes": 18119393280,
+      "name": "k4",
+      "nominal_kv_gib": 4,
+      "plan_class": "cold80",
+      "target_blocks": 2730
+    },
+    {
+      "expert_offload_bytes": 20157825024,
+      "name": "k6",
+      "nominal_kv_gib": 6,
+      "plan_class": "cold89",
+      "target_blocks": 4095
+    }
+  ]
+}

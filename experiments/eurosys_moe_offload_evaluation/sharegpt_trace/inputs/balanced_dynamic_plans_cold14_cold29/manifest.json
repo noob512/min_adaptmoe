@@ -1,0 +1,35 @@
+{
+  "schema": "eurosys_e3_near_equal_offload_plans_v1",
+  "source": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/legacy_pilot/qwen3_30b_a3b_fp8/routing/expert_distribution.pt",
+  "source_sha256": "912732708a46291b73e70c93291758747f285b364437ce77f58d53501d072f81",
+  "widths": {
+    "cold14": {
+      "experts_per_layer": 14,
+      "num_experts": 128,
+      "num_layers": 48,
+      "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/sharegpt_trace/inputs/balanced_dynamic_plans_cold14_cold29/cold14.json",
+      "selected_by_layer_canonical_sha256": "9e8f66758259e5a34009d66ac8bab0f72e7b71a37897ec42c3401d5709fc8294",
+      "selected_bytes_including_scales": 3171667968,
+      "selected_decode_route_fraction": 0.0,
+      "selected_decode_route_slots": 0,
+      "selected_main_bytes": 3170893824,
+      "selected_main_gib": 2.953125,
+      "selected_scale_bytes": 774144,
+      "sha256": "99e83c10469fe9e482fcf5c532ebaeb74fb1072a8e21a66e7dec71a1936782da"
+    },
+    "cold29": {
+      "experts_per_layer": 29,
+      "num_experts": 128,
+      "num_layers": 48,
+      "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/sharegpt_trace/inputs/balanced_dynamic_plans_cold14_cold29/cold29.json",
+      "selected_by_layer_canonical_sha256": "aa3e32392d5dd890f68111dd09dc703d2a4a3aba1522bb076fa87f33e4de6203",
+      "selected_bytes_including_scales": 6569883648,
+      "selected_decode_route_fraction": 0.0006161644345238095,
+      "selected_decode_route_slots": 53,
+      "selected_main_bytes": 6568280064,
+      "selected_main_gib": 6.1171875,
+      "selected_scale_bytes": 1603584,
+      "sha256": "19b5bce1c75b677ffa7b1cb447845cec8f2f5e38d578343f6c6d732509d9f9e2"
+    }
+  }
+}

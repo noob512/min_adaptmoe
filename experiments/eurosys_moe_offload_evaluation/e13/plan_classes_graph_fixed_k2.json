@@ -1,0 +1,17 @@
+{
+  "schema": "vllm_uvm_static_alias_plan_classes_v1",
+  "initial_class": "cold70",
+  "classes": {
+    "cold70": {
+      "capacity_gib": 14.765625,
+      "plan_file": "../../vllm_uvm_e10_multilevel_pressure/inputs/formal_k2_k4_k6_k8_k10/cold70.json"
+    }
+  },
+  "metadata": {
+    "experiment": "E13",
+    "purpose": "Fixed-K2 FULL_SEPARATE performance without unrelated plan-class Graph captures",
+    "kv_target_blocks": {
+      "cold70": 1364
+    }
+  }
+}

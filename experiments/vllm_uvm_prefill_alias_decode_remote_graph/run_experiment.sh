@@ -12,11 +12,11 @@ PREPARE="${REPO_ROOT}/experiments/vllm_slot_vs_pinned_copy/prepare_inputs.py"
 PHASE_RUNNER="${REPO_ROOT}/experiments/vllm_p3_pinned_uva_phase_compare/benchmark_phase_steps.py"
 GRAPH_RUNNER="${REPO_ROOT}/experiments/vllm_p3_static_alias_graph_integration/benchmark_full_graph_steps.py"
 UVM_ALLOCATOR_SO="${VLLM_ROOT}/uvm_test/uvm_allocator.so"
-CUSTOM_UVM="${CUSTOM_UVM:-${REPO_ROOT}/.build/nvidia-595.71.05/kernel-open/nvidia-uvm.ko}"
+CUSTOM_UVM="${CUSTOM_UVM:-${REPO_ROOT}/kernel-module/nvidia-module/kernel-open/nvidia-uvm.ko}"
 STATS_PATH="${STATS_PATH:-/proc/driver/nvidia-uvm/latency_stats}"
 
-DEFAULT_MODEL="${MODEL:-}"
-DEFAULT_FIXTURE="${REPO_ROOT}/experiments/adaptmoe_token_threshold_sharegpt_compare/inputs/sharegpt_deepseek_p1024_n128_20261024.json"
+DEFAULT_MODEL="${REPO_ROOT}/../.cache/huggingface/hub/models--Qwen--Qwen3-30B-A3B-FP8/snapshots/d206ba732169f29bb77fbf80fc2c4b81d4d30782"
+DEFAULT_FIXTURE="${REPO_ROOT}/experiments/eurosys_moe_offload_evaluation/inputs/legacy_pilot/qwen3_30b_a3b_fp8/fixtures/evaluation_fixture_token_ids.json"
 
 DUAL_BANK_BYTES=1207959552
 LOGICAL_BYTES=2415919104
@@ -623,7 +623,7 @@ run_suite() {
   if git -C "${REPO_ROOT}" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     git -C "${REPO_ROOT}" status --short >"${run_root}/git_status.txt"
   else
-    printf 'Source snapshot without Git history\n' >"${run_root}/git_status.txt"
+    printf 'Source archive; verify SOURCE_MANIFEST.sha256 for source identity.\n' >"${run_root}/git_status.txt"
   fi
   printf 'ordinal\tkind\tsample\tbatch\tsymbol\tarm\tdirectory\treturncode\n' \
     >"${run_root}/execution_status.tsv"

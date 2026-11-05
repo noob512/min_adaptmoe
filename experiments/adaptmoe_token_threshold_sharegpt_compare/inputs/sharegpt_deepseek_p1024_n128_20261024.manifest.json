@@ -1,0 +1,16 @@
+{
+  "added_source_conversations": 404,
+  "fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/adaptmoe_token_threshold_sharegpt_compare/inputs/sharegpt_deepseek_p1024_n128_20261024.json",
+  "fixture_sha256": "a4cc14060c94efb8c86f0524f2c49fbf85c0ff284eb12636e1e5c133d85bb9f2",
+  "generation_is_cpu_only": true,
+  "output_tokens": 16,
+  "parent_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/adaptmoe_token_threshold_sharegpt_compare/inputs/sharegpt_deepseek_p512_n128_20261023.json",
+  "parent_fixture_sha256": "febf1babf6981abb9f1d65cfd600e33e7a8833ad799b87e09e66cc913b8edef7",
+  "preserved_prefix_tokens_per_request": 512,
+  "prompt_tokens": 1024,
+  "requests": 128,
+  "source_dataset_sha256": "35f0e213ce091ed9b9af2a1f0755e9d39f9ccec34ab281cd4ca60d70f6479ba4",
+  "status": "ok",
+  "unique_prompts": 128,
+  "unique_source_conversations": 1252
+}

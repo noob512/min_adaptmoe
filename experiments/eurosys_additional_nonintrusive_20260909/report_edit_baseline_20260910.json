@@ -1,0 +1,512 @@
+{
+  "created_at": "2026-09-09T16:42:42.460641+00:00",
+  "schema": "nonintrusive_git_guard_v1",
+  "state": {
+    "allowed_prefix": "experiments/eurosys_additional_nonintrusive_20260909/",
+    "cached_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "dirty_path_hashes": {
+      ".vscode/settings.json": {
+        "kind": "file",
+        "sha256": "381c5e606fca3cda5748122ff30b7b7ff036c588f7d46bbfed12568a5d7c62bb",
+        "size": 619
+      },
+      "KTransformers": {
+        "git_head": "5a9c7d4cfaaed0136930e4b629ce5d55cec71a54",
+        "git_status_sha256": "6dd65d1f0bf878430189890035cb211e0daab67cf72711158e20c191f650ae7f",
+        "kind": "directory"
+      },
+      "experiments/adaptmoe_mixed_schedule_probe/README.md": {
+        "kind": "file",
+        "sha256": "f6cc0a547ca20b4d39dc3b60b3184ff001ed98df07a71c27fbd7597a5faba9c9",
+        "size": 1345
+      },
+      "experiments/adaptmoe_mixed_schedule_probe/REPORT.md": {
+        "kind": "file",
+        "sha256": "093577b8c6cffe0b536530e8e7d3b4366d25c18ead9a14c77fd0ce3ed3151bfb",
+        "size": 2551
+      },
+      "experiments/adaptmoe_mixed_schedule_probe/run_probe.sh": {
+        "kind": "file",
+        "sha256": "3f6b4c2666f003a0f86191dd0d2bba2a9dbb56262e2ea9e9bec67e3e96239465",
+        "size": 5165
+      },
+      "experiments/adaptmoe_mixed_schedule_probe/verify_probe.py": {
+        "kind": "file",
+        "sha256": "07be05e760f6068406124d2d355cf77ef112f00091b4d819223c05826864234c",
+        "size": 10679
+      },
+      "experiments/eurosys_moe_offload_evaluation/analyze_e3_prefill_transport_fair_rerun.py": {
+        "kind": "file",
+        "sha256": "d308bd61b3f2ff04544c05c29d365af8751ab429e48a19941360a02f6e4fd2f0",
+        "size": 15214
+      },
+      "experiments/eurosys_moe_offload_evaluation/compare_e5_destroy_rebuild_vs_park_resume.py": {
+        "kind": "file",
+        "sha256": "c2e24c280bd456fe0665fc67b4d451ee5160f7f47f40e523ea49ea1dfe32e72c",
+        "size": 9260
+      },
+      "experiments/eurosys_moe_offload_evaluation/compare_e5_stable_vs_nonstable_va.py": {
+        "kind": "file",
+        "sha256": "439246060461d422f4d3421469f4c6ca97defce14e1ee726943b482b988ff26a",
+        "size": 8847
+      },
+      "experiments/eurosys_moe_offload_evaluation/configs/e2_c16_equal_offload_native_uva_graph.json": {
+        "kind": "file",
+        "sha256": "e2e5564293d82b61541ef9932e9fb6933efc41e106870b4afb171f07d2686c64",
+        "size": 2737
+      },
+      "experiments/eurosys_moe_offload_evaluation/configs/e2_c16_near_equal_offload_plus_one_expert.json": {
+        "kind": "file",
+        "sha256": "3c0a9ab8941b0821c86fa91aa6f121f08e03b6b4b565e6f336dc4615070838f2",
+        "size": 2767
+      },
+      "experiments/eurosys_moe_offload_evaluation/configs/e2_c1_equal_offload_native_uva_graph.json": {
+        "kind": "file",
+        "sha256": "944a48d5d4d9b0caf14d25386701e0f937274a37f8bac9fd98f3b78b56315f12",
+        "size": 2614
+      },
+      "experiments/eurosys_moe_offload_evaluation/configs/e2_c1_near_equal_offload_plus_one_expert.json": {
+        "kind": "file",
+        "sha256": "d620ce611e68869e71a91c4ff64a0c44c2d5561819de941e3db6b6cc98644fd6",
+        "size": 2742
+      },
+      "experiments/eurosys_moe_offload_evaluation/cuda_graph_api_timing_interposer.cpp": {
+        "kind": "file",
+        "sha256": "6b7792b57ece17c34d07bcb24d748891736ad60f74ef5bb545ce2775e848e28f",
+        "size": 3943
+      },
+      "experiments/eurosys_moe_offload_evaluation/direct_batch_c16_vllm_runner.py": {
+        "kind": "file",
+        "sha256": "8f0d51b429b55dbe11c443b382267aa0595d87736bf080642a41c77dba25f753",
+        "size": 8825
+      },
+      "experiments/eurosys_moe_offload_evaluation/direct_batch_e3_ktransformers_runner.py": {
+        "kind": "file",
+        "sha256": "a5aa9f5970928855ebd4628b176e56462002c6ef8a091051c9dab58ac74d43d7",
+        "size": 16133
+      },
+      "experiments/eurosys_moe_offload_evaluation/direct_batch_phase_runner.py": {
+        "kind": "file",
+        "sha256": "bfafd6d589b64b4841acbb1c677967b76611f7255a45c8f02f04126b8785918c",
+        "size": 27366
+      },
+      "experiments/eurosys_moe_offload_evaluation/e11_continuous_arrival_runner.py": {
+        "kind": "file",
+        "sha256": "ca815c831d5669ca3297c3d2e606286914bf13e40227f1ba7c46d92b7f8b1264",
+        "size": 21119
+      },
+      "experiments/eurosys_moe_offload_evaluation/e14/README.md": {
+        "kind": "file",
+        "sha256": "c8c9b6d8c46fb263fd5f0a5027fc6a364ae571fd00f410ef98852460de0d1575",
+        "size": 3543
+      },
+      "experiments/eurosys_moe_offload_evaluation/e14/RESULTS_E14.md": {
+        "kind": "file",
+        "sha256": "90677038a7e1de119b93a662b698a8380aac33a35dbfc796b759f88c2448a930",
+        "size": 5606
+      },
+      "experiments/eurosys_moe_offload_evaluation/e14/build_request_cold_plan.py": {
+        "kind": "file",
+        "sha256": "4bf54150a6aeb537ab340a8c6881ccbcf33fff72b3241653c0e58406164f4d85",
+        "size": 11709
+      },
+      "experiments/eurosys_moe_offload_evaluation/e14/config.json": {
+        "kind": "file",
+        "sha256": "a5ca0c21d34a3fb588e28e9bcdce3be28500ef6049b9a3f94de3a5b0294ea2d6",
+        "size": 3037
+      },
+      "experiments/eurosys_moe_offload_evaluation/e14/config_request_specific.json": {
+        "kind": "file",
+        "sha256": "43bc4139f68bea55f17ba7cd9b912dd85bab96d97b814ba010e6b737ebec3cb3",
+        "size": 3971
+      },
+      "experiments/eurosys_moe_offload_evaluation/e14/inputs/request_specific_cold29_plan.json": {
+        "kind": "file",
+        "sha256": "52c98cd00883ee4bf33532b0151a5b5d414f62b8529d719fe026358ad911c1fd",
+        "size": 367999
+      },
+      "experiments/eurosys_moe_offload_evaluation/e14/inputs/whole_layers_0_10_exact_parameter_names.txt": {
+        "kind": "file",
+        "sha256": "defc713cc685140f0f47b4f2ab58bdae721377a4850907d7472886bfed9bfa96",
+        "size": 827
+      },
+      "experiments/eurosys_moe_offload_evaluation/e14/inputs/whole_layers_0_10_full_expert_plan.json": {
+        "kind": "file",
+        "sha256": "1330b5efca68a8fc2ce478a02b93960f171e59d64c0018f755bb8026497b28d1",
+        "size": 6132
+      },
+      "experiments/eurosys_moe_offload_evaluation/e14/run_e14.sh": {
+        "kind": "file",
+        "sha256": "7e477f070909c8431d5a5f06e55343d9817199043637f014878df013309ad124",
+        "size": 13709
+      },
+      "experiments/eurosys_moe_offload_evaluation/e14/verify_e14.py": {
+        "kind": "file",
+        "sha256": "24f3fbc01e9f8009f0a9fc46b75a760fb203bafd83a225801b6b3803b550dc5a",
+        "size": 26473
+      },
+      "experiments/eurosys_moe_offload_evaluation/e3_prefill_only_runner.py": {
+        "kind": "file",
+        "sha256": "c8bc7aa5a03faa9409d4c44d20281dd22a9bed8ebf50e773386e37bce9ba84a5",
+        "size": 25393
+      },
+      "experiments/eurosys_moe_offload_evaluation/prefill_nsys_wrapper.py": {
+        "kind": "file",
+        "sha256": "96d6741917bf1db6e56ca63c26132d16ebb88394b54ee86606105a6b1f6941fe",
+        "size": 1318
+      },
+      "experiments/eurosys_moe_offload_evaluation/prepare_e3_near_equal_offload_plans.py": {
+        "kind": "file",
+        "sha256": "c38ecf0574ea46032f58b981dae297579028e580aab19fd075fb5e29489fde08",
+        "size": 5037
+      },
+      "experiments/eurosys_moe_offload_evaluation/prepare_e3_prefill_transport_matched_plans.py": {
+        "kind": "file",
+        "sha256": "40c463dc24a87f71c3ae3f2a6e4bcf18334c49d912920adf37e3b50f5a2be21c",
+        "size": 7014
+      },
+      "experiments/eurosys_moe_offload_evaluation/run_c1_mechanism_runtime_hot_audit_off_matrix.sh": {
+        "kind": "file",
+        "sha256": "8d48f53ff6bdb2bec2f9c1235d423c131060206d4e164823ac972465cc7c3aa8",
+        "size": 27201
+      },
+      "experiments/eurosys_moe_offload_evaluation/run_e2_c16_direct_batch_matrix.sh": {
+        "kind": "file",
+        "sha256": "b2f1df443a5e9612bcbef07035f6a63b1571e1d921b239b1c46cbbb016c1eda7",
+        "size": 22874
+      },
+      "experiments/eurosys_moe_offload_evaluation/run_e2_e3_native_uva_cudagraph.sh": {
+        "kind": "file",
+        "sha256": "4b60c48b59f1e7ad542378a1563ef244b6a97d343f629a2cf71c15d5c81872fb",
+        "size": 3522
+      },
+      "experiments/eurosys_moe_offload_evaluation/run_e2_equal_offload_native_uva_graph.sh": {
+        "kind": "file",
+        "sha256": "96bc3415f1c935df4eefbdad189f1f22410ecf1ba40ddf1db847269cc284c804",
+        "size": 3810
+      },
+      "experiments/eurosys_moe_offload_evaluation/run_e2_near_equal_offload_plus_one_expert.sh": {
+        "kind": "file",
+        "sha256": "95f725237121f9e1af603afc24e6f466f16df7f5669861c315a8d06b2e9c141b",
+        "size": 605
+      },
+      "experiments/eurosys_moe_offload_evaluation/run_e3_c1_c16_uva_single_round.sh": {
+        "kind": "file",
+        "sha256": "af14db1935c2b735dbdde75af6c13327bd02bc73cee3a46c6459efb25f217f68",
+        "size": 8214
+      },
+      "experiments/eurosys_moe_offload_evaluation/run_e3_ktransformers_c1_c16_baseline.sh": {
+        "kind": "file",
+        "sha256": "953aa32d4fc4257eaf500303a49b51945771780542fc7981e983dc52d15ddf93",
+        "size": 12898
+      },
+      "experiments/eurosys_moe_offload_evaluation/run_e3_ktransformers_tuned_single_round.sh": {
+        "kind": "file",
+        "sha256": "d7a5f6e217bae90c069a87b3e611d9d36b82d0d9109754bafd87c2a09b2ec4f8",
+        "size": 172
+      },
+      "experiments/eurosys_moe_offload_evaluation/run_e3_ktransformers_tuned_three_round.sh": {
+        "kind": "file",
+        "sha256": "4bb6187b04589679f22ad4dfc59d3491e4afb5925dba4543010e82b4a5e762fb",
+        "size": 1785
+      },
+      "experiments/eurosys_moe_offload_evaluation/run_e3_native_copy_vs_uva_phase.sh": {
+        "kind": "file",
+        "sha256": "f32e3af9147ddf80b8321f936428a527ab764f07c92a55ee2f9cf0ec2bec5783",
+        "size": 10903
+      },
+      "experiments/eurosys_moe_offload_evaluation/run_e3_near_equal_native_copy_graph.sh": {
+        "kind": "file",
+        "sha256": "42619b5060b6b536d5464deece49a15b443988218a84970450790b0f6d657584",
+        "size": 3380
+      },
+      "experiments/eurosys_moe_offload_evaluation/run_e3_near_equal_offload_plus_one_expert.sh": {
+        "kind": "file",
+        "sha256": "7ca2626cd9303cbed9646dc3427549755452f2a244ca6cb03c36a4686a053c7d",
+        "size": 3341
+      },
+      "experiments/eurosys_moe_offload_evaluation/run_e3_prefill_transport_fair_rerun.sh": {
+        "kind": "file",
+        "sha256": "ef27a7c4bde603de7386b29ffee3f74124ae2f2e1a0c4252a303267406aad2e8",
+        "size": 15803
+      },
+      "experiments/eurosys_moe_offload_evaluation/run_formal_e3.sh": {
+        "kind": "file",
+        "sha256": "ab36b509da91a11d942eff0366acd4fb6487f892759555703bcc4cbdb334d7e2",
+        "size": 25613
+      },
+      "experiments/eurosys_moe_offload_evaluation/verify_direct_batch_c16_case.py": {
+        "kind": "file",
+        "sha256": "a84c72d6ff378dab8d450f86b9be27fed98cb92e78a5cfd8ab2518729c26863f",
+        "size": 8842
+      },
+      "experiments/eurosys_moe_offload_evaluation/verify_e2_e3_native_uva_cudagraph.py": {
+        "kind": "file",
+        "sha256": "3b50e95e0b5455e959653f26ff7c78768fe8bc6f24418818f9a150783c824fbb",
+        "size": 11572
+      },
+      "experiments/eurosys_moe_offload_evaluation/verify_e2_equal_offload_native_uva_graph.py": {
+        "kind": "file",
+        "sha256": "06974b6128dd73190a4fbbd83a93a066bf2368269d3ad957d206adeac21569cb",
+        "size": 11915
+      },
+      "experiments/eurosys_moe_offload_evaluation/verify_e3_ktransformers_c1_c16.py": {
+        "kind": "file",
+        "sha256": "da1aae3a162cd81eebc202d151245dbd79c82c5b5ce707073f311e59050ef147",
+        "size": 12433
+      },
+      "experiments/eurosys_moe_offload_evaluation/verify_e3_ktransformers_tuned_single_round.py": {
+        "kind": "file",
+        "sha256": "a288b0cb6243ce164dbd754f14f7bf1f491be98a3440e10622a3c1439c9421ff",
+        "size": 221
+      },
+      "experiments/eurosys_moe_offload_evaluation/verify_e3_ktransformers_tuned_three_round.py": {
+        "kind": "file",
+        "sha256": "7d1fbadf8cf11f895a6a20194a044b5620632954cc996e1e44edb5fdb3364b7d",
+        "size": 15807
+      },
+      "experiments/eurosys_moe_offload_evaluation/verify_e3_near_equal_native_copy_graph.py": {
+        "kind": "file",
+        "sha256": "42c182225e356cc31bca17f4c72c3b37a98659437b97308682a0484ddc82ff26",
+        "size": 8743
+      },
+      "experiments/eurosys_moe_offload_evaluation/verify_e3_near_equal_offload_plus_one_expert.py": {
+        "kind": "file",
+        "sha256": "462c7548956980717b18e663f99226e7244488bb006db8cd178f34504677f7dc",
+        "size": 10137
+      },
+      "experiments/eurosys_moe_offload_evaluation/verify_e5_core_mechanisms.py": {
+        "kind": "file",
+        "sha256": "7694284134d87352bd757c3e40b532a96f8d5e3294cf9c88d8c02c9e5c606884",
+        "size": 9718
+      },
+      "experiments/eurosys_moe_offload_evaluation/verify_formal_e9.py": {
+        "kind": "file",
+        "sha256": "9488ea648908413fdbeebbc94740b8011ec58ff5bfb2fd21438b12037e4223ce",
+        "size": 13277
+      },
+      "experiments/reproduce/README.md": {
+        "kind": "file",
+        "sha256": "933c21c43a31ee837670e5417344c40322351c6b0c529003842accfb2e49a3c7",
+        "size": 6684
+      },
+      "experiments/reproduce/REPRODUCE_E2_E3_E10_C1_C16_FULL_DUAL_SINGLE_ROUND_20260831.md": {
+        "kind": "file",
+        "sha256": "9a3ce89d0c1270b65d1532652b194baf856e944f6d81f46ae75685449a7f4797",
+        "size": 13885
+      },
+      "experiments/reproduce/REPRODUCE_E2_E3_NATIVE_UVA_CUDAGRAPH.md": {
+        "kind": "file",
+        "sha256": "5816b7542949e73e4fabc829df5347f2ead773ef2d65f5fb4f90f77cc05fd167",
+        "size": 8196
+      },
+      "experiments/reproduce/REPRODUCE_E2_EQUAL_OFFLOAD_NATIVE_UVA_GRAPH.md": {
+        "kind": "file",
+        "sha256": "ba5582b8e2075f2ca272bafb75f2a6121d8ce827b93131bccce53b78ff565195",
+        "size": 5577
+      },
+      "experiments/reproduce/REPRODUCE_E2_NEAR_EQUAL_OFFLOAD_PLUS_ONE_EXPERT.md": {
+        "kind": "file",
+        "sha256": "78ac5f784deed771df1aaaa5471b55b4103faa8d6f1afc3dcdedfdb583cfbee7",
+        "size": 5561
+      },
+      "experiments/reproduce/REPRODUCE_E3_KTRANSFORMERS_C1_C16_BASELINE.md": {
+        "kind": "file",
+        "sha256": "1a99176859f8ecc1cf7346191fe8d521748b99ca95a4319aa716f0e646ddb9d2",
+        "size": 7455
+      },
+      "experiments/reproduce/REPRODUCE_E3_KTRANSFORMERS_TUNED_SINGLE_ROUND_20260903.md": {
+        "kind": "file",
+        "sha256": "b1139685ee1f9ac3ccd6579da70ef0863dbc6daadd9343c1820899251defc26c",
+        "size": 4109
+      },
+      "experiments/reproduce/REPRODUCE_E3_KTRANSFORMERS_TUNED_THREE_ROUND_20260903.md": {
+        "kind": "file",
+        "sha256": "89e74a797adff33df7d3e70d6c255762a878c727d7d679beab03e87418280386",
+        "size": 364
+      },
+      "experiments/reproduce/REPRODUCE_E3_NEAR_EQUAL_NATIVE_COPY_GRAPH.md": {
+        "kind": "file",
+        "sha256": "cb81cbd10da5c550c227c7929926ba27e1284431d06d02282a14bf4438735fca",
+        "size": 7252
+      },
+      "experiments/reproduce/REPRODUCE_E3_NEAR_EQUAL_OFFLOAD_DUAL_GRAPH.md": {
+        "kind": "file",
+        "sha256": "1c4595e5937856ceb625b35ab07c1d239925f4b7b4dfc4a4b627215f07bf1325",
+        "size": 6574
+      },
+      "experiments/reproduce/REPRODUCE_E9_CURRENT.md": {
+        "kind": "file",
+        "sha256": "82625f2051b76b77810e2a56f430c648539d686b34165c620ef630b13a944ce9",
+        "size": 4449
+      },
+      "experiments/vllm_p3_pinned_uva_phase_compare/benchmark_phase_steps.py": {
+        "kind": "file",
+        "sha256": "45c9ae18c5532f3a84dd4ff5e8b9dcb0b01db32e91b93f2e738c8e750a155730",
+        "size": 29337
+      },
+      "experiments/vllm_p3_static_alias_graph_integration/benchmark_full_graph_steps.py": {
+        "kind": "file",
+        "sha256": "09dfd10d77fc63a1e5fb0a8876327a2b34e2745eeb510021e3875926cd55f0f7",
+        "size": 37387
+      },
+      "experiments/vllm_uvm_cold5_alias_prefill/benchmark_cold5_steps.py": {
+        "kind": "file",
+        "sha256": "790b412daf24914e342611567a75c384d494ec41a5725b70312a533081b1978b",
+        "size": 15625
+      },
+      "experiments/vllm_uvm_cold5_alias_prefill/run_experiment.sh": {
+        "kind": "file",
+        "sha256": "77850560df7b5ca6c03e0c3e8e81df2e27bcc77673e7c6db23134b8d949b4dff",
+        "size": 18232
+      },
+      "experiments/vllm_uvm_cold5_alias_prefill/verify_experiment.py": {
+        "kind": "file",
+        "sha256": "1440c9aaa367bfaf153e687e36386beee9119d2626751d3aad00e0c1a7521ad2",
+        "size": 23144
+      },
+      "experiments/vllm_uvm_dual_topology_graph/run_experiment.sh": {
+        "kind": "file",
+        "sha256": "f164f24fc85655f7b5c10339c360458c69e6b49353fd9cc1eeb8c79b1bd0e14b",
+        "size": 5823
+      },
+      "experiments/vllm_uvm_dual_topology_graph/test_dual_topology_verify.py": {
+        "kind": "file",
+        "sha256": "ef63715f29460c5703f4c948828d1bfa54a8c37e83b5310bc6b33403aecba2e8",
+        "size": 4773
+      },
+      "experiments/vllm_uvm_dual_topology_graph/verify_experiment.py": {
+        "kind": "file",
+        "sha256": "c4ce8b22715ba9d6255c998d596549bd33906f9920348dd124b09addbbc1b575",
+        "size": 30742
+      },
+      "experiments/vllm_uvm_prefill_alias_decode_remote_graph/benchmark_phase_switch_steps.py": {
+        "kind": "file",
+        "sha256": "837a63696f48cf1c8307f3a60217a5a71d69dd33504bb64b3938efab1043ec59",
+        "size": 226659
+      },
+      "experiments/vllm_uvm_prefill_alias_decode_remote_graph/run_experiment.sh": {
+        "kind": "file",
+        "sha256": "25d960f4f8467370b95cd75610281d850ff564168ff4314e3d9dcda7cb15d3a5",
+        "size": 30093
+      },
+      "paper/2604.02715v2.pdf": {
+        "kind": "file",
+        "sha256": "b1477dda0fca8be496728704a3ce9c7ce4a49e9e572bd6bf7d925ba6bb9e64dc",
+        "size": 1101275
+      },
+      "paper/eurosys.bib": {
+        "kind": "file",
+        "sha256": "f0d432fb2df5cc3a2498a538366026ba5e6a84f8ae26f9da9ab8f6fc7d0c6faf",
+        "size": 2726
+      },
+      "paper/eurosys.tex": {
+        "kind": "file",
+        "sha256": "6c29bbbe87fbb74b12293667ee097b5ae83713a8ec08d3efaa682b740ac4356f",
+        "size": 44585
+      },
+      "workloads/vllm/vllm/vllm/model_executor/models/utils.py": {
+        "kind": "file",
+        "sha256": "9ece1a0243246406d9e397ce8200baa1465f1ea2dc6b88701908f403433a25b5",
+        "size": 533453
+      },
+      "workloads/vllm/vllm/vllm/v1/engine/core.py": {
+        "kind": "file",
+        "sha256": "a0f06924e6f028f9044775f996216c443515c69d6f2c6b50c406c4c8ddde2338",
+        "size": 158167
+      },
+      "workloads/vllm/vllm/vllm/v1/worker/gpu_model_runner.py": {
+        "kind": "file",
+        "sha256": "0f6ee398177b7aef03d876b8fdfb62bf247eea822d0a8ac28157384f5f0a4fae",
+        "size": 441661
+      }
+    },
+    "head": "7b6f3a5722305510a9d314d258c3846bd122220f",
+    "status_lines": [
+      " M KTransformers",
+      " M experiments/eurosys_moe_offload_evaluation/compare_e5_destroy_rebuild_vs_park_resume.py",
+      " M experiments/eurosys_moe_offload_evaluation/compare_e5_stable_vs_nonstable_va.py",
+      " M experiments/eurosys_moe_offload_evaluation/direct_batch_c16_vllm_runner.py",
+      " M experiments/eurosys_moe_offload_evaluation/direct_batch_e3_ktransformers_runner.py",
+      " M experiments/eurosys_moe_offload_evaluation/direct_batch_phase_runner.py",
+      " M experiments/eurosys_moe_offload_evaluation/e11_continuous_arrival_runner.py",
+      " M experiments/eurosys_moe_offload_evaluation/e3_prefill_only_runner.py",
+      " M experiments/eurosys_moe_offload_evaluation/run_c1_mechanism_runtime_hot_audit_off_matrix.sh",
+      " M experiments/eurosys_moe_offload_evaluation/run_e2_c16_direct_batch_matrix.sh",
+      " M experiments/eurosys_moe_offload_evaluation/run_e3_c1_c16_uva_single_round.sh",
+      " M experiments/eurosys_moe_offload_evaluation/run_e3_native_copy_vs_uva_phase.sh",
+      " M experiments/eurosys_moe_offload_evaluation/run_formal_e3.sh",
+      " M experiments/eurosys_moe_offload_evaluation/verify_direct_batch_c16_case.py",
+      " M experiments/eurosys_moe_offload_evaluation/verify_formal_e9.py",
+      " M experiments/reproduce/README.md",
+      " M experiments/reproduce/REPRODUCE_E2_E3_E10_C1_C16_FULL_DUAL_SINGLE_ROUND_20260831.md",
+      " M experiments/reproduce/REPRODUCE_E9_CURRENT.md",
+      " M experiments/vllm_p3_pinned_uva_phase_compare/benchmark_phase_steps.py",
+      " M experiments/vllm_p3_static_alias_graph_integration/benchmark_full_graph_steps.py",
+      " M experiments/vllm_uvm_cold5_alias_prefill/benchmark_cold5_steps.py",
+      " M experiments/vllm_uvm_cold5_alias_prefill/run_experiment.sh",
+      " M experiments/vllm_uvm_cold5_alias_prefill/verify_experiment.py",
+      " M experiments/vllm_uvm_dual_topology_graph/run_experiment.sh",
+      " M experiments/vllm_uvm_dual_topology_graph/test_dual_topology_verify.py",
+      " M experiments/vllm_uvm_dual_topology_graph/verify_experiment.py",
+      " M experiments/vllm_uvm_prefill_alias_decode_remote_graph/benchmark_phase_switch_steps.py",
+      " M experiments/vllm_uvm_prefill_alias_decode_remote_graph/run_experiment.sh",
+      " M paper/eurosys.tex",
+      " M workloads/vllm/vllm/vllm/model_executor/models/utils.py",
+      " M workloads/vllm/vllm/vllm/v1/engine/core.py",
+      " M workloads/vllm/vllm/vllm/v1/worker/gpu_model_runner.py",
+      "?? .vscode/settings.json",
+      "?? experiments/adaptmoe_mixed_schedule_probe/README.md",
+      "?? experiments/adaptmoe_mixed_schedule_probe/REPORT.md",
+      "?? experiments/adaptmoe_mixed_schedule_probe/run_probe.sh",
+      "?? experiments/adaptmoe_mixed_schedule_probe/verify_probe.py",
+      "?? experiments/eurosys_moe_offload_evaluation/analyze_e3_prefill_transport_fair_rerun.py",
+      "?? experiments/eurosys_moe_offload_evaluation/configs/e2_c16_equal_offload_native_uva_graph.json",
+      "?? experiments/eurosys_moe_offload_evaluation/configs/e2_c16_near_equal_offload_plus_one_expert.json",
+      "?? experiments/eurosys_moe_offload_evaluation/configs/e2_c1_equal_offload_native_uva_graph.json",
+      "?? experiments/eurosys_moe_offload_evaluation/configs/e2_c1_near_equal_offload_plus_one_expert.json",
+      "?? experiments/eurosys_moe_offload_evaluation/cuda_graph_api_timing_interposer.cpp",
+      "?? experiments/eurosys_moe_offload_evaluation/e14/README.md",
+      "?? experiments/eurosys_moe_offload_evaluation/e14/RESULTS_E14.md",
+      "?? experiments/eurosys_moe_offload_evaluation/e14/build_request_cold_plan.py",
+      "?? experiments/eurosys_moe_offload_evaluation/e14/config.json",
+      "?? experiments/eurosys_moe_offload_evaluation/e14/config_request_specific.json",
+      "?? experiments/eurosys_moe_offload_evaluation/e14/inputs/request_specific_cold29_plan.json",
+      "?? experiments/eurosys_moe_offload_evaluation/e14/inputs/whole_layers_0_10_exact_parameter_names.txt",
+      "?? experiments/eurosys_moe_offload_evaluation/e14/inputs/whole_layers_0_10_full_expert_plan.json",
+      "?? experiments/eurosys_moe_offload_evaluation/e14/run_e14.sh",
+      "?? experiments/eurosys_moe_offload_evaluation/e14/verify_e14.py",
+      "?? experiments/eurosys_moe_offload_evaluation/prefill_nsys_wrapper.py",
+      "?? experiments/eurosys_moe_offload_evaluation/prepare_e3_near_equal_offload_plans.py",
+      "?? experiments/eurosys_moe_offload_evaluation/prepare_e3_prefill_transport_matched_plans.py",
+      "?? experiments/eurosys_moe_offload_evaluation/run_e2_e3_native_uva_cudagraph.sh",
+      "?? experiments/eurosys_moe_offload_evaluation/run_e2_equal_offload_native_uva_graph.sh",
+      "?? experiments/eurosys_moe_offload_evaluation/run_e2_near_equal_offload_plus_one_expert.sh",
+      "?? experiments/eurosys_moe_offload_evaluation/run_e3_ktransformers_c1_c16_baseline.sh",
+      "?? experiments/eurosys_moe_offload_evaluation/run_e3_ktransformers_tuned_single_round.sh",
+      "?? experiments/eurosys_moe_offload_evaluation/run_e3_ktransformers_tuned_three_round.sh",
+      "?? experiments/eurosys_moe_offload_evaluation/run_e3_near_equal_native_copy_graph.sh",
+      "?? experiments/eurosys_moe_offload_evaluation/run_e3_near_equal_offload_plus_one_expert.sh",
+      "?? experiments/eurosys_moe_offload_evaluation/run_e3_prefill_transport_fair_rerun.sh",
+      "?? experiments/eurosys_moe_offload_evaluation/verify_e2_e3_native_uva_cudagraph.py",
+      "?? experiments/eurosys_moe_offload_evaluation/verify_e2_equal_offload_native_uva_graph.py",
+      "?? experiments/eurosys_moe_offload_evaluation/verify_e3_ktransformers_c1_c16.py",
+      "?? experiments/eurosys_moe_offload_evaluation/verify_e3_ktransformers_tuned_single_round.py",
+      "?? experiments/eurosys_moe_offload_evaluation/verify_e3_ktransformers_tuned_three_round.py",
+      "?? experiments/eurosys_moe_offload_evaluation/verify_e3_near_equal_native_copy_graph.py",
+      "?? experiments/eurosys_moe_offload_evaluation/verify_e3_near_equal_offload_plus_one_expert.py",
+      "?? experiments/eurosys_moe_offload_evaluation/verify_e5_core_mechanisms.py",
+      "?? experiments/reproduce/REPRODUCE_E2_E3_NATIVE_UVA_CUDAGRAPH.md",
+      "?? experiments/reproduce/REPRODUCE_E2_EQUAL_OFFLOAD_NATIVE_UVA_GRAPH.md",
+      "?? experiments/reproduce/REPRODUCE_E2_NEAR_EQUAL_OFFLOAD_PLUS_ONE_EXPERT.md",
+      "?? experiments/reproduce/REPRODUCE_E3_KTRANSFORMERS_C1_C16_BASELINE.md",
+      "?? experiments/reproduce/REPRODUCE_E3_KTRANSFORMERS_TUNED_SINGLE_ROUND_20260903.md",
+      "?? experiments/reproduce/REPRODUCE_E3_KTRANSFORMERS_TUNED_THREE_ROUND_20260903.md",
+      "?? experiments/reproduce/REPRODUCE_E3_NEAR_EQUAL_NATIVE_COPY_GRAPH.md",
+      "?? experiments/reproduce/REPRODUCE_E3_NEAR_EQUAL_OFFLOAD_DUAL_GRAPH.md",
+      "?? paper/2604.02715v2.pdf",
+      "?? paper/eurosys.bib"
+    ],
+    "worktree_diff_sha256": "26aadf0b6289e07b8a69ad7ec21a3296fb5eeda16e2c9614a2951ee3244174be"
+  }
+}

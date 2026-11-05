@@ -1,0 +1,25 @@
+{
+  "schema": "vllm_uvm_static_alias_plan_classes_v1",
+  "initial_class": "cold14",
+  "classes": {
+    "cold14": {
+      "capacity_gib": 2.953125,
+      "plan_file": "inputs/balanced_dynamic_plans_cold14_cold32/cold14.json"
+    },
+    "cold32": {
+      "capacity_gib": 6.75,
+      "plan_file": "inputs/balanced_dynamic_plans_cold14_cold32/cold32.json"
+    }
+  },
+  "metadata": {
+    "experiment": "ShareGPT token-threshold dynamic KV K2 to K5 with dual-view HBM headroom",
+    "nested": true,
+    "kv_target_blocks": {
+      "cold14": 1364,
+      "cold32": 3413
+    },
+    "kv_physical_blocks": 3414,
+    "kv_bytes_per_block": 1572864,
+    "pairing": "K2/cold14 and K5/cold32; additional expert offload covers KV growth plus nested dual-view child-table allocation"
+  }
+}

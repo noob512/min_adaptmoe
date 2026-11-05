@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "protocol_id": "eurosys-pa-v2-20260824",
+  "purpose": "E0 compatibility and exact-output qualification",
+  "workloads": [
+    {
+      "name": "short_dialogue",
+      "evaluation_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/validation_short_dialogue.json",
+      "warmup_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_short_dialogue.json",
+      "concurrencies": [1],
+      "measurement_requests": 1,
+      "minimum_request_start_interval_seconds": 6,
+      "warmup_requests": 3,
+      "warmup_output_tokens": 8,
+      "barrier_timeout": 60,
+      "seed": 20260823
+    }
+  ]
+}

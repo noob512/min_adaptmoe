@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "protocol_id": "eurosys-pa-v2-20260824",
+  "workloads": [
+    {
+      "name": "calibration_rag_summary_c16",
+      "evaluation_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_rag_summary.json",
+      "warmup_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/validation_rag_summary.json",
+      "concurrencies": [16],
+      "measurement_requests": 16,
+      "warmup_requests": 3,
+      "warmup_output_tokens": 8,
+      "barrier_timeout": 120,
+      "seed": 20260823
+    },
+    {
+      "name": "calibration_long_generation_c16",
+      "evaluation_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_long_generation.json",
+      "warmup_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/validation_long_generation.json",
+      "concurrencies": [16],
+      "measurement_requests": 16,
+      "warmup_requests": 3,
+      "warmup_output_tokens": 8,
+      "barrier_timeout": 120,
+      "seed": 20260823
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "protocol_id": "eurosys-pa-v2-20260824",
+  "purpose": "Diagnostic-only serial PARK/remote-map/RESUME boundary probe; no formal E2 cells",
+  "workloads": [
+    {
+      "name": "ordinary_chat_c1_park_resume_diag",
+      "evaluation_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/evaluation_ordinary_chat.json",
+      "warmup_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_ordinary_chat.json",
+      "concurrencies": [
+        1
+      ],
+      "warmup_requests": 2,
+      "warmup_output_tokens": 8,
+      "measurement_requests": 8,
+      "minimum_request_start_interval_seconds": 6.1,
+      "barrier_timeout": 120,
+      "seed": 20260823
+    }
+  ]
+}

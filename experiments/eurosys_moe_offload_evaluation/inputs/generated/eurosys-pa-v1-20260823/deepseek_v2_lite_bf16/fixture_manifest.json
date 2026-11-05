@@ -1,0 +1,165 @@
+{
+  "all_fixture_source_sets_disjoint": true,
+  "calibration_validation_evaluation_shift_disjoint": true,
+  "dataset": "/home/ubuntu/nvidia-uvm-gpu/workloads/vllm/datasets/ShareGPT_V3_unfiltered_cleaned_split.json",
+  "dataset_sha256": "35f0e213ce091ed9b9af2a1f0755e9d39f9ccec34ab281cd4ca60d70f6479ba4",
+  "files": {
+    "calibration/long_generation": {
+      "output_tokens": 512,
+      "path": "calibration_long_generation.json",
+      "prompt_tokens": 512,
+      "sha256": "94530897287b5ed734b6c69175fb19a72c183c26ec515cadfa77262c7ab70c72",
+      "source_count": 200
+    },
+    "calibration/medium_context": {
+      "output_tokens": 128,
+      "path": "calibration_medium_context.json",
+      "prompt_tokens": 2048,
+      "sha256": "fcc89455162e7f270ac6d7dbeaa20c9bd8731f5a843c2942d35821a2c2ce9cd2",
+      "source_count": 462
+    },
+    "calibration/ordinary_chat": {
+      "output_tokens": 128,
+      "path": "calibration_ordinary_chat.json",
+      "prompt_tokens": 512,
+      "sha256": "97354889fb012d6cf0d0658e94895d177df0bc3d4212bfe6225679d06a15ce4b",
+      "source_count": 217
+    },
+    "calibration/rag_summary": {
+      "output_tokens": 128,
+      "path": "calibration_rag_summary.json",
+      "prompt_tokens": 8192,
+      "sha256": "9d8b14fac688e66b65230cf92ba2a4f40abf3e0ad984599e694450f131e03324",
+      "source_count": 1414
+    },
+    "calibration/short_dialogue": {
+      "output_tokens": 32,
+      "path": "calibration_short_dialogue.json",
+      "prompt_tokens": 128,
+      "sha256": "0848772b3b96b94ec335f28eff738e3cebd32e7faba50028699429cdd7b0cb90",
+      "source_count": 105
+    },
+    "evaluation/long_generation": {
+      "output_tokens": 512,
+      "path": "evaluation_long_generation.json",
+      "prompt_tokens": 512,
+      "sha256": "d09590304dc67f51a1f71760985efccecc252f66724b48ebd8b63e733f7bfa5d",
+      "source_count": 207
+    },
+    "evaluation/medium_context": {
+      "output_tokens": 128,
+      "path": "evaluation_medium_context.json",
+      "prompt_tokens": 2048,
+      "sha256": "8d6c8c17d3a98a403e9794b1689ae2a0a470c54b050856f4fe2e39f95b8dcff2",
+      "source_count": 491
+    },
+    "evaluation/ordinary_chat": {
+      "output_tokens": 128,
+      "path": "evaluation_ordinary_chat.json",
+      "prompt_tokens": 512,
+      "sha256": "a28d6863e23068e76a895fe99ad5cd7e7e506f26d9ebe3c7e4c6589e359e6e4d",
+      "source_count": 211
+    },
+    "evaluation/rag_summary": {
+      "output_tokens": 128,
+      "path": "evaluation_rag_summary.json",
+      "prompt_tokens": 8192,
+      "sha256": "5d676eb6ff356c542d5ab60aaaaf34b7779d25e0161be247e9774024b173a508",
+      "source_count": 1459
+    },
+    "evaluation/short_dialogue": {
+      "output_tokens": 32,
+      "path": "evaluation_short_dialogue.json",
+      "prompt_tokens": 128,
+      "sha256": "31a37f41855cee2900f3274bd590da5e0805dd9a432dd5ac2c47a610af6363d4",
+      "source_count": 86
+    },
+    "shift/long_generation": {
+      "output_tokens": 512,
+      "path": "shift_long_generation.json",
+      "prompt_tokens": 512,
+      "sha256": "8437f46e352e8407dbdcd7583bc5efa7c15cb9555b44f0091cbb9d9d05af76fe",
+      "source_count": 78
+    },
+    "shift/medium_context": {
+      "output_tokens": 128,
+      "path": "shift_medium_context.json",
+      "prompt_tokens": 2048,
+      "sha256": "029092a1efecf446d4562a32a27cbf2a06295749ffac9dee7c5e4b41f4f52e04",
+      "source_count": 150
+    },
+    "shift/ordinary_chat": {
+      "output_tokens": 128,
+      "path": "shift_ordinary_chat.json",
+      "prompt_tokens": 512,
+      "sha256": "7162f3029d3226d60536e48a954c7f971587fa57f84f015ad948ab8467b7fd88",
+      "source_count": 81
+    },
+    "shift/rag_summary": {
+      "output_tokens": 128,
+      "path": "shift_rag_summary.json",
+      "prompt_tokens": 8192,
+      "sha256": "d0e36161c1c98188652c1d2824e0536e4aa94423d953176358bc9a270a99b932",
+      "source_count": 438
+    },
+    "shift/short_dialogue": {
+      "output_tokens": 32,
+      "path": "shift_short_dialogue.json",
+      "prompt_tokens": 128,
+      "sha256": "5a8d2715ac6172feed14b6f23188dd8794a914a9432a8b20cfab947e6c0e1bd8",
+      "source_count": 55
+    },
+    "validation/long_generation": {
+      "output_tokens": 512,
+      "path": "validation_long_generation.json",
+      "prompt_tokens": 512,
+      "sha256": "f6265c14df4bbdd1ee7834e1ccfeded29ca2a69160db0f792f78db4aa19ffb05",
+      "source_count": 231
+    },
+    "validation/medium_context": {
+      "output_tokens": 128,
+      "path": "validation_medium_context.json",
+      "prompt_tokens": 2048,
+      "sha256": "b1bffb6dc92cbf7a443a67ed794167da5a5887ace7f956e8ba7a0f44c0cc4ed8",
+      "source_count": 425
+    },
+    "validation/ordinary_chat": {
+      "output_tokens": 128,
+      "path": "validation_ordinary_chat.json",
+      "prompt_tokens": 512,
+      "sha256": "96154190d0c8f3266690dd6a9726982bedde2c0a2bf8220b92200c8a056821d3",
+      "source_count": 240
+    },
+    "validation/rag_summary": {
+      "output_tokens": 128,
+      "path": "validation_rag_summary.json",
+      "prompt_tokens": 8192,
+      "sha256": "3c678697eafa486ef9c6c1b3c79adb147de6d019930be5e4ca0301bbd8a4fc7d",
+      "source_count": 1474
+    },
+    "validation/short_dialogue": {
+      "output_tokens": 32,
+      "path": "validation_short_dialogue.json",
+      "prompt_tokens": 128,
+      "sha256": "0e7f13325d199a134196ba7c5efd7c73a6c1f7ea39c69a272b66c205bac094ea",
+      "source_count": 89
+    }
+  },
+  "generated_at": "2026-08-23T05:53:36.827575+00:00",
+  "generation_is_cpu_only": true,
+  "model": "/home/ubuntu/.cache/huggingface/hub/models--deepseek-ai--DeepSeek-V2-Lite-Chat/snapshots/85864749cd611b4353ce1decdb286193298f64c7",
+  "model_config_sha256": "f346286b0f1c8b044252fd54cb4fa78b9fab6472a6e8bebb9edfe03d414ea03d",
+  "model_index_sha256": "d2cdb2f325f6682cf3ad1ad2526a9f979d857390b579380c0331d975136e0acf",
+  "protocol_id": "eurosys-pa-v1-20260823",
+  "requests_per_workload": 32,
+  "schema_version": 1,
+  "seed": 20260823,
+  "source_candidate_counts": {
+    "calibration": 16364,
+    "evaluation": 16539,
+    "shift": 9343,
+    "validation": 16574
+  },
+  "status": "ok",
+  "tokenizer_class": "LlamaTokenizerFast"
+}

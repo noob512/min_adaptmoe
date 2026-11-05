@@ -3,7 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
-CUSTOM_UVM="${CUSTOM_MODULE:-${REPO_ROOT}/.build/nvidia-595.71.05/kernel-open/nvidia-uvm.ko}"
+CUSTOM_UVM="${CUSTOM_MODULE:-${REPO_ROOT}/kernel-module/nvidia-module/kernel-open/nvidia-uvm.ko}"
 PYTHON="${PYTHON:-${REPO_ROOT}/workloads/vllm/vllm/.venv/bin/python}"
 OUTPUT="${OUTPUT:-${SCRIPT_DIR}/result_$(date -u +%Y%m%dT%H%M%SZ).json}"
 PROBE="${PROBE:-${SCRIPT_DIR}/probe.py}"

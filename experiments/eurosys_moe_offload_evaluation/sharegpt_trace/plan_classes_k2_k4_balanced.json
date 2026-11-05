@@ -1,0 +1,24 @@
+{
+  "schema": "vllm_uvm_static_alias_plan_classes_v1",
+  "initial_class": "cold12",
+  "classes": {
+    "cold12": {
+      "capacity_gib": 2.53125,
+      "plan_file": "inputs/balanced_dynamic_plans_cold12_cold22/cold12.json"
+    },
+    "cold22": {
+      "capacity_gib": 4.640625,
+      "plan_file": "inputs/balanced_dynamic_plans_cold12_cold22/cold22.json"
+    }
+  },
+  "metadata": {
+    "experiment": "ShareGPT token-threshold plus dynamic KV",
+    "nested": true,
+    "kv_target_blocks": {
+      "cold12": 1364,
+      "cold22": 2730
+    },
+    "kv_bytes_per_block": 1572864,
+    "pairing": "K2/cold12 and K4/cold22 with 192 MiB runtime headroom"
+  }
+}

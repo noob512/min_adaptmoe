@@ -1,0 +1,58 @@
+{
+  "calibration_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/qwen3_30b_a3b_fp8/calibration_ordinary_chat.json",
+  "calibration_fixture_sha256": "b4caae9db5aaec80d8c499ad08b8b79ca3353dafca1bc626c28ee8359c2ee3c1",
+  "exact_parameter_count": 96,
+  "exact_parameter_names": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/qwen3_30b_a3b_fp8/e2_adaptive_plans/cold25/exact_parameter_names.txt",
+  "exact_parameter_names_sha256": "6142b29ba13671bd2c0c1e18525a64e1bd3f676ad369add9d3d2323086ac4141",
+  "metadata": {
+    "calibration_batch": 32,
+    "decode_calibration_passes": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "decode_calibration_route_slots": 86016,
+    "decode_calibration_tokens": 224,
+    "experts_per_layer": 25,
+    "hot_plan_records": 4944,
+    "logical_count_shape": [
+      11,
+      48,
+      128
+    ],
+    "num_experts": 128,
+    "num_layers": 48,
+    "offload_plan_records": 1200,
+    "pass_route_slots": [
+      117120,
+      1572864,
+      1572864,
+      547968,
+      12288,
+      12288,
+      12288,
+      12288,
+      12288,
+      12288,
+      12288
+    ],
+    "selected_by_layer_canonical_sha256": "4a24d5f2ee4dc41741ce4ce8a26f383e659fe000d872090698bf59b1762db5fa",
+    "selected_bytes_including_scales": 5663692800,
+    "selected_decode_route_fraction": 0.00025576636904761906,
+    "selected_decode_route_slots": 22,
+    "selected_main_bytes": 5662310400,
+    "selected_main_gib": 5.2734375,
+    "selected_scale_bytes": 1382400,
+    "selected_zero_count_coordinates": 1185
+  },
+  "plan": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/qwen3_30b_a3b_fp8/e2_adaptive_plans/cold25/cold_decode_plan_2g.json",
+  "plan_sha256": "2ea8cf9caca1c1831fc205a1419dd5536974bb019e9a7616c2d8944fb87fa116",
+  "protocol_id": "eurosys-pa-v2-20260824",
+  "routing_source": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/legacy_pilot/qwen3_30b_a3b_fp8/routing/expert_distribution.pt",
+  "routing_source_sha256": "912732708a46291b73e70c93291758747f285b364437ce77f58d53501d072f81",
+  "schema": "eurosys_qwen_e3_calibration_assets_v2"
+}

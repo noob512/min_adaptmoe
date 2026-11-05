@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "experiment_id": "c16-short-mechanism-runtime-hot-audit-off-pilot-20260827",
+  "description": "Reduced six-mechanism C16 pilot using only the frozen short-dialogue workload",
+  "workloads": [
+    {
+      "name": "short_dialogue",
+      "cell": "short_dialogue_c16",
+      "prompt_tokens": 128,
+      "output_tokens": 32,
+      "concurrency": 16,
+      "max_model_len": 192,
+      "kv_tokens": 3072,
+      "kv_cache_bytes": 100663296,
+      "kt_kv_tokens": 3104,
+      "max_batched_tokens": 2048,
+      "ours_max_batched_tokens": 2048,
+      "decode_graph_batch_sizes": [1, 4, 8, 16],
+      "prefill_graph_tokens": 2048,
+      "prefill_reserve_tokens": 2048,
+      "fused_moe_chunk_tokens": 2048,
+      "moe_infinity_device_ratio": "0.80",
+      "moe_infinity_kv_ratio": "0.0145625",
+      "moe_infinity_kv_blocks": 192
+    }
+  ],
+  "moe_infinity_kv_calibration": {
+    "block_tokens": 16,
+    "block_bytes": 1769472,
+    "available_bytes": 29164137986,
+    "ratio_rounding_digits": 7,
+    "source": "DeepSeek-V2-Lite BF16 direct serving runtime stats on RTX 5090"
+  }
+}

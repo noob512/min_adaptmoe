@@ -1,0 +1,25 @@
+{
+  "schema": "vllm_uvm_static_alias_plan_classes_v1",
+  "initial_class": "cold14",
+  "classes": {
+    "cold14": {
+      "capacity_gib": 2.953125,
+      "plan_file": "inputs/balanced_dynamic_plans_cold14_cold28_cold44/cold14.json"
+    },
+    "cold28": {
+      "capacity_gib": 5.90625,
+      "plan_file": "inputs/balanced_dynamic_plans_cold14_cold28_cold44/cold28.json"
+    },
+    "cold44": {
+      "capacity_gib": 9.28125,
+      "plan_file": "inputs/balanced_dynamic_plans_cold14_cold28_cold44/cold44.json"
+    }
+  },
+  "metadata": {
+    "experiment": "ShareGPT QPS=2 token-threshold with two physical KV growth steps",
+    "nested": true,
+    "kv_target_blocks": {"cold14": 1364, "cold28": 2730, "cold44": 4095},
+    "kv_bytes_per_block": 1572864,
+    "pairing": "Retain K2/cold14 and K4/cold28; K6/cold44 adds four experts per layer over rejected cold40 to cover physical migration and the unchanged 192 MiB free-memory gate."
+  }
+}

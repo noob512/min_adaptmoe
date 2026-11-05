@@ -8,7 +8,7 @@ Read [the build and protocol guide](../../docs/REPRODUCING_ADAPTMOE.md) first.
 
 ```bash
 # CPU-only preparation; choose an output directory that does not exist.
-PREPARE_ONLY=1 VLLM_PY=/usr/bin/python3 bash experiments/adaptmoe_token_threshold_sharegpt_compare/run_kv1_compare.sh \
+PREPARE_ONLY=1 bash experiments/adaptmoe_token_threshold_sharegpt_compare/run_kv1_compare.sh \
   /absolute/new/prepared-inputs 1
 
 # Real GPU replay: four arms, one process each, no automatic repetitions.
@@ -38,7 +38,7 @@ The entry point runs four vLLM arms; it does not run KTransformers.
 
 The frozen input is in `inputs/sharegpt_deepseek_p1024_n128_20261024.json`.
 Its SHA-256 is
-`fed1428ffe8d2fe7a4608b626041f31b81f22071876e330b495e3db3b8376a43`.
+`a4cc14060c94efb8c86f0524f2c49fbf85c0ff284eb12636e1e5c133d85bb9f2`.
 The ShareGPT V3 source SHA-256 is
 `35f0e213ce091ed9b9af2a1f0755e9d39f9ccec34ab281cd4ca60d70f6479ba4`.
 The original model snapshot was

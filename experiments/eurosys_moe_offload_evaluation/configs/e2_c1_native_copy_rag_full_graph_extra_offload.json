@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "protocol_id": "eurosys-pa-v2-20260824",
+  "purpose": "DeepSeek RAG/C1 Native Copy FULL_SEPARATE retry with additional expert tensors offloaded to provide Graph-capture headroom",
+  "workloads": [
+    {
+      "name": "rag_summary",
+      "cell": "rag_summary_c1",
+      "prompt_tokens": 8192,
+      "output_tokens": 128,
+      "max_model_len": 8320,
+      "kv_tokens": 8320,
+      "kv_cache_bytes": 272629760,
+      "max_batched_tokens": 2048,
+      "ours_max_batched_tokens": 2048,
+      "prefill_graph_tokens": 2048,
+      "prefill_reserve_tokens": 2048,
+      "fused_moe_chunk_tokens": 2048,
+      "ours_cold_candidates": [2],
+      "ttft_slo_ms": 30000,
+      "tpot_slo_ms": 200,
+      "native_offload_gb_candidates": [1.843994140625],
+      "native_copy_exact_w2_layer_candidates": [],
+      "native_offload_gb": 1.843994140625,
+      "native_copy_exact_offload_gb": 1.843994140625,
+      "native_copy_exact_parameter_names": [
+        "model.layers.0.mlp.gate_up_proj.weight",
+        "model.layers.0.mlp.down_proj.weight",
+        "model.layers.1.mlp.experts.w13_weight",
+        "model.layers.2.mlp.experts.w13_weight",
+        "model.layers.3.mlp.experts.w2_weight"
+      ]
+    }
+  ]
+}

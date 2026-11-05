@@ -1,0 +1,91 @@
+{
+  "schema": "eurosys_e14_uva_layer_vs_cold_protocol_v1",
+  "experiment": "E14",
+  "title": "Eager UVA concurrency scaling with request-specific cold experts versus fixed whole layers",
+  "model": "/home/ubuntu/.cache/huggingface/hub/models--Qwen--Qwen3-30B-A3B-FP8/snapshots/d206ba732169f29bb77fbf80fc2c4b81d4d30782",
+  "fixture": "experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/qwen3_30b_a3b_fp8/evaluation_short_dialogue.json",
+  "cold_plan": "experiments/eurosys_moe_offload_evaluation/e14/inputs/request_specific_cold29_plan.json",
+  "cold_exact_names": "experiments/vllm_uvm_large_kv_multilevel/inputs/exact_parameter_names.txt",
+  "whole_layer_exact_names": "experiments/eurosys_moe_offload_evaluation/e14/inputs/whole_layers_0_10_exact_parameter_names.txt",
+  "batch_sizes": [1, 4, 16, 32],
+  "prompt_tokens_per_request": 8,
+  "capture_sizes": [],
+  "selection": {
+    "scope": "same_e14_evaluation_requests",
+    "profile_batch_size": 32,
+    "profile_prefill_tokens_per_request": 8,
+    "profile_decode_steps": 21,
+    "profile_route_slots": 356352,
+    "selected_route_slots": 3680,
+    "selected_route_fraction": 0.010326867816091954,
+    "selected_prefill_route_fraction": 0.012440999348958334,
+    "selected_decode_route_fraction": 0.009521484375,
+    "selected_zero_count_coordinates": 541,
+    "plan_sha256": "52c98cd00883ee4bf33532b0151a5b5d414f62b8529d719fe026358ad911c1fd",
+    "leakage_notice": "The same frozen request set is used for placement selection and performance evaluation; this is an in-distribution oracle experiment."
+  },
+  "execution": {
+    "mechanism": "managed original-VA UVA remote read in eager Prefill and Decode",
+    "phase_mode": "remote_only",
+    "remote_only_direct_forward": true,
+    "per_forward_copy_trace": false,
+    "compilation_mode": "NONE",
+    "cudagraph_mode": "NONE",
+    "enforce_eager": true,
+    "enable_dbo": false,
+    "max_model_len": 64,
+    "max_num_seqs": 32,
+    "max_num_batched_tokens": 256,
+    "kv_cache_memory_bytes": 536870912,
+    "minimum_post_graph_free_bytes": 201326592,
+    "cpu_offload_gb": 6.5,
+    "gpu_memory_utilization": 0.97
+  },
+  "arms": {
+    "D": {
+      "name": "distributed_request_cold29",
+      "placement": "29 lowest combined Prefill+Decode route-count experts per layer on the same E14 request set",
+      "selected_layers": 48,
+      "selected_expert_instances": 1392,
+      "selected_main_bytes": 6568280064,
+      "selected_main_gib": 6.1171875,
+      "expected_alias_backing_bytes": 273678336
+    },
+    "W": {
+      "name": "fixed_whole_layers_0_10",
+      "placement": "all 128 experts in each of the fixed MoE layers 0 through 10",
+      "selected_layers": 11,
+      "selected_expert_instances": 1408,
+      "selected_main_bytes": 6643777536,
+      "selected_main_gib": 6.1875,
+      "expected_alias_backing_bytes": 1207959552
+    }
+  },
+  "fairness": {
+    "offload_byte_difference_fraction_of_distributed": 0.011493661971830986,
+    "same_model": true,
+    "same_frozen_requests": true,
+    "same_uva_remote_read_mechanism": true,
+    "same_remote_only_direct_forward": true,
+    "same_per_forward_trace_setting": true,
+    "same_no_graph_mode": true,
+    "same_capture_shapes": true,
+    "same_kv_budget": true,
+    "same_process_repeat_protocol": true
+  },
+  "acceptance": {
+    "b1_distributed_over_whole_throughput_range_both_phases": [0.75, 1.25],
+    "b32_distributed_over_whole_minimum_both_phases": 1.15,
+    "b32_distributed_minimum_linear_scaling_efficiency_both_phases": 0.9,
+    "b32_whole_layer_maximum_linear_scaling_efficiency_both_phases": 0.75,
+    "interpretation": "Whole-layer throughput may still rise; the claim is lower scaling efficiency, not zero growth."
+  },
+  "formal": {
+    "process_order": "DWWDDW",
+    "independent_processes_per_arm": 3,
+    "conditioning_repeats_per_process": 1,
+    "measurement_repeats_per_process": 3,
+    "warmup_decode_steps": 5,
+    "measured_decode_steps": 16
+  }
+}

@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+RUN_ROOT="${RUN_ROOT:-/tmp/deepseek_v2_lite_compare_$(date +%Y%m%d_%H%M%S)}"
+mkdir -p "${RUN_ROOT}"
+
+export RUN_ROOT
+MODEL_ID="deepseek-ai/DeepSeek-V2-Lite-Chat"
+MODEL_SNAPSHOT="${MODEL_SNAPSHOT:-/home/ubuntu/.cache/huggingface/hub/models--deepseek-ai--DeepSeek-V2-Lite-Chat/snapshots/85864749cd611b4353ce1decdb286193298f64c7}"
+if [[ -z "${MODEL:-}" ]]; then
+  if [[ -d "${MODEL_SNAPSHOT}" ]]; then
+    MODEL="${MODEL_SNAPSHOT}"
+  else
+    MODEL="${MODEL_ID}"
+  fi
+fi
+export MODEL MODEL_ID
+export RUN_CASES="${RUN_CASES:-pilot,adaptive}"
+export REQUEST_COUNT="${REQUEST_COUNT:-64}"
+export PILOT_REQUEST_COUNT="${PILOT_REQUEST_COUNT:-${REQUEST_COUNT}}"
+export PROMPT_MIN_TOKENS="${PROMPT_MIN_TOKENS:-320}"
+export PROMPT_MAX_TOKENS="${PROMPT_MAX_TOKENS:-360}"
+export OUTPUT_TOKENS="${OUTPUT_TOKENS:-32}"
+export PILOT_OUTPUT_TOKENS="${PILOT_OUTPUT_TOKENS:-${OUTPUT_TOKENS}}"
+export PHASE_NAMES="${PHASE_NAMES:-low,mid,high}"
+export PHASE_COUNTS="${PHASE_COUNTS:-8,32,64}"
+export PHASE_OUTPUTS="${PHASE_OUTPUTS:-32,32,32}"
+export MAINTENANCE_WAVES_PER_PHASE_LIST="${MAINTENANCE_WAVES_PER_PHASE_LIST:-5,5,6}"
+export MODEL_NUM_LAYERS="${MODEL_NUM_LAYERS:-27}"
+export MODEL_NUM_EXPERTS="${MODEL_NUM_EXPERTS:-64}"
+export FIRST_MOE_LAYER="${FIRST_MOE_LAYER:-1}"
+export COLD_EXPERTS_PER_LAYER="${COLD_EXPERTS_PER_LAYER:-16}"
+export EXPERT_EST_BYTES="${EXPERT_EST_BYTES:-17301504}"
+export NATIVE_CPU_OFFLOAD_GB="${NATIVE_CPU_OFFLOAD_GB:-8.0}"
+export MAX_MODEL_LEN="${MAX_MODEL_LEN:-512}"
+export MAX_NUM_SEQS="${MAX_NUM_SEQS:-64}"
+export MAX_NUM_BATCHED_TOKENS="${MAX_NUM_BATCHED_TOKENS:-2048}"
+export SMALL_KV_BYTES="${SMALL_KV_BYTES:-1073741824}"
+export LARGE_KV_BYTES="${LARGE_KV_BYTES:-8589934592}"
+export INITIAL_KV_BLOCKS="${INITIAL_KV_BLOCKS:-512}"
+export FINAL_KV_BLOCKS="${FINAL_KV_BLOCKS:-4096}"
+export TIMEOUT_SEC="${TIMEOUT_SEC:-3600}"
+export MOE_INFINITY_PHASE_NAMES="${MOE_INFINITY_PHASE_NAMES:-final}"
+export MOE_INFINITY_PHASE_COUNTS="${MOE_INFINITY_PHASE_COUNTS:-64}"
+export MOE_INFINITY_PHASE_OUTPUTS="${MOE_INFINITY_PHASE_OUTPUTS:-32}"
+export MOE_INFINITY_DEVICE_MEMORY_RATIO="${MOE_INFINITY_DEVICE_MEMORY_RATIO:-0.55}"
+export MOE_INFINITY_PREFETCH="${MOE_INFINITY_PREFETCH:-1}"
+# Use HF generate path first; native path currently depends on MoE-Infinity paged engine stability.
+unset MOE_INFINITY_USE_NATIVE_ENGINE
+
+exec bash "${ROOT}/experiments/moe_infinity_compare/run_detached_compare.sh"

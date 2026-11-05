@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "protocol_id": "eurosys-pa-v2-20260824",
+  "purpose": "C1 cross-mechanism, per-workload precise-reservation pilot with runtime hot-expert audits disabled for ours",
+  "cold_expert_search": {
+    "minimum_per_layer": 1,
+    "maximum_per_layer": 16
+  },
+  "moe_infinity_kv_calibration": {
+    "block_tokens": 16,
+    "block_bytes": 1769472,
+    "available_bytes": 29164137986,
+    "ratio_rounding_digits": 6,
+    "source": "DeepSeek-V2-Lite BF16 /v1/config and /admin/stats on RTX 5090"
+  },
+  "workloads": [
+    {
+      "name": "short_dialogue",
+      "cell": "short_dialogue_c1",
+      "prompt_tokens": 128,
+      "output_tokens": 32,
+      "max_model_len": 192,
+      "kv_tokens": 192,
+      "kv_cache_bytes": 6291456,
+      "max_batched_tokens": 128,
+      "ours_max_batched_tokens": 128,
+      "prefill_graph_tokens": 128,
+      "prefill_reserve_tokens": 128,
+      "fused_moe_chunk_tokens": 128,
+      "moe_infinity_kv_ratio": "0.001",
+      "moe_infinity_kv_blocks": 12
+    },
+    {
+      "name": "ordinary_chat",
+      "cell": "ordinary_chat_c1",
+      "prompt_tokens": 512,
+      "output_tokens": 128,
+      "max_model_len": 672,
+      "kv_tokens": 672,
+      "kv_cache_bytes": 22020096,
+      "max_batched_tokens": 512,
+      "ours_max_batched_tokens": 512,
+      "prefill_graph_tokens": 512,
+      "prefill_reserve_tokens": 512,
+      "fused_moe_chunk_tokens": 512,
+      "moe_infinity_kv_ratio": "0.001",
+      "moe_infinity_kv_blocks": 42
+    },
+    {
+      "name": "rag_summary",
+      "cell": "rag_summary_c1",
+      "prompt_tokens": 8192,
+      "output_tokens": 128,
+      "max_model_len": 8320,
+      "kv_tokens": 8320,
+      "kv_cache_bytes": 272629760,
+      "max_batched_tokens": 8192,
+      "ours_max_batched_tokens": 2048,
+      "prefill_graph_tokens": 2048,
+      "prefill_reserve_tokens": 2048,
+      "fused_moe_chunk_tokens": 2048,
+      "moe_infinity_kv_ratio": "0.012",
+      "moe_infinity_kv_blocks": 520
+    },
+    {
+      "name": "long_generation",
+      "cell": "long_generation_c1",
+      "prompt_tokens": 512,
+      "output_tokens": 512,
+      "max_model_len": 1056,
+      "kv_tokens": 1056,
+      "kv_cache_bytes": 34603008,
+      "max_batched_tokens": 512,
+      "ours_max_batched_tokens": 512,
+      "prefill_graph_tokens": 512,
+      "prefill_reserve_tokens": 512,
+      "fused_moe_chunk_tokens": 512,
+      "moe_infinity_kv_ratio": "0.002",
+      "moe_infinity_kv_blocks": 66
+    }
+  ]
+}

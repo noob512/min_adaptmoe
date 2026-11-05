@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "status": "ok",
+  "protocol_id": "eurosys-pa-v2-20260824",
+  "models": {
+    "deepseek_v2_lite_bf16": {
+      "manifest": "deepseek_v2_lite_bf16/fixture_manifest.json",
+      "sha256": "4a45ff0fb5ec13013e9b585c6a24bd55d729786da0a2897b14dc009ead1502ad"
+    },
+    "qwen3_30b_a3b_fp8": {
+      "manifest": "qwen3_30b_a3b_fp8/fixture_manifest.json",
+      "sha256": "7d04ab8b3719b22bc5c1a545b302956fe4103ff5bf9f74489f9d74b8425a6d12"
+    }
+  },
+  "calibration_assets": {
+    "deepseek_v2_lite_bf16": {
+      "manifest": "deepseek_v2_lite_bf16/calibration_assets/asset_manifest.json",
+      "sha256": "1a5d03737d2656f238c9923bfb26e876b76d9d5dd7e345b2b298335536b29bd5"
+    }
+  }
+}

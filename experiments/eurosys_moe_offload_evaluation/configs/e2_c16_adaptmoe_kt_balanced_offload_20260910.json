@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "experiment_id": "e2-c16-adaptmoe-ktransformers-balanced-offload-20260910",
+  "description": "DeepSeek E2 C16 exact expert-count match between AdaptMoE and 7-thread KTransformers",
+  "concurrency": 16,
+  "workloads": [
+    {
+      "name": "short_dialogue",
+      "prompt_tokens": 128,
+      "output_tokens": 32,
+      "ttft_slo_ms": 2000,
+      "tpot_slo_ms": 100,
+      "max_model_len": 192,
+      "kv_cache_bytes": 100663296,
+      "max_batched_tokens": 2048,
+      "prefill_graph_tokens": 2048,
+      "ours_cold_candidates": [1],
+      "kt_cold_candidates": [1]
+    },
+    {
+      "name": "ordinary_chat",
+      "prompt_tokens": 512,
+      "output_tokens": 128,
+      "ttft_slo_ms": 5000,
+      "tpot_slo_ms": 150,
+      "max_model_len": 672,
+      "kv_cache_bytes": 352321536,
+      "max_batched_tokens": 8192,
+      "prefill_graph_tokens": 8192,
+      "ours_cold_candidates": [4],
+      "kt_cold_candidates": [4]
+    },
+    {
+      "name": "rag_summary",
+      "prompt_tokens": 8192,
+      "output_tokens": 128,
+      "ttft_slo_ms": 30000,
+      "tpot_slo_ms": 200,
+      "max_model_len": 8320,
+      "kv_cache_bytes": 4362076160,
+      "max_batched_tokens": 16384,
+      "prefill_graph_tokens": 16384,
+      "ours_cold_candidates": [16],
+      "kt_cold_candidates": [16]
+    },
+    {
+      "name": "long_generation",
+      "prompt_tokens": 512,
+      "output_tokens": 512,
+      "ttft_slo_ms": 5000,
+      "tpot_slo_ms": 150,
+      "max_model_len": 1056,
+      "kv_cache_bytes": 553648128,
+      "max_batched_tokens": 8192,
+      "prefill_graph_tokens": 8192,
+      "ours_cold_candidates": [4],
+      "kt_cold_candidates": [4]
+    }
+  ]
+}

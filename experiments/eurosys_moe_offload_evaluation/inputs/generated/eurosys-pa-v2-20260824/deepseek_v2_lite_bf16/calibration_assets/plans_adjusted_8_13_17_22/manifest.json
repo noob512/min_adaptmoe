@@ -1,0 +1,104 @@
+{
+  "calibration_trace": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_assets/routing/routing_trace.jsonl",
+  "calibration_trace_sha256": "80773535c1cf94adc11425068e0d1f368d691a7a6392b9a8a066a1c85f2aaa41",
+  "coverage": {
+    "decode_num_tokens_max": 32,
+    "decode_num_tokens_min": 32,
+    "phase_classification": "strict batch with chunked prefill disabled: first serving scheduler step(s) are prefill; remaining steps are batched decode",
+    "prefill_num_tokens": [
+      16384
+    ],
+    "prefill_step_count": 1,
+    "record_counts": {
+      "decode": 3302,
+      "prefill": 26
+    },
+    "routed_slots": {
+      "decode": 633984,
+      "prefill": 2555904
+    },
+    "scheduler_steps": {
+      "decode": 127,
+      "prefill": 1,
+      "total": 128
+    },
+    "serving_start_step": 3,
+    "token_rows": {
+      "decode": 105664,
+      "prefill": 425984
+    }
+  },
+  "expert_main_bytes": 17301504,
+  "experts_per_layer": 64,
+  "full_expert_main_bytes": 28789702656,
+  "full_parameter_count": 52,
+  "layer_ids": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26
+  ],
+  "schema": "deepseek_v2_lite_cold_budget_matrix_v1",
+  "selection_rule": "minimum calibration prefill+decode routed slots per layer; ties by expert_id; tier plans are nested",
+  "tier_width_source": "command_line",
+  "tiers": {
+    "2g": {
+      "calibration_selected_route_slots": 260972,
+      "cold_experts_per_layer": 8,
+      "plan": "cold_plan_2g.json",
+      "plan_sha256": "75648b4e7863afa3b62956ac00b1a662bc92a50e31f858549f7d3855cc38163d",
+      "selected_expert_count": 208,
+      "selected_main_bytes": 3598712832,
+      "selected_main_gib": 3.3515625
+    },
+    "4g": {
+      "calibration_selected_route_slots": 452133,
+      "cold_experts_per_layer": 13,
+      "plan": "cold_plan_4g.json",
+      "plan_sha256": "7792aa8f6491d95d230fa012efd2507986d275c40270bbcca95ae5ffcabc60fd",
+      "selected_expert_count": 338,
+      "selected_main_bytes": 5847908352,
+      "selected_main_gib": 5.4462890625
+    },
+    "6g": {
+      "calibration_selected_route_slots": 613905,
+      "cold_experts_per_layer": 17,
+      "plan": "cold_plan_6g.json",
+      "plan_sha256": "0ba3280d4d80c03738aa80693140074f88418f82cdad5391ebb0d6c29839abcf",
+      "selected_expert_count": 442,
+      "selected_main_bytes": 7647264768,
+      "selected_main_gib": 7.1220703125
+    },
+    "8g": {
+      "calibration_selected_route_slots": 824619,
+      "cold_experts_per_layer": 22,
+      "plan": "cold_plan_8g.json",
+      "plan_sha256": "d7369c4530d0a31d52890ab562f565e380cd4750b297c1e49a32e1002fd52dc1",
+      "selected_expert_count": 572,
+      "selected_main_bytes": 9896460288,
+      "selected_main_gib": 9.216796875
+    }
+  }
+}

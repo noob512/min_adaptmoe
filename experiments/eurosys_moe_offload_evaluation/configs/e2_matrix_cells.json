@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "protocol_id": "eurosys-pa-v2-20260824",
+  "purpose": "E2 formal equal-HBM matrix cells isolated for per-cell verification",
+  "workloads": [
+    {
+      "name": "short_dialogue_c1",
+      "evaluation_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/evaluation_short_dialogue.json",
+      "warmup_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_short_dialogue.json",
+      "concurrencies": [
+        1
+      ],
+      "warmup_requests": 3,
+      "warmup_output_tokens": 8,
+      "barrier_timeout": 120,
+      "seed": 20260823
+    },
+    {
+      "name": "short_dialogue_c4",
+      "evaluation_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/evaluation_short_dialogue.json",
+      "warmup_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_short_dialogue.json",
+      "concurrencies": [
+        4
+      ],
+      "warmup_requests": 3,
+      "warmup_output_tokens": 8,
+      "barrier_timeout": 120,
+      "seed": 20260823
+    },
+    {
+      "name": "short_dialogue_c8",
+      "evaluation_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/evaluation_short_dialogue.json",
+      "warmup_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_short_dialogue.json",
+      "concurrencies": [
+        8
+      ],
+      "warmup_requests": 3,
+      "warmup_output_tokens": 8,
+      "barrier_timeout": 120,
+      "seed": 20260823
+    },
+    {
+      "name": "short_dialogue_c16",
+      "evaluation_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/evaluation_short_dialogue.json",
+      "warmup_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_short_dialogue.json",
+      "concurrencies": [
+        16
+      ],
+      "warmup_requests": 3,
+      "warmup_output_tokens": 8,
+      "barrier_timeout": 120,
+      "seed": 20260823
+    },
+    {
+      "name": "ordinary_chat_c1",
+      "evaluation_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/evaluation_ordinary_chat.json",
+      "warmup_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_ordinary_chat.json",
+      "concurrencies": [
+        1
+      ],
+      "warmup_requests": 3,
+      "warmup_output_tokens": 8,
+      "barrier_timeout": 120,
+      "seed": 20260823
+    },
+    {
+      "name": "ordinary_chat_c4",
+      "evaluation_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/evaluation_ordinary_chat.json",
+      "warmup_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_ordinary_chat.json",
+      "concurrencies": [
+        4
+      ],
+      "warmup_requests": 3,
+      "warmup_output_tokens": 8,
+      "barrier_timeout": 120,
+      "seed": 20260823
+    },
+    {
+      "name": "ordinary_chat_c8",
+      "evaluation_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/evaluation_ordinary_chat.json",
+      "warmup_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_ordinary_chat.json",
+      "concurrencies": [
+        8
+      ],
+      "warmup_requests": 3,
+      "warmup_output_tokens": 8,
+      "barrier_timeout": 120,
+      "seed": 20260823
+    },
+    {
+      "name": "ordinary_chat_c16",
+      "evaluation_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/evaluation_ordinary_chat.json",
+      "warmup_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_ordinary_chat.json",
+      "concurrencies": [
+        16
+      ],
+      "warmup_requests": 3,
+      "warmup_output_tokens": 8,
+      "barrier_timeout": 120,
+      "seed": 20260823
+    },
+    {
+      "name": "rag_summary_c1",
+      "evaluation_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/evaluation_rag_summary.json",
+      "warmup_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_rag_summary.json",
+      "concurrencies": [
+        1
+      ],
+      "warmup_requests": 3,
+      "warmup_output_tokens": 8,
+      "barrier_timeout": 120,
+      "seed": 20260823
+    },
+    {
+      "name": "rag_summary_c4",
+      "evaluation_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/evaluation_rag_summary.json",
+      "warmup_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_rag_summary.json",
+      "concurrencies": [
+        4
+      ],
+      "warmup_requests": 3,
+      "warmup_output_tokens": 8,
+      "barrier_timeout": 120,
+      "seed": 20260823
+    },
+    {
+      "name": "rag_summary_c8",
+      "evaluation_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/evaluation_rag_summary.json",
+      "warmup_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_rag_summary.json",
+      "concurrencies": [
+        8
+      ],
+      "warmup_requests": 3,
+      "warmup_output_tokens": 8,
+      "barrier_timeout": 120,
+      "seed": 20260823
+    },
+    {
+      "name": "rag_summary_c16",
+      "evaluation_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/evaluation_rag_summary.json",
+      "warmup_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_rag_summary.json",
+      "concurrencies": [
+        16
+      ],
+      "warmup_requests": 3,
+      "warmup_output_tokens": 8,
+      "barrier_timeout": 120,
+      "seed": 20260823
+    },
+    {
+      "name": "long_generation_c1",
+      "evaluation_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/evaluation_long_generation.json",
+      "warmup_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_long_generation.json",
+      "concurrencies": [
+        1
+      ],
+      "warmup_requests": 3,
+      "warmup_output_tokens": 8,
+      "barrier_timeout": 120,
+      "seed": 20260823
+    },
+    {
+      "name": "long_generation_c4",
+      "evaluation_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/evaluation_long_generation.json",
+      "warmup_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_long_generation.json",
+      "concurrencies": [
+        4
+      ],
+      "warmup_requests": 3,
+      "warmup_output_tokens": 8,
+      "barrier_timeout": 120,
+      "seed": 20260823
+    },
+    {
+      "name": "long_generation_c8",
+      "evaluation_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/evaluation_long_generation.json",
+      "warmup_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_long_generation.json",
+      "concurrencies": [
+        8
+      ],
+      "warmup_requests": 3,
+      "warmup_output_tokens": 8,
+      "barrier_timeout": 120,
+      "seed": 20260823
+    },
+    {
+      "name": "long_generation_c16",
+      "evaluation_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/evaluation_long_generation.json",
+      "warmup_fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_long_generation.json",
+      "concurrencies": [
+        16
+      ],
+      "warmup_requests": 3,
+      "warmup_output_tokens": 8,
+      "barrier_timeout": 120,
+      "seed": 20260823
+    }
+  ]
+}

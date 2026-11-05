@@ -1,0 +1,15 @@
+{
+  "classes": {
+    "cold70": {
+      "capacity_gib": 14.765625,
+      "plan_file": "cold70.json"
+    }
+  },
+  "initial_class": "cold70",
+  "metadata": {
+    "nested": true,
+    "policy": "cold-frequency",
+    "scope": "single-tier-prefill-decode-dual-view"
+  },
+  "schema": "vllm_uvm_static_alias_plan_classes_v1"
+}

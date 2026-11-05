@@ -1,0 +1,101 @@
+{
+  "added_source_conversations": 637,
+  "base_prefix_requests": 32,
+  "dataset": "/home/ubuntu/nvidia-uvm-gpu/workloads/vllm/datasets/ShareGPT_V3_unfiltered_cleaned_split.json",
+  "dataset_sha256": "35f0e213ce091ed9b9af2a1f0755e9d39f9ccec34ab281cd4ca60d70f6479ba4",
+  "eligible_conversations": 14085,
+  "excluded_fixture_files": [
+    {
+      "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_long_generation.json",
+      "sha256": "ca7968019462bfd063c4478753fbaf3645b242531b14b156a322b4785eae9962"
+    },
+    {
+      "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_medium_context.json",
+      "sha256": "eb92d2ed8a4e0780581ffa9576346bdeb49d098fa336dd89034b32336b963776"
+    },
+    {
+      "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_ordinary_chat.json",
+      "sha256": "b80531031abc032aa49281a0596e8f034d9a5a79d63942a6260b94dddf9edf84"
+    },
+    {
+      "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_rag_summary.json",
+      "sha256": "c62e84f05f819623be1b44b3f58941d6193d1d0d8f677097398dc0c8d608bdfe"
+    },
+    {
+      "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_short_dialogue.json",
+      "sha256": "337404dd625f5ca91748c5ace76ceb6adb6810de8d08959e83baddd1fba0e21c"
+    },
+    {
+      "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/evaluation_long_generation.json",
+      "sha256": "dc706f77fa3a768683f617b877bb5695c277979fc9b5befca4cafec9c4c5fe09"
+    },
+    {
+      "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/evaluation_medium_context.json",
+      "sha256": "64a26b614caf34e28bb7fa763d4058e3f960ddbe179579ab46e04a524dcef5b1"
+    },
+    {
+      "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/evaluation_ordinary_chat.json",
+      "sha256": "7bed62e15818280cdc7db2edabd57a27b76291f7e84d9d93e8c02d66efae0505"
+    },
+    {
+      "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/evaluation_rag_summary.json",
+      "sha256": "d05a5ddd0c977d334ec0b2f0643598c352c55adf4e22228031a4241a6d376f3e"
+    },
+    {
+      "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/evaluation_short_dialogue.json",
+      "sha256": "3aec45dda0fe5a5e8b8aa99cdd216714206c25975f007a508616b79bca8cfe2e"
+    },
+    {
+      "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/shift_long_generation.json",
+      "sha256": "cd6c5f9a517eae562904a050596e412d4e97e300d8cd16db5ae96484ee7d7aa5"
+    },
+    {
+      "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/shift_medium_context.json",
+      "sha256": "75ae27dd0494554c96c2c18243b2fbc2419cf7c13b8e3b9fa97bc7116d9c03b7"
+    },
+    {
+      "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/shift_ordinary_chat.json",
+      "sha256": "b33e56acae2245ae96b12d8873d55b31efb6048b83c1c54e6ef4185c8483a925"
+    },
+    {
+      "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/shift_rag_summary.json",
+      "sha256": "394107996504031c7cbb3d32fa6c1512cc3ec7a57e7071a3ee706b70753993c2"
+    },
+    {
+      "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/shift_short_dialogue.json",
+      "sha256": "e2578b5ae26cebb920c5ce17f15786d8fd1ca791a140f78905c8252ad9fa8dc0"
+    },
+    {
+      "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/validation_long_generation.json",
+      "sha256": "3e51570c4519461b27563b94a5d3c01d457186fde6ea1b3981612982aa471bfc"
+    },
+    {
+      "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/validation_medium_context.json",
+      "sha256": "4b9c3cf7a02b0ab1f59dcce79f35c3bfb527b1184a49aebc8254947ca7821db2"
+    },
+    {
+      "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/validation_ordinary_chat.json",
+      "sha256": "21689b63d2557aeafd19e8012a243a0adf67ef103f00a418f29d696179ad5455"
+    },
+    {
+      "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/validation_rag_summary.json",
+      "sha256": "9b2bd56e5b1e67d833b27755813c8c4d088e351db4c69ba5d21fff4b2248fd70"
+    },
+    {
+      "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/validation_short_dialogue.json",
+      "sha256": "faca535282b1499bdceb8cbb17f7fbe5ccf39c4917b37a81a0663d72c7e56457"
+    }
+  ],
+  "fixture": "/home/ubuntu/nvidia-uvm-gpu/experiments/adaptmoe_token_threshold_sharegpt_compare/inputs/sharegpt_deepseek_p512_n128_20261023.json",
+  "fixture_sha256": "febf1babf6981abb9f1d65cfd600e33e7a8833ad799b87e09e66cc913b8edef7",
+  "generation_is_cpu_only": true,
+  "new_sources_disjoint_from_original_fixtures": true,
+  "original_prefix_preserved": true,
+  "output_tokens": 16,
+  "prompt_tokens": 512,
+  "requests": 128,
+  "status": "ok",
+  "total_source_conversations": 848,
+  "unique_prompt_hashes": 128,
+  "unique_source_indices": 848
+}

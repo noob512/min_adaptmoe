@@ -1,0 +1,9 @@
+model.layers.1.mlp.experts.w13_weight
+model.layers.1.mlp.experts.w2_weight
+model.layers.2.mlp.experts.w13_weight
+model.layers.2.mlp.experts.w2_weight
+model.layers.3.mlp.experts.w13_weight
+model.layers.3.mlp.experts.w2_weight
+model.layers.4.mlp.experts.w13_weight
+model.layers.4.mlp.experts.w2_weight
+model.layers.5.mlp.experts.w2_weight

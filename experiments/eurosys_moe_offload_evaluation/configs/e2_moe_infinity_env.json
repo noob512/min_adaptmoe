@@ -1,0 +1,11 @@
+{
+  "CUDA_VISIBLE_DEVICES": "0",
+  "HF_HUB_OFFLINE": "1",
+  "TRANSFORMERS_OFFLINE": "1",
+  "TOKENIZERS_PARALLELISM": "false",
+  "PYTHONUNBUFFERED": "1",
+  "TZ": "Asia/Shanghai",
+  "OMP_NUM_THREADS": "14",
+  "MKL_NUM_THREADS": "14"
+}
+

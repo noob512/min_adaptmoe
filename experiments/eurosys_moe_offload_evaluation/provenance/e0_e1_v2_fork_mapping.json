@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-08-24T16:30:05Z",
+  "historical_run": "eurosys-pa-v2-20260824T142031Z-e0-e1-formal",
+  "immutability_note": "This append-only mapping does not rewrite the original run protocol, git_commits.json, or dirty patches, and does not claim that the historical run directly used the materialized fork commits.",
+  "historical_repositories": {
+    "main": {
+      "base_commit": "0c150c0d69042413d2d28b8762d66b92f0506d86",
+      "tracked_patch_sha256": "847aa891b575513c1c9e31697f341da119e53e463503fe3d7a4eafd37d1bd8f1"
+    },
+    "moe_infinity": {
+      "base_commit": "ba5651897a80d9c9b7a1500cef2c68adaa63db0f",
+      "tracked_patch_sha256": "997b7627cb34332b9e47acc25b86d3e549519636dde4a05730c2f6b759989946"
+    },
+    "ktransformers": {
+      "base_commit": "eb9b70c4115cff151ace2cae5b0fc9db3690e31e",
+      "tracked_patch_sha256": "87f916eb75474d18f7c51b07f4c59ed1fce730e08ec789b835601f0a6af11c8a",
+      "sglang_gitlink": "bc7f0058fafe6c05dc6ad52d6b1c854af2a673b2"
+    },
+    "sglang": {
+      "base_commit": "bc7f0058fafe6c05dc6ad52d6b1c854af2a673b2",
+      "tracked_patch_sha256": "621a76f1cdaee29644935bf18669c03cb2285a631dd42c994ef5a176a6174be6"
+    }
+  },
+  "materialized_forks": {
+    "moe_infinity": {
+      "url": "https://github.com/noob512/MoE-Infinity.git",
+      "branch": "artifact/eurosys-e0e1-v2",
+      "tag": "eurosys-e0e1-v2-20260825",
+      "commit": "92c2bc9266e33bbed22405356ca7ca7e71ae8974",
+      "tree": "f031d157fcde0166d402376cea8760bb4f223427",
+      "historical_patch_byte_equivalent": true
+    },
+    "ktransformers": {
+      "url": "https://github.com/noob512/ktransformers.git",
+      "branch": "artifact/eurosys-e0e1-v2",
+      "tag": "eurosys-e0e1-v2-20260825",
+      "commit": "8d9325af331d916721dfe7e2104f93f9b268678b",
+      "tree": "69d8f2d61b202922cb842cc7ab0b947751b8a8e2",
+      "sglang_gitlink": "a1b31959e60c7bc989650aef507a74e41e567f56",
+      "historical_patch_note": "The archived KTransformers patch records only a dirty submodule marker. The source delta is materialized by the mapped SGLang commit, so no byte-equivalence claim is made for the KTransformers patch itself."
+    },
+    "sglang": {
+      "url": "https://github.com/noob512/sglang.git",
+      "branch": "artifact/eurosys-e0e1-v2",
+      "tag": "eurosys-e0e1-v2-20260825",
+      "commit": "a1b31959e60c7bc989650aef507a74e41e567f56",
+      "tree": "0262c149dac04e64659daebccc59a64b704490f3",
+      "historical_patch_byte_equivalent": true
+    }
+  },
+  "parent_wiring": {
+    "repository": "https://github.com/noob512/uvm.git",
+    "migration_base_commit": "c49e734c3b7420eeacbb1d3732576aaf7170b5b2",
+    "branch": "artifact/eurosys-e0e1-v2-submodules",
+    "wiring_commit": "817402065f6c838e0f7432d095bc69e15e276f19",
+    "wiring_tree": "ceb99778a5b835da753405572cd909ef179c2535"
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "calibration_trace": "/home/ubuntu/nvidia-uvm-gpu/experiments/hybrid_offload_2_4_6_8_compare/artifacts/calibration_20260821/routing.jsonl",
+  "calibration_trace_sha256": "d8c958f1b6c8181af75f7b09db2eb3d8aa3e9d0c00212211b174439f650cacc4",
+  "coverage": {
+    "record_counts": {
+      "decode": 182,
+      "prefill": 26
+    },
+    "routed_slots": {
+      "decode": 1092,
+      "prefill": 79872
+    },
+    "serving_start_step": 3,
+    "token_rows": {
+      "decode": 182,
+      "prefill": 13312
+    }
+  },
+  "expert_main_bytes": 17301504,
+  "experts_per_layer": 64,
+  "full_expert_main_bytes": 28789702656,
+  "full_parameter_count": 52,
+  "layer_ids": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26
+  ],
+  "schema": "deepseek_v2_lite_cold_budget_matrix_v1",
+  "selection_rule": "minimum calibration prefill+decode routed slots per layer; ties by expert_id; tier plans are nested",
+  "tiers": {
+    "2g": {
+      "calibration_selected_route_slots": 608,
+      "cold_experts_per_layer": 5,
+      "plan": "cold_plan_2g.json",
+      "plan_sha256": "30740f73759b771cf66f6233f5b0db7cf5509b891872753c9f397371bd92b36f",
+      "selected_expert_count": 130,
+      "selected_main_bytes": 2249195520,
+      "selected_main_gib": 2.0947265625
+    },
+    "4g": {
+      "calibration_selected_route_slots": 2241,
+      "cold_experts_per_layer": 10,
+      "plan": "cold_plan_4g.json",
+      "plan_sha256": "d56d004244f77fe1905c94f4c70f717c935a586cb435f2cdb579841e404891a4",
+      "selected_expert_count": 260,
+      "selected_main_bytes": 4498391040,
+      "selected_main_gib": 4.189453125
+    },
+    "6g": {
+      "calibration_selected_route_slots": 4118,
+      "cold_experts_per_layer": 14,
+      "plan": "cold_plan_6g.json",
+      "plan_sha256": "a2c8690264989c71d6c926850072b64ac7a60bf603523fdd9e7893208e97a60f",
+      "selected_expert_count": 364,
+      "selected_main_bytes": 6297747456,
+      "selected_main_gib": 5.865234375
+    },
+    "8g": {
+      "calibration_selected_route_slots": 7215,
+      "cold_experts_per_layer": 19,
+      "plan": "cold_plan_8g.json",
+      "plan_sha256": "2800b757a7093a2f5214ae30bb05f4a00ec2a95e2501b127047ee835e36c2a42",
+      "selected_expert_count": 494,
+      "selected_main_bytes": 8546942976,
+      "selected_main_gib": 7.9599609375
+    }
+  }
+}

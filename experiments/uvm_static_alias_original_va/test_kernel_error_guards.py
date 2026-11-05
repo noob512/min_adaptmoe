@@ -72,12 +72,13 @@ def test_immutable_shadow_partial_release_presplits_before_free() -> None:
     wait = helper.index("uvm_push_end_and_wait(", split)
     verify = helper.index("gpu_state->pte_is_2m", wait)
     assert validate < allocate < submit < split < wait < verify
-    # The resident-aware helper preserves complete CPU shadow backing when
-    # local GPU residency is sparse; it replaces the older generic split.
-    assert "resident_override = UVM_ID_CPU;" in helper[:validate]
-    assert "uvm_page_mask_subset(&mapped_pages, &va_block->cpu.resident)" in helper
-    assert "uvm_page_mask_subset(&mapped_pages, &va_block->cpu.allocated)" in helper
+    # The immutable CPU shadow is the explicit destination when GPU backing
+    # is sparse. The split must preserve that validated destination.
     assert "resident_override," in helper[split:wait]
+    override = helper.index("resident_override = UVM_ID_CPU;")
+    assert "&va_block->cpu.resident" in helper[:override]
+    assert "&va_block->cpu.allocated" in helper[:override]
+    assert "&gpu_state->resident" in helper[:override]
 
     presplit = cutover.index("block_presplit_2m_for_partial_shadow_cutover(")
     make_resident = cutover.index("uvm_va_block_make_resident(")
@@ -86,10 +87,9 @@ def test_immutable_shadow_partial_release_presplits_before_free() -> None:
     )
     postcheck = cutover.index("gpu_state->pte_is_2m", post_resplit)
     assert presplit < make_resident < post_resplit < postcheck
-    # The failure branch also emits telemetry before leaving the cutover.
-    failure_guard = cutover.index("if (status != NV_OK)", presplit)
-    failure_exit = cutover.index("goto out;", failure_guard)
-    assert presplit < failure_guard < failure_exit < make_resident
+    presplit_guard = cutover[presplit:make_resident]
+    assert "if (status != NV_OK) {" in presplit_guard
+    assert "goto out;" in presplit_guard
 
     release_end = source.index("return status;", release_start)
     release = source[release_start:release_end]
