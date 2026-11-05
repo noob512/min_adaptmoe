@@ -1,0 +1,17 @@
+{
+  "schema": "vllm_uvm_static_alias_plan_classes_v1",
+  "initial_class": "cold89",
+  "classes": {
+    "cold89": {
+      "capacity_gib": 18.7734375,
+      "plan_file": "../../vllm_uvm_e10_multilevel_pressure/inputs/formal_k2_k4_k6_k8_k10/cold89.json"
+    }
+  },
+  "metadata": {
+    "experiment": "E13",
+    "purpose": "Fixed-K6 FULL_SEPARATE performance without unrelated plan-class Graph captures",
+    "kv_target_blocks": {
+      "cold89": 4095
+    }
+  }
+}

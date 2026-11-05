@@ -32,6 +32,10 @@ modules.order
 # Generated measurements and machine-specific state
 **/artifacts/
 **/results/
+**/runs/
+**/checks/
+**/final_audit/
+**/cache/
 /results/
 /log/
 *.log
@@ -40,6 +44,13 @@ modules.order
 *.ncu-rep
 /workloads/vllm/datasets/
 /experiments/adaptmoe_token_threshold_sharegpt_compare/ADAPTMOE_KV1_LATEST.*
+*.d
+*.md5
+*.to_be_processed
+*.part
+**/_out/
+*.o_binary
+*.pt
 .env
 .env.*
 .vscode/
@@ -47,3 +58,15 @@ modules.order
 *.pdf
 *.zip
 *.tar.gz
+
+# Generated plots; keep evaluation/figures/scripts and data as source inputs.
+/evaluation/figures/pdf/
+/evaluation/figures/png/
+/evaluation/figures/output/
+/evaluation/figures/new_output/
+/evaluation/figures/captions/
+/evaluation/figures/tables/
+
+# Optional baseline checkouts are reconstructed from baselines/versions.json.
+/KTransformers/
+/MoE-Infinity/

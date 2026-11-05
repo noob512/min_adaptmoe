@@ -1,0 +1,5 @@
+model,workload,batch_size,plan,request_throughput_req_s,e2e_latency_ms,sample_nature,source_section,validity
+Qwen3-30B-A3B FP8,Short-128 / Output-32,64,Fixed-K2,29.148900,2189.230000,median of three within-process samples after one excluded warmup,RESULTS_E0_E12_LATEST_CONSOLIDATED_20260831.md §16.2 Fixed-K2 and Fixed-K6,valid_single_cold_process_arm
+Qwen3-30B-A3B FP8,Short-128 / Output-32,64,Fixed-K6,25.327700,2519.780000,median of three within-process samples after one excluded warmup,RESULTS_E0_E12_LATEST_CONSOLIDATED_20260831.md §16.2 Fixed-K2 and Fixed-K6,valid_single_cold_process_arm
+Qwen3-30B-A3B FP8,Short-128 / Output-32,128,Fixed-K2,39.690900,3212.920000,median of three within-process samples after one excluded warmup,RESULTS_E0_E12_LATEST_CONSOLIDATED_20260831.md §16.2 Fixed-K2 and Fixed-K6,valid_single_cold_process_arm
+Qwen3-30B-A3B FP8,Short-128 / Output-32,128,Fixed-K6,32.571700,3917.920000,median of three within-process samples after one excluded warmup,RESULTS_E0_E12_LATEST_CONSOLIDATED_20260831.md §16.2 Fixed-K2 and Fixed-K6,valid_single_cold_process_arm

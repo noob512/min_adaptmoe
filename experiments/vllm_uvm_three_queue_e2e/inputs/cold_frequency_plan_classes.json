@@ -1,0 +1,21 @@
+{
+  "classes": {
+    "cold29": {
+      "capacity_gib": 6.1171875,
+      "plan_file": "../../vllm_uvm_physical_kv_pool_resize/inputs/cold_decode_plan_6g.json"
+    },
+    "cold30": {
+      "capacity_gib": 6.328125,
+      "plan_file": "cold_frequency_tier_30.json"
+    }
+  },
+  "initial_class": "cold29",
+  "metadata": {
+    "difference_experts_per_layer": 1,
+    "difference_selected_main_bytes": 226492416,
+    "nested": true,
+    "policy": "cold-frequency",
+    "tier_output_sha256": "304b0fbcbde4470a332a243939ed8422c3e7df76f9976df5cac9e2b2543dbf13"
+  },
+  "schema": "vllm_uvm_static_alias_plan_classes_v1"
+}

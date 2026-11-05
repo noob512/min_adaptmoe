@@ -1,0 +1,70 @@
+{
+  "schema": "adaptmoe_eurosys_additional_nonintrusive_v1",
+  "created_date": "2026-09-09",
+  "scope": "qualification-sized execution of the added EuroSys experiments",
+  "immutability": {
+    "allowed_repository_prefix": "experiments/eurosys_additional_nonintrusive_20260909/",
+    "existing_files_may_change": false,
+    "existing_runners_are_black_box_inputs": true,
+    "pre_and_post_guard_required": true
+  },
+  "platform": {
+    "gpu": "NVIDIA GeForce RTX 5090 32607 MiB",
+    "driver": "595.71.05",
+    "gpu_index": 0,
+    "cpuset": "0-13"
+  },
+  "models": {
+    "deepseek": "/home/ubuntu/.cache/huggingface/hub/models--deepseek-ai--DeepSeek-V2-Lite-Chat/snapshots/85864749cd611b4353ce1decdb286193298f64c7",
+    "qwen": "/home/ubuntu/.cache/huggingface/hub/models--Qwen--Qwen3-30B-A3B-FP8/snapshots/d206ba732169f29bb77fbf80fc2c4b81d4d30782"
+  },
+  "reduced_repeat_policy": {
+    "system_case_processes": 1,
+    "online_seeds": 1,
+    "fast_switch_cycles": 1000,
+    "plan_cycles": "one qualification sequence",
+    "profiler_repeats": 1,
+    "interpretation": "qualification and trend only; no confidence interval or formal p99 claim"
+  },
+  "cases": {
+    "A": {
+      "entry": "run_e11_continuous_arrival_qualification.sh",
+      "arms": ["remote_phase_epoch", "remote_continuous", "hybrid_fail_closed"],
+      "success": "two remote arms finish, mixed scheduling is observed only in continuous mode, and the hybrid mixed path fails closed"
+    },
+    "B_C": {
+      "entry": "run_e12_dual_view_soak_qualification.sh",
+      "cycles": 1000,
+      "success": "all parent-switch cycles pass data, coverage, fault, cleanup, and module-restore checks"
+    },
+    "B_F2": {
+      "entry": "existing E5 PTE and stable-VA qualification runners",
+      "success": "available arms complete with matching output and no recapture/fault; unsupported arms are recorded"
+    },
+    "D": {
+      "entry": "existing E10/E13 qualification runner selected after static preflight",
+      "success": "at least one grow/shrink sequence completes without OOM, fault, recapture, or invariant violation"
+    },
+    "E": {
+      "entry": "new read-only process/module/model inventory plus existing result metadata",
+      "success": "GPU, host, graph, mapping, and initialization evidence can be reconciled without runtime modification"
+    },
+    "F_G": {
+      "entry": "existing E3/E4 stage runner at one representative coordinate",
+      "success": "same frozen input completes and produces phase latency plus transport/counter evidence"
+    },
+    "H": {
+      "entry": "existing managed-memory controlled probes",
+      "success": "stock UVM and explicit/prefetch variants complete or a semantic incompatibility is recorded"
+    },
+    "I": {
+      "entry": "only existing failure switches or external fault wrapper; no driver/runtime modification",
+      "success": "injected failure is rejected or rolled back with clean module/GPU state"
+    },
+    "X": {
+      "entry": "existing formal E1/E2 black-box runners at a representative coordinate",
+      "success": "common input, measured HBM, output gate, and cleanup evidence are available for every runnable arm"
+    }
+  }
+}
+

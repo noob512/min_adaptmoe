@@ -1,0 +1,114 @@
+{
+  "arrival_process": {
+    "first_arrival_ms": 0.0,
+    "kind": "open_loop_gamma_interarrival",
+    "normalized_arrivals_sha256": "82f6f4340a333641715a1b44b67a7d87456ea93c8a71ad8f7939de7b7c2deb73",
+    "normalized_interarrival_shape": 0.5,
+    "normalized_seed": 20262013,
+    "rates_req_s": {
+      "high": 0.75,
+      "low": 0.25,
+      "medium": 0.5
+    },
+    "same_request_order_across_loads": true,
+    "same_trace_required_for_all_mechanisms": true,
+    "scaled_only": true,
+    "shape": 0.5
+  },
+  "dataset": "/home/ubuntu/nvidia-uvm-gpu/workloads/vllm/datasets/ShareGPT_V3_unfiltered_cleaned_split.json",
+  "dataset_sha256": "35f0e213ce091ed9b9af2a1f0755e9d39f9ccec34ab281cd4ca60d70f6479ba4",
+  "files": {
+    "base": {
+      "path": "experiments/eurosys_moe_offload_evaluation/inputs/sharegpt_trace_20261013/sharegpt_qwen_trace_base.jsonl",
+      "sha256": "e27de47fbdb7e7398941b4e7f13b4f9b94b03b6b14dde132b9725dc850936730"
+    },
+    "high": {
+      "path": "experiments/eurosys_moe_offload_evaluation/inputs/sharegpt_trace_20261013/sharegpt_qwen_trace_high.jsonl",
+      "sha256": "49f884c21d558e1caa8414f5f106e66d30869f09cb6d9fed8ae0b3fd7f40e46b"
+    },
+    "length_summary": {
+      "path": "experiments/eurosys_moe_offload_evaluation/inputs/sharegpt_trace_20261013/length_summary.csv"
+    },
+    "low": {
+      "path": "experiments/eurosys_moe_offload_evaluation/inputs/sharegpt_trace_20261013/sharegpt_qwen_trace_low.jsonl",
+      "sha256": "416fe6e9bd464fec30259bdc375c462a1486e252b5a2555176452ab7253d98a2"
+    },
+    "medium": {
+      "path": "experiments/eurosys_moe_offload_evaluation/inputs/sharegpt_trace_20261013/sharegpt_qwen_trace_medium.jsonl",
+      "sha256": "21c2f06d5c04c1198028d60375ea1e98c61095d06f91138229c5789a951a3dc0"
+    }
+  },
+  "model": "/home/ubuntu/.cache/huggingface/hub/models--Qwen--Qwen3-30B-A3B-FP8/snapshots/d206ba732169f29bb77fbf80fc2c4b81d4d30782",
+  "protocol_notes": [
+    "ShareGPT provides request content, not production arrival timestamps.",
+    "The arrival process is synthetic and must be reported as such.",
+    "Use one cold process per mechanism and do not count warmup requests.",
+    "Use the same trace file, tokenizer, max_tokens, seed and scheduler limits for all arms.",
+    "Calibrate rates with a pilot against the slowest arm before declaring low/medium/high utilization.",
+    "The frozen prompt_token_ids are for direct-engine adapters; HTTP adapters may use messages."
+  ],
+  "request_count": 128,
+  "schema": "eurosys_sharegpt_open_loop_trace_v1",
+  "seed": 20261013,
+  "selection": {
+    "candidate_count_after_filters": 22922,
+    "deduplication": "sha256(prompt + NUL + assistant reference)",
+    "input_bins": [
+      [
+        "32-255",
+        32,
+        255
+      ],
+      [
+        "256-1023",
+        256,
+        1023
+      ],
+      [
+        "1024-4095",
+        1024,
+        4095
+      ],
+      [
+        "4096-8192",
+        4096,
+        8192
+      ]
+    ],
+    "max_prompt_plus_output_tokens": 8192,
+    "output_bins": [
+      [
+        "16-63",
+        16,
+        63
+      ],
+      [
+        "64-127",
+        64,
+        127
+      ],
+      [
+        "128-255",
+        128,
+        255
+      ],
+      [
+        "256-512",
+        256,
+        512
+      ]
+    ],
+    "quota_per_2d_cell": 8,
+    "rejection_counts": {
+      "duplicate_first_turn": 10698,
+      "empty_or_control_text": 81,
+      "less_than_two_turns": 1259,
+      "output_too_short": 987,
+      "prompt_length": 24111,
+      "prompt_plus_output_length": 2,
+      "unexpected_roles": 34085
+    },
+    "unit": "first human/user turn plus first assistant turn"
+  },
+  "tokenizer_hash": "b883bed46e0bde2674076d64f0b729f3a7014f59d69be303d28bf0b29fd030ef"
+}

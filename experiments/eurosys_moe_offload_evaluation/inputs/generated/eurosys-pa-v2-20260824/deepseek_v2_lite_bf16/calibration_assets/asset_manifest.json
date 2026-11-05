@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "status": "ok",
+  "protocol_id": "eurosys-pa-v2-20260824",
+  "created_at": "2026-08-25T08:48:45Z",
+  "purpose": "calibration_only_not_performance",
+  "model": "/home/ubuntu/.cache/huggingface/hub/models--deepseek-ai--DeepSeek-V2-Lite-Chat/snapshots/85864749cd611b4353ce1decdb286193298f64c7",
+  "calibration_fixture": {
+    "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_ordinary_chat.json",
+    "sha256": "b80531031abc032aa49281a0596e8f034d9a5a79d63942a6260b94dddf9edf84",
+    "requests": 32
+  },
+  "routing_trace": {
+    "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_assets/routing/routing_trace.jsonl",
+    "sha256": "80773535c1cf94adc11425068e0d1f368d691a7a6392b9a8a066a1c85f2aaa41"
+  },
+  "routing_result": {
+    "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_assets/routing/result.json",
+    "sha256": "ae60b154d6adb7d1139040e0a1b79b73d96ed555893ab92ddce41a711ea046a5"
+  },
+  "cold_plans": {
+    "manifest": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_assets/plans/manifest.json",
+    "sha256": "825b9aa945deb286ec5c24e588705ed1e880074d4db38e3f7205cda03d5c0df0"
+  },
+  "kt_exact_placements": {
+    "manifest": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_assets/kt_placements/kt_frequency_manifest.json",
+    "sha256": "1044253d341e68798f8adfed9fb957d6e7106d79c7dde8f2620dd2b778019249"
+  },
+  "provenance": {
+    "repo_commit": "462daa5c2396aa64de62d30948388192e1251929",
+    "ktransformers_commit": "8d9325af331d916721dfe7e2104f93f9b268678b",
+    "sglang_commit": "a1b31959e60c7bc989650aef507a74e41e567f56"
+  }
+}

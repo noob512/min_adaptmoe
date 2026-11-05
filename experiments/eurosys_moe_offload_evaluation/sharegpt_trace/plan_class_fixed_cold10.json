@@ -1,0 +1,15 @@
+{
+  "schema": "vllm_uvm_static_alias_plan_classes_v1",
+  "initial_class": "cold10",
+  "classes": {
+    "cold10": {
+      "capacity_gib": 2.109375,
+      "plan_file": "../../qwen_decode_six_mechanism_compare/inputs/cold_decode_plan_2g.json"
+    }
+  },
+  "metadata": {
+    "experiment": "Fixed 1.5 GiB KV, cold10, token-threshold versus equal-byte Native UVA",
+    "kv_target_blocks": {"cold10": 1023},
+    "selected_main_bytes": 2264924160
+  }
+}

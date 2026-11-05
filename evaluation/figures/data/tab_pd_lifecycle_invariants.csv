@@ -1,0 +1,8 @@
+event,count,interpretation,source_section,validity
+Parent switch calls,2000,mapping-control operations,REPORT.md Experiment C §6.1,valid_driver_event_count
+PDE writes,8000,mapping-control operations,REPORT.md Experiment C §6.1,valid_driver_event_count
+TLB batches,2000,mapping-control operations,REPORT.md Experiment C §6.1,valid_driver_event_count
+Vidmem allocations during switch,0,no allocation/migration/fault activity,REPORT.md Experiment C §6.1,valid_driver_event_count
+Vidmem free/evictions during switch,0,no allocation/migration/fault activity,REPORT.md Experiment C §6.1,valid_driver_event_count
+Copy pushes during switch,0,no allocation/migration/fault activity,REPORT.md Experiment C §6.1,valid_driver_event_count
+Faults,0,no allocation/migration/fault activity,REPORT.md Experiment C §6.1,valid_driver_event_count

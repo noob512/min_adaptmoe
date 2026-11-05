@@ -1,0 +1,55 @@
+{
+  "classes": {
+    "cold70": {
+      "capacity_gib": 14.765625,
+      "plan_file": "cold70.json"
+    },
+    "cold80": {
+      "capacity_gib": 16.875,
+      "plan_file": "cold80.json"
+    },
+    "cold89": {
+      "capacity_gib": 18.7734375,
+      "plan_file": "cold89.json"
+    }
+  },
+  "initial_class": "cold70",
+  "metadata": {
+    "base_plan": "/home/ubuntu/nvidia-uvm-gpu/experiments/vllm_uvm_large_kv_multilevel/inputs/cold_decode_plan_base70.json",
+    "base_plan_sha256": "f2de84ec50ee1456439e7096dffd5fc9b1f93bbd77fc9832c554f47c0744437e",
+    "expert_step_bytes": {
+      "cold70_to_cold80": 2264924160,
+      "cold80_to_cold89": 2038431744
+    },
+    "inputs": {
+      "cold70": {
+        "experts_per_layer": 70,
+        "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/vllm_uvm_e10_multilevel_pressure/inputs/cold70.json",
+        "selected_main_bytes": 15854469120,
+        "sha256": "a4f59c00d266478442ee343c033586beb8a831a4398636dfedc6ef10c2157b9d"
+      },
+      "cold80": {
+        "experts_per_layer": 80,
+        "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/vllm_uvm_e10_multilevel_pressure/inputs/cold80.json",
+        "selected_main_bytes": 18119393280,
+        "sha256": "963f53f107782d409efdc0b6f512f6484d91e2edd324413c37f8d8c47b7d881d"
+      },
+      "cold89": {
+        "experts_per_layer": 89,
+        "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/vllm_uvm_e10_multilevel_pressure/inputs/cold89.json",
+        "selected_main_bytes": 20157825024,
+        "sha256": "dd1853b1cd534418575d69c35373333ecbe19616e5718faef44e549e3c4725c4"
+      }
+    },
+    "kv_target_blocks": {
+      "cold70": 1364,
+      "cold80": 2730,
+      "cold89": 4095
+    },
+    "nested": true,
+    "policy": "cold-frequency",
+    "wave_plan": "/home/ubuntu/nvidia-uvm-gpu/experiments/vllm_uvm_large_kv_multilevel/inputs/incremental_expert_waves.json",
+    "wave_plan_sha256": "1e1b9831b5d1fac3d78b68d9d81f0a9313d35bfde8f84c0c76dac755447b2357"
+  },
+  "schema": "vllm_uvm_static_alias_plan_classes_v1"
+}

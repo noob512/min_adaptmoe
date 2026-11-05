@@ -1,0 +1,12 @@
+{
+  "CUDA_VISIBLE_DEVICES": "0",
+  "HF_HUB_OFFLINE": "1",
+  "TRANSFORMERS_OFFLINE": "1",
+  "TOKENIZERS_PARALLELISM": "false",
+  "PYTHONUNBUFFERED": "1",
+  "TZ": "Asia/Shanghai",
+  "OMP_NUM_THREADS": "14",
+  "MKL_NUM_THREADS": "14",
+  "PATH": "/home/ubuntu/nvidia-uvm-gpu/KTransformers/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+  "SGLANG_APPLY_CONFIG_BACKUP": "none"
+}

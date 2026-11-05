@@ -1,0 +1,28 @@
+{
+  "schema": "vllm_uvm_static_alias_plan_classes_v1",
+  "initial_class": "cold70",
+  "classes": {
+    "cold70": {
+      "capacity_gib": 14.765625,
+      "plan_file": "../../vllm_uvm_e10_multilevel_pressure/inputs/formal_k2_k4_k6_k8_k10/cold70.json"
+    },
+    "cold80": {
+      "capacity_gib": 16.875,
+      "plan_file": "../../vllm_uvm_e10_multilevel_pressure/inputs/formal_k2_k4_k6_k8_k10/cold80.json"
+    },
+    "cold89": {
+      "capacity_gib": 18.7734375,
+      "plan_file": "../../vllm_uvm_e10_multilevel_pressure/inputs/formal_k2_k4_k6_k8_k10/cold89.json"
+    }
+  },
+  "metadata": {
+    "experiment": "E13",
+    "nested": true,
+    "kv_target_blocks": {
+      "cold70": 1364,
+      "cold80": 2730,
+      "cold89": 4095
+    },
+    "source_manifest": "../../vllm_uvm_e10_multilevel_pressure/inputs/formal_k2_k4_k6_k8_k10/plan_classes.json"
+  }
+}

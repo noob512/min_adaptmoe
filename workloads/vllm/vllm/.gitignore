@@ -1,0 +1,33 @@
+# Python cache/env
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Build directories
+build/
+dist/
+out/
+cmake-build-*/
+
+# Native build artifacts
+*.o
+*.obj
+*.a
+*.la
+*.lo
+*.so
+*.so.*
+*.dylib
+*.dll
+*.lib
+*.exp
+*.pyd
+
+# Debug/profile artifacts
+*.dSYM/
+*.gcda
+*.gcno
+*.prof
+*.profraw
+*.profdata

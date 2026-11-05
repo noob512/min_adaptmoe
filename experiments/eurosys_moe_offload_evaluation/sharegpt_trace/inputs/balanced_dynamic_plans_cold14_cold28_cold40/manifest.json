@@ -1,0 +1,49 @@
+{
+  "schema": "eurosys_e3_near_equal_offload_plans_v1",
+  "source": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/inputs/legacy_pilot/qwen3_30b_a3b_fp8/routing/expert_distribution.pt",
+  "source_sha256": "912732708a46291b73e70c93291758747f285b364437ce77f58d53501d072f81",
+  "widths": {
+    "cold14": {
+      "experts_per_layer": 14,
+      "num_experts": 128,
+      "num_layers": 48,
+      "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/sharegpt_trace/inputs/balanced_dynamic_plans_cold14_cold28_cold40/cold14.json",
+      "selected_by_layer_canonical_sha256": "9e8f66758259e5a34009d66ac8bab0f72e7b71a37897ec42c3401d5709fc8294",
+      "selected_bytes_including_scales": 3171667968,
+      "selected_decode_route_fraction": 0.0,
+      "selected_decode_route_slots": 0,
+      "selected_main_bytes": 3170893824,
+      "selected_main_gib": 2.953125,
+      "selected_scale_bytes": 774144,
+      "sha256": "99e83c10469fe9e482fcf5c532ebaeb74fb1072a8e21a66e7dec71a1936782da"
+    },
+    "cold28": {
+      "experts_per_layer": 28,
+      "num_experts": 128,
+      "num_layers": 48,
+      "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/sharegpt_trace/inputs/balanced_dynamic_plans_cold14_cold28_cold40/cold28.json",
+      "selected_by_layer_canonical_sha256": "c998f47cf8e994c47ae69da304c8c6f766f73cf4f91335f477eb48b399cc222c",
+      "selected_bytes_including_scales": 6343335936,
+      "selected_decode_route_fraction": 0.000499906994047619,
+      "selected_decode_route_slots": 43,
+      "selected_main_bytes": 6341787648,
+      "selected_main_gib": 5.90625,
+      "selected_scale_bytes": 1548288,
+      "sha256": "bc8100c4bef9c26729c9efa44f05bee915ed79613a5349dcd90de866f97de7e3"
+    },
+    "cold40": {
+      "experts_per_layer": 40,
+      "num_experts": 128,
+      "num_layers": 48,
+      "path": "/home/ubuntu/nvidia-uvm-gpu/experiments/eurosys_moe_offload_evaluation/sharegpt_trace/inputs/balanced_dynamic_plans_cold14_cold28_cold40/cold40.json",
+      "selected_by_layer_canonical_sha256": "f291380cb715242e928cdce4055b9c2466c7dfe0dfd20bb53115cf8665f67bf6",
+      "selected_bytes_including_scales": 9061908480,
+      "selected_decode_route_fraction": 0.003638857886904762,
+      "selected_decode_route_slots": 313,
+      "selected_main_bytes": 9059696640,
+      "selected_main_gib": 8.4375,
+      "selected_scale_bytes": 2211840,
+      "sha256": "4da836185cf006bdc0248de9279cc39bb7fb043f65feb5502ebd4b372c01723c"
+    }
+  }
+}

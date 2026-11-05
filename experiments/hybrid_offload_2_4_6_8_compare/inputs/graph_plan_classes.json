@@ -1,0 +1,22 @@
+{
+  "schema": "vllm_uvm_static_alias_plan_classes_v1",
+  "initial_class": "c8",
+  "classes": {
+    "c2": {
+      "capacity_gib": 2,
+      "plan_file": "cold_plan_2g.json"
+    },
+    "c4": {
+      "capacity_gib": 4,
+      "plan_file": "cold_plan_4g.json"
+    },
+    "c6": {
+      "capacity_gib": 6,
+      "plan_file": "cold_plan_6g.json"
+    },
+    "c8": {
+      "capacity_gib": 8,
+      "plan_file": "cold_plan_8g.json"
+    }
+  }
+}

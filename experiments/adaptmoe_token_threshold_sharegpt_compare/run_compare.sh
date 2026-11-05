@@ -9,9 +9,9 @@ COMPARE_VERIFY="${COMPARE_VERIFY_OVERRIDE:-${COMPARE_DIR}/verify_compare.py}"
 FROZEN_ENV="${EVAL_DIR}/configs/e2_ours_2g_env.json"
 ADAPT_NAMES="${EVAL_DIR}/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_assets/plans/exact_parameter_names.txt"
 ADAPT_PLAN="${EVAL_DIR}/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/calibration_assets/plans_adjusted_11_17_23_29/cold_plan_2g.json"
-NATIVE_NAMES="${NATIVE_NAMES:?Use run_kv1_compare.sh to prepare native parameter names}"
-MODEL="${MODEL:?Set MODEL to the local DeepSeek-V2-Lite-Chat snapshot}"
-FIXTURE="${FIXTURE:-${COMPARE_DIR}/inputs/sharegpt_deepseek_p1024_n128_20261024.json}"
+NATIVE_NAMES="${NATIVE_NAMES:-${REPO_ROOT}/experiments/adaptmoe_mixed_copy_forward_compare/inputs/native_near_equal_parameter_names.txt}"
+MODEL="${MODEL:?Set MODEL to the local DeepSeek-V2-Lite-Chat snapshot directory}"
+FIXTURE="${FIXTURE:-${EVAL_DIR}/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16/evaluation_short_dialogue.json}"
 SHAREGPT_DATASET="${SHAREGPT_DATASET:-${REPO_ROOT}/workloads/vllm/datasets/ShareGPT_V3_unfiltered_cleaned_split.json}"
 SAMPLES="${SAMPLES:-2}"
 COMPARE_ARMS="${COMPARE_ARMS:-adaptive native_uva native_copy}"
@@ -84,10 +84,9 @@ run_root="$(cd "${run_root}" && pwd)"
 RUN_ROOT_ACTIVE="${run_root}"
 
 mapfile -t frozen_env < <(
-  "${VLLM_PY}" - "${FROZEN_ENV}" "${REPO_ROOT}" <<'PY'
+  "${VLLM_PY}" - "${FROZEN_ENV}" <<'PY'
 import json, sys
 for key, value in json.load(open(sys.argv[1], encoding="utf-8")).items():
-    value = value.replace("__REPO_ROOT__", sys.argv[2])
     print(f"{key}={value}")
 PY
 )
@@ -178,7 +177,7 @@ sha256sum "${COMPARE_RUNNER}" "${COMPARE_VERIFY}" "${FROZEN_ENV}" "${ADAPT_NAMES
 if git -C "${REPO_ROOT}" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   git -C "${REPO_ROOT}" status --short >"${run_root}/git_status.txt"
 else
-  printf 'Git metadata unavailable\n' >"${run_root}/git_status.txt"
+  printf 'Source archive; verify SOURCE_MANIFEST.sha256 for source identity.\n' >"${run_root}/git_status.txt"
 fi
 printf 'ordinal\tsample\tarm\tdirectory\treturncode\n' \
   >"${run_root}/execution_status.tsv"

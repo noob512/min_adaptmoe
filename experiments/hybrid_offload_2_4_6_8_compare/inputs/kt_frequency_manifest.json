@@ -1,0 +1,59 @@
+{
+  "logical_count_shape": [
+    1,
+    27,
+    64
+  ],
+  "schema": "deepseek_v2_lite_kt_frequency_placements_v1",
+  "selection": "exact complement of frozen per-layer cold expert plan",
+  "tiers": {
+    "2g": {
+      "cold_experts_per_layer": 5,
+      "frequency_path": "/home/ubuntu/nvidia-uvm-gpu/experiments/hybrid_offload_2_4_6_8_compare/inputs/kt_frequency_2g.pt",
+      "frequency_sha256": "bc4ea01b5c471eaa5b5de79cd9675e909276ba3e37e219c10f93429f83e5cff2",
+      "gpu_experts_per_layer": 59,
+      "mask_uint8_sha256": "12cc76148eddd3d633f725912b5d48781cf8be0efc5eae24bc541ef1f797f484",
+      "selected_main_bytes": 2249195520,
+      "source_plan": "/home/ubuntu/nvidia-uvm-gpu/experiments/hybrid_offload_2_4_6_8_compare/inputs/cold_plan_2g.json",
+      "source_plan_sha256": "30740f73759b771cf66f6233f5b0db7cf5509b891872753c9f397371bd92b36f",
+      "total_cpu_experts": 130,
+      "total_gpu_experts": 1534
+    },
+    "4g": {
+      "cold_experts_per_layer": 10,
+      "frequency_path": "/home/ubuntu/nvidia-uvm-gpu/experiments/hybrid_offload_2_4_6_8_compare/inputs/kt_frequency_4g.pt",
+      "frequency_sha256": "86052f3c018e21d823b18ee7187e9c762a54009555595e9be9f9e9b1a065e7ca",
+      "gpu_experts_per_layer": 54,
+      "mask_uint8_sha256": "3630d6c6761bc17fe1f4573974844e018ade328d4427e4ecca93632e443fa48c",
+      "selected_main_bytes": 4498391040,
+      "source_plan": "/home/ubuntu/nvidia-uvm-gpu/experiments/hybrid_offload_2_4_6_8_compare/inputs/cold_plan_4g.json",
+      "source_plan_sha256": "d56d004244f77fe1905c94f4c70f717c935a586cb435f2cdb579841e404891a4",
+      "total_cpu_experts": 260,
+      "total_gpu_experts": 1404
+    },
+    "6g": {
+      "cold_experts_per_layer": 14,
+      "frequency_path": "/home/ubuntu/nvidia-uvm-gpu/experiments/hybrid_offload_2_4_6_8_compare/inputs/kt_frequency_6g.pt",
+      "frequency_sha256": "1ffa744f697418a9b12e68204735f89bff41f747ec7040d6ffe67c3ee8a5a830",
+      "gpu_experts_per_layer": 50,
+      "mask_uint8_sha256": "c447b9885833ce70e406d759ccbe884df35b278a4c807260003bd495b61bc624",
+      "selected_main_bytes": 6297747456,
+      "source_plan": "/home/ubuntu/nvidia-uvm-gpu/experiments/hybrid_offload_2_4_6_8_compare/inputs/cold_plan_6g.json",
+      "source_plan_sha256": "a2c8690264989c71d6c926850072b64ac7a60bf603523fdd9e7893208e97a60f",
+      "total_cpu_experts": 364,
+      "total_gpu_experts": 1300
+    },
+    "8g": {
+      "cold_experts_per_layer": 19,
+      "frequency_path": "/home/ubuntu/nvidia-uvm-gpu/experiments/hybrid_offload_2_4_6_8_compare/inputs/kt_frequency_8g.pt",
+      "frequency_sha256": "7b62cd97542691edeb329e3c517fd9f4a6e8bfcb6e1f387525f886a28229fcf3",
+      "gpu_experts_per_layer": 45,
+      "mask_uint8_sha256": "feb4e03f62bf8b242bb0d4858ed7933fd2bba71bf046142f5503476115ebda64",
+      "selected_main_bytes": 8546942976,
+      "source_plan": "/home/ubuntu/nvidia-uvm-gpu/experiments/hybrid_offload_2_4_6_8_compare/inputs/cold_plan_8g.json",
+      "source_plan_sha256": "2800b757a7093a2f5214ae30bb05f4a00ec2a95e2501b127047ee835e36c2a42",
+      "total_cpu_experts": 494,
+      "total_gpu_experts": 1170
+    }
+  }
+}

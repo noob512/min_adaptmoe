@@ -1,0 +1,27 @@
+diff --git a/python/sglang/srt/observability/req_time_stats.py b/python/sglang/srt/observability/req_time_stats.py
+index bb859ae..0aed043 100644
+--- a/python/sglang/srt/observability/req_time_stats.py
++++ b/python/sglang/srt/observability/req_time_stats.py
+@@ -40,6 +40,9 @@ if TYPE_CHECKING:
+     from sglang.srt.managers.schedule_batch import ScheduleBatch
+ 
+ SGLANG_TEST_REQUEST_TIME_STATS = get_bool_env_var("SGLANG_TEST_REQUEST_TIME_STATS")
++SGLANG_E3_SERIALIZE_SCHEDULER_TIME_STATS = get_bool_env_var(
++    "SGLANG_E3_SERIALIZE_SCHEDULER_TIME_STATS"
++)
+ 
+ 
+ logger = logging.getLogger(__name__)
+@@ -564,7 +567,11 @@ class SchedulerReqTimeStats(ReqTimeStatsBase):
+ 
+     def __getstate__(self) -> object:
+         # send to detokenizer/tokenizer
+-        if not self.enable_metrics:
++        # The in-process Engine API may not attach a Prometheus collector even
++        # when an experiment needs the already-recorded scheduler timestamps.
++        # Keep production behavior unchanged and expose those timestamps only
++        # for the explicit E3 no-HTTP measurement protocol.
++        if not self.enable_metrics and not SGLANG_E3_SERIALIZE_SCHEDULER_TIME_STATS:
+             return {}
+ 
+         state = {

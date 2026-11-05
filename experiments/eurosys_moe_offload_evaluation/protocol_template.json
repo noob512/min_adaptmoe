@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "protocol_name": "eurosys-phase-aware-moe-offload-platform-a-v2",
+  "claim_scope": "single-GPU phase-batched serving; mixed prefill/decode batches fail closed",
+  "platforms": {
+    "A": {
+      "required": true,
+      "gpu": "NVIDIA GeForce RTX 5090 32 GiB",
+      "cpu": "Intel Xeon Gold 6530, 14 visible physical cores",
+      "numa_nodes": 1
+    },
+    "B": {
+      "required": false,
+      "status": "not_available",
+      "reason": "no second data-center GPU is attached to this workspace"
+    }
+  },
+  "models": {
+    "deepseek_v2_lite_bf16": {
+      "role": "three-system primary model",
+      "snapshot": "85864749cd611b4353ce1decdb286193298f64c7",
+      "systems": ["ours", "ktransformers", "moe_infinity"]
+    },
+    "qwen3_30b_a3b_fp8": {
+      "role": "ours/KTransformers mechanism and scaling extension",
+      "snapshot": "d206ba732169f29bb77fbf80fc2c4b81d4d30782",
+      "systems": ["ours", "ktransformers"]
+    }
+  },
+  "tracks": {
+    "A": "equal selected expert coordinates and bytes",
+    "B": "equal measured peak system HBM"
+  },
+  "budget": {
+    "offload_gib": [0, 2, 4, 6, 8],
+    "peak_hbm_tolerance": {
+      "relative": 0.03,
+      "absolute_bytes": 268435456,
+      "rule": "max(relative * target, absolute_bytes)"
+    },
+    "mismatch_disposition": "exclude_from_speedup_but_retain_artifact"
+  },
+  "workloads": {
+    "short_dialogue": {"prompt_tokens": 128, "output_tokens": 32},
+    "ordinary_chat": {"prompt_tokens": 512, "output_tokens": 128},
+    "rag_summary": {"prompt_tokens": 8192, "output_tokens": 128},
+    "long_generation": {"prompt_tokens": 512, "output_tokens": 512}
+  },
+  "load": {
+    "closed_loop_concurrency": [1, 4, 8, 16],
+    "strict_batch": [1, 4, 8],
+    "open_loop_processes": ["poisson", "trace_replay"],
+    "relative_saturation": [0.2, 0.4, 0.6, 0.8, 0.9],
+    "open_loop_seconds": 1800,
+    "open_loop_seeds": [1103, 2207, 3301, 4409, 5501]
+  },
+  "repetition": {
+    "mechanism_cold_processes": 10,
+    "system_server_processes": 5,
+    "warmup_requests_per_process": 3,
+    "randomization": "balanced block order",
+    "random_seed": 20260823
+  },
+  "request_rate_policy": {
+    "E0_E1_concurrency": 1,
+    "E1_measurement_requests_per_server_block": 10,
+    "minimum_inference_request_start_interval_seconds": 6,
+    "maximum_inference_request_starts_per_minute": 10,
+    "health_and_metrics_requests_excluded": true
+  },
+  "slo": {
+    "short_dialogue": {"ttft_ms": 2000, "tpot_ms": 100},
+    "ordinary_chat": {"ttft_ms": 5000, "tpot_ms": 150},
+    "rag_summary": {"ttft_ms": 30000, "tpot_ms": 200},
+    "long_generation": {"ttft_ms": 5000, "tpot_ms": 150}
+  },
+  "correctness": {
+    "greedy": true,
+    "teacher_forced_max_relative_l1": 0.01,
+    "teacher_forced_top1_agreement_min": 0.99,
+    "perplexity_relative_delta_max": 0.01,
+    "offload_must_match_same_framework_token_ids": true,
+    "unknown_residency_bytes": 0,
+    "manual_migration_faults": 0
+  },
+  "timing": {
+    "boundary": "localhost pre-tokenized streaming client",
+    "ttft": "request body sent to first generated token received",
+    "tpot": "mean adjacent generated-token arrival interval excluding first token",
+    "e2e": "request body sent to final generated token received",
+    "tokenization_included": false,
+    "connection_setup_included": false
+  },
+  "experiments": {
+    "E0": {
+      "required": true,
+      "name": "compatibility and correctness",
+      "provenance_registration": "v2",
+      "unsupported_capabilities_are_reported_as": "N/A"
+    },
+    "E1": {
+      "required": true,
+      "name": "maximum-resident framework calibration",
+      "independent_server_processes_per_system": 5,
+      "systems": ["ours", "ktransformers", "moe_infinity"],
+      "balanced_order": "cyclic Latin-order rotation",
+      "concurrency": 1,
+      "measurement_requests_per_process": 10,
+      "minimum_request_start_interval_seconds": 6
+    },
+    "E2": {"required": true, "name": "main equal-HBM matrix"},
+    "E3": {"required": true, "name": "prefill/decode crossover"},
+    "E4": {"required": true, "name": "concurrency and PCIe saturation"},
+    "E5": {"required": true, "name": "Graph/original-VA/PTE ablation"},
+    "E6": {"required": true, "name": "cutover scaling and amortization"},
+    "E7": {"required": true, "name": "cold selection and shift"},
+    "E8": {"required": true, "name": "MoE-Infinity cache/prefetch"},
+    "E9": {"required": true, "name": "KTransformers placement/CPU"},
+    "E10": {"required": true, "name": "physical KV auto-resize"},
+    "E11": {
+      "required": true,
+      "name": "continuous/phase scheduling",
+      "accepted_outcomes": ["phase_epoch_supported", "fail_closed_scope_reduction"]
+    },
+    "E12": {
+      "required": true,
+      "name": "robustness soak and fault injection",
+      "soak_seconds": 21600,
+      "park_resume_cycles": 1000
+    }
+  },
+  "statistics": {
+    "confidence_level": 0.95,
+    "bootstrap_resamples": 10000,
+    "speedup_resampling_unit": "balanced process block",
+    "cross_workload_aggregate": "geometric_mean",
+    "outlier_policy": "retain all valid observations",
+    "invalid_reasons": ["oom", "gpu_fault", "dirty_gpu", "protocol_error", "timeout"]
+  }
+}
