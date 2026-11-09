@@ -18,6 +18,14 @@ schedule timestamps consumed by the measurement harness. An existing checkout
 at a different revision is rejected. Repeating the command recognizes the
 already applied patch.
 
+For anonymous review copies, provide mirrors containing the pinned commits
+before fetching:
+
+```bash
+export ADAPTMOE_KTRANSFORMERS_URL=https://example.invalid/ktransformers.git
+export ADAPTMOE_MOE_INFINITY_URL=https://example.invalid/moe-infinity.git
+```
+
 Build and install each system according to its upstream README in its own
 environment. Historical runners expect `KTransformers/.venv/bin/python`; some
 MoE-Infinity experiments require a fresh extension build receipt as specified

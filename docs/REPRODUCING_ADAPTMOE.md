@@ -13,7 +13,7 @@
 这不是对其他 GPU/驱动/多 GPU 配置的兼容承诺。
 
 ```bash
-git clone https://github.com/noob512/min_adaptmoe.git
+git clone "$REPOSITORY_URL"
 cd min_adaptmoe
 ```
 

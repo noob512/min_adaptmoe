@@ -1,6 +1,7 @@
 {
   "KTransformers": {
-    "url": "https://github.com/noob512/ktransformers.git",
+    "url": null,
+    "url_env": "ADAPTMOE_KTRANSFORMERS_URL",
     "commit": "5a9c7d4cfaaed0136930e4b629ce5d55cec71a54",
     "nested": {
       "third_party/sglang": "f3ef6723f61ecbfa3cd28b76eea08af6da49a7d0"
@@ -10,7 +11,8 @@
     }
   },
   "MoE-Infinity": {
-    "url": "https://github.com/noob512/MoE-Infinity.git",
+    "url": null,
+    "url_env": "ADAPTMOE_MOE_INFINITY_URL",
     "commit": "9741f80b53374f0d98e7bd8f4a777b816bf68de8"
   }
 }

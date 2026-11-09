@@ -54,7 +54,7 @@ shared GPU copy buffer or change KV capacity.
 | `baselines/` | Pinned optional baseline versions and measurement patches |
 
 ```bash
-git clone https://github.com/noob512/min_adaptmoe.git
+git clone "$REPOSITORY_URL"
 cd min_adaptmoe
 ```
 

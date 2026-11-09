@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 import subprocess
 
@@ -33,13 +34,19 @@ def main() -> None:
         return
     for name in selected:
         spec = versions[name]
+        url_env = spec.get("url_env")
+        repository_url = os.environ.get(url_env, "") if url_env else spec.get("url")
+        if not repository_url:
+            raise SystemExit(
+                f"Set {url_env} to a mirror containing the pinned {name} commit"
+                if url_env else f"No repository URL configured for {name}")
         destination = ROOT / name
         if destination.exists() and not (destination / ".git").exists():
             if any(destination.iterdir()):
                 raise SystemExit(f"Refusing to replace non-Git directory: {destination}")
         if not (destination / ".git").exists():
             subprocess.run(["git", "clone", "--no-checkout", "--filter=blob:none",
-                            spec["url"], str(destination)], check=True)
+                            repository_url, str(destination)], check=True)
             git(destination, "checkout", "--detach", spec["commit"])
         head = git(destination, "rev-parse", "HEAD").stdout.strip()
         if head != spec["commit"]:
