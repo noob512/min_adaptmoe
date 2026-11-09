@@ -30,7 +30,14 @@
       "ours_cold_per_layer": 2,
       "native_offload_gb": 0.4189453125,
       "moe_infinity_kv_ratio": "0.001",
-      "moe_infinity_kv_blocks": 12
+      "moe_infinity_kv_blocks": 12,
+      "ours_cold_candidates": [
+        2
+      ],
+      "native_offload_gb_candidates": [
+        0.4189453125
+      ],
+      "native_copy_exact_w2_layer_candidates": []
     },
     {
       "name": "ordinary_chat",
@@ -48,7 +55,14 @@
       "ours_cold_per_layer": 2,
       "native_offload_gb": 0.4189453125,
       "moe_infinity_kv_ratio": "0.001",
-      "moe_infinity_kv_blocks": 42
+      "moe_infinity_kv_blocks": 42,
+      "ours_cold_candidates": [
+        2
+      ],
+      "native_offload_gb_candidates": [
+        0.4189453125
+      ],
+      "native_copy_exact_w2_layer_candidates": []
     },
     {
       "name": "rag_summary",
@@ -66,7 +80,14 @@
       "ours_cold_per_layer": 2,
       "native_offload_gb": 0.4189453125,
       "moe_infinity_kv_ratio": "0.012",
-      "moe_infinity_kv_blocks": 520
+      "moe_infinity_kv_blocks": 520,
+      "ours_cold_candidates": [
+        2
+      ],
+      "native_offload_gb_candidates": [
+        0.4189453125
+      ],
+      "native_copy_exact_w2_layer_candidates": []
     },
     {
       "name": "long_generation",
@@ -84,7 +105,14 @@
       "ours_cold_per_layer": 2,
       "native_offload_gb": 0.4189453125,
       "moe_infinity_kv_ratio": "0.002",
-      "moe_infinity_kv_blocks": 66
+      "moe_infinity_kv_blocks": 66,
+      "ours_cold_candidates": [
+        2
+      ],
+      "native_offload_gb_candidates": [
+        0.4189453125
+      ],
+      "native_copy_exact_w2_layer_candidates": []
     }
   ]
 }

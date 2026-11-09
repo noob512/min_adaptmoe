@@ -2722,12 +2722,18 @@ def test_remote_only_reconciles_after_kv_before_warmup(monkeypatch: Any) -> None
     assert events == ["reconcile"]
 
 
+@pytest.mark.parametrize("release_unused_cache", [False, True])
+@pytest.mark.parametrize("startup_complete", [False, True])
 def test_prefill_remote_decode_reconciles_hot_experts_before_warmup(
     monkeypatch: Any,
+    release_unused_cache: bool,
+    startup_complete: bool,
 ) -> None:
     from vllm.model_executor.models import utils as offload_utils
 
     calls: list[dict[str, Any]] = []
+    monkeypatch.setenv("VLLM_UVM_STARTUP_EMPTY_CACHE_NO_HOT",
+                       "1" if release_unused_cache else "0")
     monkeypatch.setattr(
         offload_utils,
         "cpu_offload_uvm_original_va_phase_mode",
@@ -2755,9 +2761,11 @@ def test_prefill_remote_decode_reconciles_hot_experts_before_warmup(
     )
 
     worker = object.__new__(Worker)
-    worker._reconcile_uvm_original_va_remote_before_warmup()
+    worker._reconcile_uvm_original_va_remote_before_warmup(startup_complete=startup_complete)
 
-    assert calls == [{"preserve_allocator_cache": True}]
+    assert calls == [{"preserve_allocator_cache": not release_unused_cache,
+                      "require_no_hot_experts": release_unused_cache,
+                      "check_minimum_free_headroom": not (startup_complete and release_unused_cache)}]
 
 
 def test_phase_off_opt_in_reconciles_sealed_hot_experts_after_kv(

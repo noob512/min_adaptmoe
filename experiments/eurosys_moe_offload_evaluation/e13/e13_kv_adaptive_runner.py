@@ -193,6 +193,7 @@ def load_teacher_targets(
 
 def load_protocol(args: argparse.Namespace) -> tuple[dict[str, Any], dict[str, Any]]:
     protocol = json.loads(args.config.read_text(encoding="utf-8"))
+    protocol["model"] = os.environ.get("MODEL") or protocol["model"]
     if protocol.get("schema") != "eurosys_e13_kv_adaptive_protocol_v1":
         raise ValueError("unsupported E13 protocol schema")
     arms = {item["name"]: item for item in protocol["arms"]}

@@ -4,6 +4,8 @@
 [AdaptMoE 复现指南](../../docs/REPRODUCING_ADAPTMOE.md) 进入。
 [静态 alias CUDA Graph 单次复现](STATIC_ALIAS_REPRODUCTION.md)提供一条不加载模型的
 GPU/UVM 数据面验证入口；它用于先验证模块、映射、Graph 回放和清理流程。
+[论文图表实验复现](FIGURE_REPRODUCTION.md)提供 21 份图表输入对应的统一实验入口，
+新运行使用独立目录并保留各 cell 的成功、失败和性能门检查记录。
 下列 E0–E14 索引保留其原始日期与协议，不代表当前 mixed-step 模式的能力边界。
 
 最后核验：2026-09-03（Asia/Shanghai）

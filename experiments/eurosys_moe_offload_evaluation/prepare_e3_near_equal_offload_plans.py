@@ -18,6 +18,7 @@ DEFAULT_WIDTHS = (11, 39, 90)
 EXPECTED_SOURCE_SHA256 = (
     "912732708a46291b73e70c93291758747f285b364437ce77f58d53501d072f81"
 )
+EXPECTED_COUNTS_SHA256 = "09c37445b5ae9704d8394d3eb97b852a3a63040c40c62673fd7a9fa7115dcd81"
 
 
 def sha256_file(path: Path) -> str:
@@ -57,16 +58,26 @@ def main() -> int:
 
     source = args.source.resolve()
     source_sha256 = sha256_file(source)
-    if source_sha256 != EXPECTED_SOURCE_SHA256:
-        raise SystemExit(f"calibration source hash differs: {source_sha256}")
-    logical_count = torch.load(
-        source, map_location="cpu", weights_only=False
-    ).get("logical_count")
-    if not isinstance(logical_count, torch.Tensor):
-        raise SystemExit("calibration source lacks logical_count")
-    if tuple(logical_count.shape) != (11, NUM_LAYERS, NUM_EXPERTS):
-        raise SystemExit(f"unexpected logical_count shape: {logical_count.shape}")
-    decode_counts = logical_count[4:11].to(torch.int64).sum(dim=0)
+    if source.suffix == ".json":
+        if source_sha256 != EXPECTED_COUNTS_SHA256:
+            raise SystemExit(f"frozen count source hash differs: {source_sha256}")
+        counts = json.loads(source.read_text())
+        if counts.get("original_tensor_sha256") != EXPECTED_SOURCE_SHA256:
+            raise SystemExit("frozen counts refer to a different calibration tensor")
+        decode_counts = torch.tensor(counts["decode_counts"], dtype=torch.int64)
+        if tuple(decode_counts.shape) != (NUM_LAYERS, NUM_EXPERTS):
+            raise SystemExit("unexpected frozen count shape")
+    else:
+        if source_sha256 != EXPECTED_SOURCE_SHA256:
+            raise SystemExit(f"calibration source hash differs: {source_sha256}")
+        logical_count = torch.load(
+            source, map_location="cpu", weights_only=False
+        ).get("logical_count")
+        if not isinstance(logical_count, torch.Tensor):
+            raise SystemExit("calibration source lacks logical_count")
+        if tuple(logical_count.shape) != (11, NUM_LAYERS, NUM_EXPERTS):
+            raise SystemExit(f"unexpected logical_count shape: {logical_count.shape}")
+        decode_counts = logical_count[4:11].to(torch.int64).sum(dim=0)
     total_slots = int(decode_counts.sum().item())
     if total_slots != 7 * 32 * NUM_LAYERS * 8:
         raise SystemExit(f"decode calibration slot total differs: {total_slots}")

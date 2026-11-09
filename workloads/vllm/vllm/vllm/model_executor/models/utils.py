@@ -10223,6 +10223,8 @@ def prepare_cpu_offload_uvm_original_va_profile_topology(
 def reconcile_cpu_offload_uvm_original_va_sealed_hot_residency(
     *,
     preserve_allocator_cache: bool = True,
+    require_no_hot_experts: bool = False,
+    check_minimum_free_headroom: bool = True,
     runtime_remote_ranges: Iterable[tuple[int, int]] = (),
     mapping_refresh_ranges: Iterable[tuple[int, int]] | None = None,
 ) -> dict[str, Any]:
@@ -10235,13 +10237,20 @@ def reconcile_cpu_offload_uvm_original_va_sealed_hot_residency(
     pages.  This helper repairs only the disjoint hot ranges, leaves every
     cold alias/PTE untouched, preserves intentional allocator reserve by
     default, and fails before warmup unless residency and free headroom are
-    exact.
+    exact. The explicit all-alias startup path can audit again after warmup
+    without repeating the pre-warmup free-memory budget: Graph workspaces are
+    then live, and a mandatory zero-hot audit proves no hot residency repair
+    needs that budget. The default and every placement with hot ranges retain
+    the minimum-free check.
     """
     global _CPU_OFFLOAD_UVM_REMOTE_MAP_ACTIVE
     global _CPU_OFFLOAD_UVM_STATIC_ALIAS_STATE
 
     if not cpu_offload_uvm_original_va_static_alias_enabled():
         return {"ok": True, "reason": "disabled"}
+
+    if not check_minimum_free_headroom and not require_no_hot_experts:
+        raise ValueError("Post-warmup headroom exemption requires the zero-hot-expert audit")
 
     raw_min_free = os.environ.get(
         "VLLM_UVM_ORIGINAL_VA_GRAPH_MIN_FREE_BYTES",
@@ -10307,6 +10316,8 @@ def reconcile_cpu_offload_uvm_original_va_sealed_hot_residency(
         total_bytes = -1
         allocator_reserved_before = -1
         allocator_reserved_after = -1
+        allocator_allocated_after = -1
+        allocator_inactive_split_after = -1
         try:
             from vllm.device_allocator import uvm
 
@@ -10316,9 +10327,6 @@ def reconcile_cpu_offload_uvm_original_va_sealed_hot_residency(
                 int(value) for value in torch.cuda.mem_get_info(device)
             )
             allocator_reserved_before = int(torch.cuda.memory_reserved(device))
-            if not preserve_allocator_cache:
-                torch.cuda.empty_cache()
-
             hot_ranges = [
                 hot_range
                 for _, binding in sorted(
@@ -10328,6 +10336,20 @@ def reconcile_cpu_offload_uvm_original_va_sealed_hot_residency(
             ]
             hot_range_count = len(hot_ranges)
             hot_bytes = sum(length for _, length in hot_ranges)
+            # Explicit startup-only cache release is safe for the all-alias
+            # E5 topology: there is no managed hot complement that a later
+            # native allocator expansion could evict. Reject other placements
+            # before releasing any cache. Live tensors and Graph pools remain
+            # owned by PyTorch; empty_cache releases only unused segments.
+            # use_uvm_expert_weight_allocation restricts managed weights to
+            # these frozen exact-name pairs; unselected experts are native.
+            if require_no_hot_experts and hot_bytes:
+                raise RuntimeError(
+                    "Startup cache release requires zero managed hot-expert "
+                    f"bytes, got {hot_bytes}"
+                )
+            if not preserve_allocator_cache:
+                torch.cuda.empty_cache()
             hot_gpu_ranges = _uvm_original_alias_subtract_ranges(
                 hot_ranges,
                 normalized_runtime_remote_ranges,
@@ -10552,6 +10574,10 @@ def reconcile_cpu_offload_uvm_original_va_sealed_hot_residency(
 
             free_after = int(torch.cuda.mem_get_info(device)[0])
             allocator_reserved_after = int(torch.cuda.memory_reserved(device))
+            if require_no_hot_experts:
+                allocator_allocated_after = int(torch.cuda.memory_allocated(device))
+                allocator_inactive_split_after = int(torch.cuda.memory_stats(device).get(
+                    "inactive_split_bytes.all.current", 0))
             if (
                 preserve_allocator_cache
                 and allocator_reserved_after < allocator_reserved_before
@@ -10562,11 +10588,14 @@ def reconcile_cpu_offload_uvm_original_va_sealed_hot_residency(
                     f"before={allocator_reserved_before}, "
                     f"after={allocator_reserved_after}"
                 )
-            if free_after < min_free_bytes:
+            if check_minimum_free_headroom and free_after < min_free_bytes:
                 raise RuntimeError(
                     "Insufficient GPU headroom after sealed hot-expert "
                     "reconciliation: "
-                    f"free_bytes={free_after}, required_bytes={min_free_bytes}"
+                    f"free_bytes={free_after}, required_bytes={min_free_bytes}, "
+                    f"allocated_bytes={allocator_allocated_after}, "
+                    f"reserved_bytes={allocator_reserved_after}, "
+                    f"inactive_split_bytes={allocator_inactive_split_after}"
                 )
 
             parameter_vas_after = _uvm_original_parameter_va_snapshot()
@@ -10641,9 +10670,13 @@ def reconcile_cpu_offload_uvm_original_va_sealed_hot_residency(
                 "free_bytes_after": int(free_after),
                 "total_bytes": int(total_bytes),
                 "minimum_free_bytes": int(min_free_bytes),
+                "minimum_free_headroom_checked": bool(check_minimum_free_headroom),
                 "allocator_cache_preserved": bool(preserve_allocator_cache),
+                "require_no_hot_experts": bool(require_no_hot_experts),
                 "allocator_reserved_before": int(allocator_reserved_before),
                 "allocator_reserved_after": int(allocator_reserved_after),
+                "allocator_allocated_after": int(allocator_allocated_after),
+                "allocator_inactive_split_after": int(allocator_inactive_split_after),
             }
             _CPU_OFFLOAD_UVM_PHASE_TRANSITION_HISTORY.append(result)
             _append_cpu_offload_manifest(result)
@@ -10665,6 +10698,8 @@ def reconcile_cpu_offload_uvm_original_va_sealed_hot_residency(
                 "parameter_vas_before": parameter_vas_before,
                 "hot_range_count": int(hot_range_count),
                 "hot_bytes": int(hot_bytes),
+                "require_no_hot_experts": bool(require_no_hot_experts),
+                "minimum_free_headroom_checked": bool(check_minimum_free_headroom),
                 "hot_gpu_range_count": int(hot_gpu_range_count),
                 "hot_expected_gpu_bytes": int(hot_expected_gpu_bytes),
                 "runtime_remote_range_count": len(

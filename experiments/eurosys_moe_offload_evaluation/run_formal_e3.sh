@@ -4,6 +4,7 @@ set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 VLLM_ROOT="${REPO_ROOT}/workloads/vllm/vllm"
+export PYTHONPATH="${VLLM_ROOT}${PYTHONPATH:+:${PYTHONPATH}}"
 VLLM_PY="${VLLM_ROOT}/.venv/bin/python"
 KT_ROOT="${REPO_ROOT}/KTransformers"
 KT_PY="${KT_ROOT}/.venv/bin/python"
@@ -11,11 +12,11 @@ PHASE_RUNNER="${PHASE_RUNNER_OVERRIDE:-${REPO_ROOT}/experiments/vllm_uvm_prefill
 KT_RUNNER="${REPO_ROOT}/experiments/ktransformers_l0_l3_phase_compare/benchmark_phase_stream.py"
 BASE_HARNESS="${REPO_ROOT}/experiments/vllm_uvm_prefill_alias_decode_remote_graph/run_experiment.sh"
 MODEL="${MODEL:-/home/ubuntu/.cache/huggingface/hub/models--Qwen--Qwen3-30B-A3B-FP8/snapshots/d206ba732169f29bb77fbf80fc2c4b81d4d30782}"
-CALIBRATION_ROOT="${CALIBRATION_ROOT:-${SCRIPT_DIR}/artifacts/e3-calibration-20260825T091247Z}"
-PLAN="${PLAN:-${CALIBRATION_ROOT}/calibration_assets/cold_decode_plan_2g.json}"
-NAMES="${NAMES:-${CALIBRATION_ROOT}/calibration_assets/exact_parameter_names.txt}"
+CALIBRATION_ROOT="${CALIBRATION_ROOT:-${SCRIPT_DIR}/inputs/frozen/e3_qwen_cold63_20260828}"
+PLAN="${PLAN:-${CALIBRATION_ROOT}/cold_decode_plan_2g.json}"
+NAMES="${NAMES:-${CALIBRATION_ROOT}/exact_parameter_names.txt}"
 KT_STATS="${KT_STATS:-${CALIBRATION_ROOT}/calibration_assets/kt_stats/cold_decode_plan_2g_logical_count.pt}"
-CALIBRATION_MANIFEST="${CALIBRATION_MANIFEST:-${CALIBRATION_ROOT}/calibration_assets/manifest.json}"
+CALIBRATION_MANIFEST="${CALIBRATION_MANIFEST:-${SCRIPT_DIR}/inputs/legacy_pilot/qwen3_30b_a3b_fp8/routing/frequency_stats_manifest.json}"
 FIXTURE_ROOT="${FIXTURE_ROOT:-${SCRIPT_DIR}/inputs/generated/eurosys-pa-v2-20260824/qwen3_30b_a3b_fp8}"
 RUN_ROOT="${RUN_ROOT:-${SCRIPT_DIR}/artifacts/e3-formal-$(date -u +%Y%m%dT%H%M%SZ)}"
 PROCESS_BLOCKS="${PROCESS_BLOCKS:-1}"
@@ -84,10 +85,15 @@ cleanup() {
 trap cleanup EXIT INT TERM
 
 [[ "${ALLOW_GPU_RUN:-0}" == 1 ]] || die "GPU execution requires ALLOW_GPU_RUN=1"
-for path in "${VLLM_PY}" "${KT_PY}" "${PHASE_RUNNER}" "${KT_RUNNER}" \
-  "${MODEL}/config.json" "${PLAN}" "${NAMES}" "${KT_STATS}" "${CALIBRATION_MANIFEST}"; do
+for path in "${VLLM_PY}" "${PHASE_RUNNER}" \
+  "${MODEL}/config.json" "${PLAN}" "${NAMES}" "${CALIBRATION_MANIFEST}"; do
   [[ -f "${path}" ]] || die "missing file: ${path}"
 done
+if [[ "${RUN_KT}" == 1 ]]; then
+  for path in "${KT_PY}" "${KT_RUNNER}" "${KT_STATS}"; do
+    [[ -f "${path}" ]] || die "missing KTransformers input: ${path}"
+  done
+fi
 [[ "${PROCESS_BLOCKS}" =~ ^[1-9][0-9]*$ ]] || die "invalid PROCESS_BLOCKS"
 [[ "${E3_CURRENT_TIER_DUAL_VIEW}" == 0 || "${E3_CURRENT_TIER_DUAL_VIEW}" == 1 ]] \
   || die "E3_CURRENT_TIER_DUAL_VIEW must be 0 or 1"
@@ -116,11 +122,14 @@ PHASE_RUNNER="${PHASE_RUNNER_OVERRIDE:-${REPO_ROOT}/experiments/vllm_uvm_prefill
 RUN_ROOT_ACTIVE="${RUN_ROOT}"
 runtime_preflight || die "custom runtime preflight failed"
 
-sha256sum "${PLAN}" "${NAMES}" "${KT_STATS}" "${MODEL}/config.json" \
+sha256sum "${PLAN}" "${NAMES}" "${MODEL}/config.json" \
   "${FIXTURE_ROOT}"/evaluation_*.json >"${RUN_ROOT}/provenance/inputs.sha256"
 git -C "${REPO_ROOT}" rev-parse HEAD >"${RUN_ROOT}/provenance/repo.commit"
-git -C "${KT_ROOT}" rev-parse HEAD >"${RUN_ROOT}/provenance/ktransformers.commit"
-git -C "${KT_ROOT}/third_party/sglang" rev-parse HEAD >"${RUN_ROOT}/provenance/sglang.commit"
+if [[ "${RUN_KT}" == 1 ]]; then
+  sha256sum "${KT_STATS}" >>"${RUN_ROOT}/provenance/inputs.sha256"
+  git -C "${KT_ROOT}" rev-parse HEAD >"${RUN_ROOT}/provenance/ktransformers.commit"
+  git -C "${KT_ROOT}/third_party/sglang" rev-parse HEAD >"${RUN_ROOT}/provenance/sglang.commit"
+fi
 git -C "${REPO_ROOT}" status --short >"${RUN_ROOT}/provenance/repo.status.txt"
 nvidia-smi -q >"${RUN_ROOT}/provenance/nvidia-smi-q.txt"
 lscpu >"${RUN_ROOT}/provenance/lscpu.txt"

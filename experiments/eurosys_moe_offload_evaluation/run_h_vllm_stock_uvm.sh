@@ -3,6 +3,7 @@ set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+export PYTHONPATH="${REPO_ROOT}/workloads/vllm/vllm${PYTHONPATH:+:${PYTHONPATH}}"
 VLLM_PY="${VLLM_PY:-${REPO_ROOT}/workloads/vllm/vllm/.venv/bin/python}"
 RUNNER="${SCRIPT_DIR}/direct_batch_c16_vllm_runner.py"
 FIXTURE_BASE="${SCRIPT_DIR}/inputs/generated/eurosys-pa-v2-20260824"

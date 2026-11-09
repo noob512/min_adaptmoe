@@ -4,9 +4,10 @@ set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 VLLM_ROOT="${REPO_ROOT}/workloads/vllm/vllm"
+export PYTHONPATH="${VLLM_ROOT}${PYTHONPATH:+:${PYTHONPATH}}"
 VLLM_PY="${VLLM_ROOT}/.venv/bin/python"
 RUNNER="${E3_NATIVE_PHASE_RUNNER_OVERRIDE:-${REPO_ROOT}/experiments/vllm_p3_pinned_uva_phase_compare/benchmark_phase_steps.py}"
-MODEL="${MODEL:-/home/ubuntu/.cache/huggingface/hub/models--Qwen--Qwen3-30B-A3B-FP8/snapshots/d206ba732169f29bb77fbf80fc2c4b81d4d30782}"
+MODEL="${MODEL:?Set MODEL to the local Qwen3-30B-A3B-FP8 snapshot directory}"
 FIXTURE_ROOT="${FIXTURE_ROOT:-${SCRIPT_DIR}/inputs/generated/eurosys-pa-v2-20260824/qwen3_30b_a3b_fp8}"
 RUN_ROOT="${1:-${SCRIPT_DIR}/artifacts/e3-native-copy-vs-uva-phase-$(date -u +%Y%m%dT%H%M%SZ)}"
 CPUSET="${CPUSET:-0-13}"
@@ -64,11 +65,14 @@ kv_bytes() {
   echo "${value}"
 }
 
-# The native arms cannot select expert slices.  Use the same whole-Parameter
-# byte budget in both arms and verify the realized manifest signatures later.
+# The native arms cannot select expert slices. RAG/C16 Copy FULL_SEPARATE
+# requires the documented extra capture headroom (21.298364 GiB realized).
 offload_gib() {
-  local workload="$1" batch="$2"
-  if [[ "${workload}" == rag_summary && "${batch}" == 16 ]]; then
+  local workload="$1" batch="$2" arm="$3"
+  if [[ "${workload}" == rag_summary && "${batch}" == 16 \
+      && "${arm}" == copy && "${CUDAGRAPH_MODE}" == FULL_SEPARATE ]]; then
+    echo "${RAG_B16_COPY_GRAPH_OFFLOAD_GIB:-21.0}"
+  elif [[ "${workload}" == rag_summary && "${batch}" == 16 ]]; then
     echo "${RAG_B16_OFFLOAD_GIB:-20.25}"
   elif [[ "${workload}" == rag_summary && "${batch}" == 8 ]]; then
     echo 13.5
@@ -97,7 +101,7 @@ run_one() {
   (( max_batched < max_model )) && max_batched="${max_model}"
   measured=$((output_tokens - 1 - 5))
   (( measured > 0 )) || die "invalid measured Decode steps for ${label}"
-  offload="$(offload_gib "${workload}" "${batch}")"
+  offload="$(offload_gib "${workload}" "${batch}" "${arm}")"
 
   wait_gpu_clean || die "GPU is dirty before ${label}"
   nvidia-smi --query-gpu=timestamp,memory.used,utilization.gpu,power.draw,clocks.sm,temperature.gpu \
@@ -231,7 +235,7 @@ jq -n --arg attention "${ATTENTION_BACKEND}" --arg batch_filter "${BATCH_FILTER}
     phases:["strict_complete_prefill_step","strict_cached_one_token_decode_steps"],
     transport:"none",attention_backend:$attention,
     conditioning_repeats:$conditioning,measurement_repeats:$measurement,
-    warmup_decode_steps:5,native_coordinate_contract:"same realized whole-Parameter signature"}' \
+    warmup_decode_steps:5,native_coordinate_contract:"same whole-Parameter budget except documented RAG/C16 Copy FULL_SEPARATE capture headroom"}' \
   >"${RUN_ROOT}/configuration.json"
 
 workloads=(short_dialogue ordinary_chat medium_context rag_summary long_generation)

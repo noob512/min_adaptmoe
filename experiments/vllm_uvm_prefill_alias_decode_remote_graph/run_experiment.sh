@@ -4,6 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 VLLM_ROOT="${REPO_ROOT}/workloads/vllm/vllm"
+export PYTHONPATH="${VLLM_ROOT}${PYTHONPATH:+:${PYTHONPATH}}"
 VLLM_PY="${VLLM_PY:-${VLLM_ROOT}/.venv/bin/python}"
 RUNNER="${SCRIPT_DIR}/benchmark_phase_switch_steps.py"
 VERIFY="${SCRIPT_DIR}/verify_experiment.py"
@@ -75,8 +76,19 @@ gpu_clean() {
 }
 
 wait_gpu_clean() {
-  local attempt
+  local attempt service
   for ((attempt = 0; attempt < GPU_CLEAN_TIMEOUT_SEC; ++attempt)); do
+    # A host supervisor can restart exporters after the initial stop. Some
+    # exporters inspect process fds and retain a UVM client after CUDA exits.
+    # Keep them stopped at cleanup boundaries; restore the captured service
+    # state only after the stock module is back.
+    if (( MODULE_CYCLE_ARMED == 1 && SERVICES_RESTARTED == 0 )); then
+      for service in node-exporter.service gpu-exporter.service dcgm-exporter.service; do
+        if systemctl is-active --quiet "${service}" 2>/dev/null; then
+          sudo systemctl stop "${service}"
+        fi
+      done
+    fi
     gpu_clean && return 0
     sleep 1
   done
@@ -487,6 +499,13 @@ run_arm() {
     MKL_NUM_THREADS="${CPU_THREADS}"
     CUDA_VISIBLE_DEVICES="${GPU_INDEX}"
   )
+  if [[ "${symbol}" == H || "${symbol}" == G ]]; then
+    # H/G select complete expert tensors, with no managed hot complement.
+    # Explicit-KV profiling and sampler warmup can retain unused native
+    # segments. Release those at the audited startup reconciliation boundary;
+    # the runtime rejects nonzero hot bytes and keeps the headroom/VA gates.
+    common_env+=(VLLM_UVM_STARTUP_EMPTY_CACHE_NO_HOT=1)
+  fi
   if [[ "${symbol}" == D ]]; then
     common_env+=(VLLM_ATTENTION_BACKEND=TRITON_ATTN)
   fi

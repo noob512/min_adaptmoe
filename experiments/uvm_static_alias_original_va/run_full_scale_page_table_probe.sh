@@ -5,7 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 BASE="${REPO_ROOT}/experiments/vllm_uvm_prefill_alias_decode_remote_graph/run_experiment.sh"
 PROBE="${SCRIPT_DIR}/full_scale_page_table_probe.py"
-VERIFY="${SCRIPT_DIR}/verify_full_scale_page_table_probe.py"
+VERIFY_FULL_SCALE="${SCRIPT_DIR}/verify_full_scale_page_table_probe.py"
 RUN_ROOT="${RUN_ROOT:-${REPO_ROOT}/experiments/eurosys_moe_offload_evaluation/artifacts/e10-synthetic-page-table-34560-20260830-attempt-01-qualification}"
 OUTPUT="${RUN_ROOT}/result.json"
 
@@ -21,9 +21,9 @@ source "${BASE}"
 unset VLLM_PHASE_SWITCH_SOURCE_ONLY
 
 require_file "${PROBE}"
-require_file "${VERIFY}"
+require_file "${VERIFY_FULL_SCALE}"
 [[ ! -e "${RUN_ROOT}" ]] || die "RUN_ROOT already exists: ${RUN_ROOT}"
-"${VLLM_PY}" -m py_compile "${PROBE}" "${VERIFY}"
+"${VLLM_PY}" -m py_compile "${PROBE}" "${VERIFY_FULL_SCALE}"
 runtime_preflight
 mkdir -p "${RUN_ROOT}"
 RUN_ROOT="$(cd "${RUN_ROOT}" && pwd)"
@@ -33,7 +33,7 @@ OUTPUT="${RUN_ROOT}/result.json"
 git -C "${REPO_ROOT}" status --short >"${RUN_ROOT}/git_status.txt"
 nvidia-smi -i 0 --query-gpu=name,memory.total,driver_version \
   --format=csv,noheader,nounits >"${RUN_ROOT}/hardware.csv"
-sha256sum "${PROBE}" "${VERIFY}" "${BASH_SOURCE[0]}" "${CUSTOM_UVM}" "${STOCK_UVM}" \
+sha256sum "${PROBE}" "${VERIFY_FULL_SCALE}" "${BASH_SOURCE[0]}" "${CUSTOM_UVM}" "${STOCK_UVM}" \
   >"${RUN_ROOT}/input_sha256.txt"
 
 module_snapshot "${RUN_ROOT}/module.before.json" "${STOCK_UVM}"
@@ -79,7 +79,7 @@ if (( runner_rc != 0 )); then
   die "the one-shot synthetic page-table probe failed"
 fi
 
-"${VLLM_PY}" "${VERIFY}" \
+"${VLLM_PY}" "${VERIFY_FULL_SCALE}" \
   --result "${OUTPUT}" \
   --kernel-log "${RUN_ROOT}/kernel.since.log" \
   --output "${RUN_ROOT}/verification.json"

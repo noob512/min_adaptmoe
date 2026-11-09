@@ -128,6 +128,7 @@ def main() -> int:
     require(separator == "_" and mechanism in {"direct", "switched"}, "invalid arm")
     require(tier_name in SOURCE_TIER, "invalid tier")
     protocol = json.loads(args.config.read_text(encoding="utf-8"))
+    protocol["model"] = os.environ.get("MODEL") or protocol["model"]
     require(protocol.get("schema") == "eurosys_e13_kv_adaptive_protocol_v1", "bad config")
     runtime = protocol["runtime"]
     tiers = {item["name"]: item for item in protocol["tiers"]}

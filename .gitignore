@@ -70,3 +70,7 @@ modules.order
 # Optional baseline checkouts are reconstructed from baselines/versions.json.
 /KTransformers/
 /MoE-Infinity/
+# Also ignore optional runtime links created by scripts/borrow_runtime.py.
+/KTransformers
+/MoE-Infinity
+/workloads/vllm/vllm/.venv

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "protocol_id": "eurosys-pa-v2-20260824",
-  "purpose": "E2 C1 Native Copy using a safe exact-name placement within 10% of the existing AdaptMoE cold2 results",
+  "purpose": "E2 C1 Native Copy safe exact-name placements; RAG FULL_SEPARATE includes documented extra Graph capture headroom",
   "cold_expert_search": {
     "minimum_per_layer": 2,
     "maximum_per_layer": 2
@@ -99,7 +99,15 @@
         "model.layers.1.mlp.experts.w13_weight"
       ],
       "moe_infinity_kv_ratio": "0.012",
-      "moe_infinity_kv_blocks": 520
+      "moe_infinity_kv_blocks": 520,
+      "native_copy_full_graph_exact_offload_gb": 1.843994140625,
+      "native_copy_full_graph_exact_parameter_names": [
+        "model.layers.0.mlp.gate_up_proj.weight",
+        "model.layers.0.mlp.down_proj.weight",
+        "model.layers.1.mlp.experts.w13_weight",
+        "model.layers.2.mlp.experts.w13_weight",
+        "model.layers.3.mlp.experts.w2_weight"
+      ]
     },
     {
       "name": "long_generation",

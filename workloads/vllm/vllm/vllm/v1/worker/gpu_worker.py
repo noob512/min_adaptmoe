@@ -578,6 +578,14 @@ class Worker(WorkerBase):
         # 如果不提前初始化连接器，这些复杂的内部共享层可能会破坏连接器对连续内存或特定结构的假设。
         ensure_kv_transfer_initialized(self.vllm_config, kv_cache_config)
 
+        if self._uvm_env_flag(
+            "VLLM_UVM_STARTUP_EMPTY_CACHE_NO_HOT", default=False
+        ):
+            # Release dead profile segments before KV tensors can occupy
+            # their split blocks. The same all-alias/headroom/VA audit runs
+            # again after KV allocation and after sampler warmup.
+            self._reconcile_uvm_original_va_remote_before_warmup()
+
         if getattr(self, "_uvm_pre_kv_native_hole_sentinel", None) is None:
             self._uvm_pre_kv_native_hole_sentinel = (
                 self._allocate_uvm_native_hole_sentinel(
@@ -909,7 +917,9 @@ class Worker(WorkerBase):
             result,
         )
 
-    def _reconcile_uvm_original_va_remote_before_warmup(self) -> None:
+    def _reconcile_uvm_original_va_remote_before_warmup(
+        self, *, startup_complete: bool = False,
+    ) -> None:
         """Restore serving expert placement after KV allocation.
 
         Kernel/compile warmup executes real MoE kernels before
@@ -937,6 +947,9 @@ class Worker(WorkerBase):
             "VLLM_CPU_OFFLOAD_REQUIRE_FULL_DUAL_VIEW",
             default=False,
         )
+        release_unused_cache = self._uvm_env_flag(
+            "VLLM_UVM_STARTUP_EMPTY_CACHE_NO_HOT", default=False
+        )
         if (
             phase_mode
             in (
@@ -955,7 +968,17 @@ class Worker(WorkerBase):
             # full_dual_view, leaving ordinary G arms able to fault on the
             # cold39/hot40 boundary before Graph capture.
             result = reconcile_cpu_offload_uvm_original_va_sealed_hot_residency(
-                preserve_allocator_cache=True,
+                preserve_allocator_cache=not release_unused_cache,
+                require_no_hot_experts=release_unused_cache,
+                # The all-alias opt-in audits the 256 MiB startup budget
+                # before KV allocation and before kernel/Graph warmup. After
+                # warmup, live Graph workspaces have consumed part of that
+                # budget, and there are no managed hot pages to restore. Keep
+                # the zero-hot, topology and Parameter-VA audits, without
+                # applying a pre-warmup budget a second time to that topology.
+                check_minimum_free_headroom=not (
+                    startup_complete and release_unused_cache
+                ),
             )
             refreshed = (
                 refresh_cpu_offload_uvm_original_va_full_dual_view()
@@ -964,7 +987,8 @@ class Worker(WorkerBase):
             )
             logger.info(
                 "Reconciled hot experts after allocation: full_dual_view=%s "
-                "hot_cpu_before=%d hot_gpu_after=%d refresh_ms=%.3f",
+                "hot_cpu_before=%d hot_gpu_after=%d refresh_ms=%.3f "
+                "startup_complete=%s free_bytes=%d headroom_checked=%s",
                 full_dual_view,
                 int(
                     (result.get("hot_physical_residency_before") or {}).get(
@@ -977,6 +1001,9 @@ class Worker(WorkerBase):
                     )
                 ),
                 int((refreshed or {}).get("wall_ns", 0)) / 1e6,
+                startup_complete,
+                int(result.get("free_bytes_after", -1)),
+                result.get("minimum_free_headroom_checked", True),
             )
             return
         if (
@@ -1405,7 +1432,7 @@ class Worker(WorkerBase):
             refresh_cpu_offload_uvm_original_va_full_dual_view()
             activate_cpu_offload_uvm_original_va_prefill_topology()
             self._reconverge_uvm_kv_cache_for_serving()
-            self._reconcile_uvm_original_va_remote_before_warmup()
+            self._reconcile_uvm_original_va_remote_before_warmup(startup_complete=True)
             set_random_seed(self.model_config.seed)
             return
 
@@ -1618,7 +1645,7 @@ class Worker(WorkerBase):
             refresh_cpu_offload_uvm_original_va_full_dual_view()
             activate_cpu_offload_uvm_original_va_prefill_topology()
             self._reconverge_uvm_kv_cache_for_serving()
-            self._reconcile_uvm_original_va_remote_before_warmup()
+            self._reconcile_uvm_original_va_remote_before_warmup(startup_complete=True)
         finally:
             self._release_uvm_native_hole_sentinel(native_hole_sentinel)
 

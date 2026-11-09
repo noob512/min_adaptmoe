@@ -4,8 +4,9 @@ set -euo pipefail
 EVAL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${EVAL_DIR}/../.." && pwd)"
 VLLM_PY="${REPO_ROOT}/workloads/vllm/vllm/.venv/bin/python"
-KT_PY="${REPO_ROOT}/KTransformers/.venv/bin/python"
-MODEL="/home/ubuntu/.cache/huggingface/hub/models--deepseek-ai--DeepSeek-V2-Lite-Chat/snapshots/85864749cd611b4353ce1decdb286193298f64c7"
+export PYTHONPATH="${REPO_ROOT}/workloads/vllm/vllm${PYTHONPATH:+:${PYTHONPATH}}"
+KT_PY="${KT_PY:-${REPO_ROOT}/KTransformers/.venv/bin/python}"
+MODEL="${MODEL:?Set MODEL to the local DeepSeek-V2-Lite-Chat snapshot directory}"
 FIXTURE_ROOT="${EVAL_DIR}/inputs/generated/eurosys-pa-v2-20260824/deepseek_v2_lite_bf16"
 PROFILE="${E2_C16_PROFILE:-${EVAL_DIR}/configs/e2_c16_direct_batch_matrix.json}"
 NATIVE_ENV="${EVAL_DIR}/configs/c1_native_common_env.json"
@@ -21,8 +22,8 @@ TRACE="${FIXTURE_ROOT}/calibration_assets/routing/routing_trace.jsonl"
 PLAN_BUILDER="${REPO_ROOT}/experiments/hybrid_offload_2_4_6_8_compare/prepare_cold_plans.py"
 KT_PLAN_BUILDER="${REPO_ROOT}/experiments/hybrid_offload_2_4_6_8_compare/prepare_kt_frequency_plans.py"
 BASE_HARNESS="${REPO_ROOT}/experiments/vllm_uvm_prefill_alias_decode_remote_graph/run_experiment.sh"
-MOEI_OFFLOAD="/home/ubuntu/moe_infinity_offload/deepseek_v2_lite_chat_85864749cd611b4353ce1decdb286193298f64c7"
-MOEI_RECEIPT="${EVAL_DIR}/artifacts/c1-mechanism-min-offload-pilot-20260827-attempt-01/provenance/moe_infinity_store_build/store_build_receipt.json"
+MOEI_OFFLOAD="${MOEI_OFFLOAD:-${REPO_ROOT}/.build/moe-infinity-offload}"
+MOEI_RECEIPT="${MOEI_RECEIPT:-${REPO_ROOT}/.build/moe-infinity-build-receipt.json}"
 RUN_ROOT="${1:-${EVAL_DIR}/artifacts/e2-c16-direct-batch-$(date -u +%Y%m%dT%H%M%SZ)}"
 CASE_TIMEOUT_SECONDS="${E2_C16_CASE_TIMEOUT_SECONDS:-14400}"
 SYSTEM_FILTER="${E2_C16_SYSTEMS:-native_all_gpu,native_pinned_uva,native_copy_on_forward,ours,ktransformers,moe_infinity}"
@@ -35,14 +36,20 @@ contains_csv() { [[ ",$2," == *",$1,"* ]]; }
 if [[ -e "${RUN_ROOT}" && "${E2_C16_RESUME:-0}" != 1 ]]; then
   die "refusing to overwrite ${RUN_ROOT}; set E2_C16_RESUME=1 to resume"
 fi
-for path in "${MODEL}/config.json" "${VLLM_PY}" "${KT_PY}" "${PROFILE}" \
+for path in "${MODEL}/config.json" "${VLLM_PY}" "${PROFILE}" \
   "${NATIVE_ENV}" "${OURS_ENV}" "${KT_ENV}" "${MOEI_ENV}" "${VLLM_RUNNER}" \
   "${KT_RUNNER}" "${MOEI_RUNNER}" "${C16_VERIFY}" "${TRACE}" "${PLAN_BUILDER}" \
-  "${KT_PLAN_BUILDER}" "${BASE_HARNESS}" "${MOEI_RECEIPT}" \
+  "${KT_PLAN_BUILDER}" "${BASE_HARNESS}" \
   "${DUAL_VIEW_VERIFY}"; do
   [[ -e "${path}" ]] || die "required path is missing: ${path}"
 done
-[[ -d "${MOEI_OFFLOAD}" ]] || die "MoE-Infinity offload store is missing"
+if contains_csv ktransformers "${SYSTEM_FILTER}"; then
+  [[ -x "${KT_PY}" ]] || die "KTransformers Python environment is missing"
+fi
+if contains_csv moe_infinity "${SYSTEM_FILTER}"; then
+  [[ -f "${MOEI_RECEIPT}" && -d "${MOEI_OFFLOAD}" ]] \
+    || die "MoE-Infinity store or build receipt is missing"
+fi
 command -v jq >/dev/null || die "jq is unavailable"
 command -v flock >/dev/null || die "flock is unavailable"
 [[ "${CONCURRENCY}" == 1 || "${CONCURRENCY}" == 16 ]] \
@@ -51,6 +58,26 @@ if [[ "${CONCURRENCY}" != 16 ]] \
     && contains_csv moe_infinity "${SYSTEM_FILTER}"; then
   die "generic direct runner does not support C1 for MoE-Infinity"
 fi
+# Reject incomplete profiles before module cycles or measurements. Older C1
+# server profiles used scalar placements; the direct runner needs candidates.
+for workload in short_dialogue ordinary_chat rag_summary long_generation; do
+  contains_csv "${workload}" "${WORKLOAD_FILTER}" || continue
+  jq -e --arg workload "${workload}" \
+    '[.workloads[] | select(.name == $workload)] | length == 1' \
+    "${PROFILE}" >/dev/null || die "profile lacks unique workload ${workload}"
+  if contains_csv ours "${SYSTEM_FILTER}"; then
+    jq -e --arg workload "${workload}" \
+      '.workloads[] | select(.name == $workload) |
+       .ours_cold_candidates | type == "array" and length > 0' \
+      "${PROFILE}" >/dev/null || die "profile lacks ours_cold_candidates for ${workload}"
+  fi
+  if contains_csv native_pinned_uva "${SYSTEM_FILTER}"; then
+    jq -e --arg workload "${workload}" \
+      '.workloads[] | select(.name == $workload) |
+       .native_offload_gb_candidates | type == "array" and length > 0' \
+      "${PROFILE}" >/dev/null || die "profile lacks native_offload_gb_candidates for ${workload}"
+  fi
+done
 
 exec 7>"/tmp/eurosys_c16_direct_batch_matrix.lock"
 flock -n 7 || die "another C16 direct-batch matrix holds the GPU lock"
@@ -188,9 +215,12 @@ cp "${PROFILE}" "${RUN_ROOT}/provenance/profile.json"
 git -C "${REPO_ROOT}" status --short >"${RUN_ROOT}/provenance/git_status.txt"
 sha256sum "${PROFILE}" "${VLLM_RUNNER}" "${KT_RUNNER}" "${MOEI_RUNNER}" \
   "${C16_VERIFY}" "${TRACE}" "${MODEL}/config.json" \
-  "${REPO_ROOT}/MoE-Infinity/moe_infinity/serving/model_runner.py" \
-  "${REPO_ROOT}/MoE-Infinity/moe_infinity/serving/engine.py" \
   >"${RUN_ROOT}/provenance/input_sha256.txt"
+if contains_csv moe_infinity "${SYSTEM_FILTER}"; then
+  sha256sum "${REPO_ROOT}/MoE-Infinity/moe_infinity/serving/model_runner.py" \
+    "${REPO_ROOT}/MoE-Infinity/moe_infinity/serving/engine.py" \
+    >>"${RUN_ROOT}/provenance/input_sha256.txt"
+fi
 
 PLAN_ROOT="${RUN_ROOT}/provenance/cold_plans"
 if { contains_csv ours "${SYSTEM_FILTER}" || contains_csv ktransformers "${SYSTEM_FILTER}"; } \
@@ -207,7 +237,23 @@ if { contains_csv ours "${SYSTEM_FILTER}" || contains_csv ktransformers "${SYSTE
 fi
 
 if contains_csv ktransformers "${SYSTEM_FILTER}"; then
-  for cold in $(seq -w 1 24); do
+  mapfile -t kt_widths < <(
+    for workload in short_dialogue ordinary_chat rag_summary long_generation; do
+      contains_csv "${workload}" "${WORKLOAD_FILTER}" || continue
+      if [[ -n "${E2_KT_CPU_EXPERTS_BY_WORKLOAD:-}" ]]; then
+        jq -er --arg workload "${workload}" '.[$workload]' \
+          <<<"${E2_KT_CPU_EXPERTS_BY_WORKLOAD}"
+      elif [[ -n "${E2_KT_CPU_EXPERTS_PER_LAYER:-}" ]]; then
+        printf '%s\n' "${E2_KT_CPU_EXPERTS_PER_LAYER}"
+      else
+        profile_array "${workload}" kt_cold_candidates
+      fi
+    done | sort -nu
+  )
+  for width in "${kt_widths[@]}"; do
+    [[ "${width}" =~ ^[0-9]+$ && "${width}" -ge 1 && "${width}" -le 24 ]] \
+      || die "KTransformers plan width must be in [1, 24]"
+    cold="$(printf '%02d' "${width}")"
     KT_INPUT="${RUN_ROOT}/provenance/kt_inputs/cold${cold}"
     KT_OUTPUT="${RUN_ROOT}/provenance/kt_plans/cold${cold}"
     [[ -f "${KT_OUTPUT}/kt_frequency_2g.pt" ]] && continue
@@ -224,6 +270,13 @@ run_native_workload() {
   local arm="$1" workload="$2" backend="" cpu_gb tag case_root effective_env
   local exact_names_file="" layer_count="" setting="" tmp_env exact_name_count="0"
   local prompt output max_len kv_bytes max_batched ttft tpot
+  local copy_names_key=native_copy_exact_parameter_names
+  local copy_gb_key=native_copy_exact_offload_gb
+  if [[ "${E2_C16_CUDAGRAPH_MODE:-NONE}" == FULL_SEPARATE ]] \
+      && [[ "$(profile_value_default "${workload}" native_copy_full_graph_exact_parameter_names '[]' | jq 'length')" -gt 0 ]]; then
+    copy_names_key=native_copy_full_graph_exact_parameter_names
+    copy_gb_key=native_copy_full_graph_exact_offload_gb
+  fi
   local -a candidates
   prompt="$(profile_value "${workload}" prompt_tokens)"
   output="${E2_MEASUREMENT_OUTPUT_TOKENS:-$(profile_value "${workload}" output_tokens)}"
@@ -238,7 +291,7 @@ run_native_workload() {
     native_pinned_uva) backend=uva; mapfile -t candidates < <(profile_array "${workload}" native_offload_gb_candidates) ;;
     native_copy_on_forward)
       backend=copy
-      exact_name_count="$(profile_value_default "${workload}" native_copy_exact_parameter_names '[]' | jq 'length')"
+      exact_name_count="$(profile_value_default "${workload}" "${copy_names_key}" '[]' | jq 'length')"
       if [[ "${exact_name_count}" -gt 0 ]]; then
         candidates=(exact_names)
       elif [[ "$(profile_value "${workload}" native_copy_exact_w2_layer_candidates | jq 'length')" -gt 0 ]]; then
@@ -253,7 +306,7 @@ run_native_workload() {
     exact_names_file=""
     layer_count=""
     if [[ "${arm}" == native_copy_on_forward && "${exact_name_count}" -gt 0 ]]; then
-      cpu_gb="$(profile_value "${workload}" native_copy_exact_offload_gb)"
+      cpu_gb="$(profile_value "${workload}" "${copy_gb_key}")"
       tag="exact_names"
       setting="exact_parameter_names=${exact_name_count};cpu_offload_gb=${cpu_gb}"
     elif [[ "${arm}" == native_copy_on_forward \
@@ -272,7 +325,7 @@ run_native_workload() {
     mkdir -p "${case_root}"
     if [[ "${exact_name_count}" -gt 0 ]]; then
       exact_names_file="${case_root}/exact_parameter_names.json"
-      profile_value "${workload}" native_copy_exact_parameter_names >"${exact_names_file}"
+      profile_value "${workload}" "${copy_names_key}" >"${exact_names_file}"
     elif [[ -n "${layer_count}" ]]; then
       exact_names_file="${case_root}/exact_w2_parameter_names.json"
       jq -n --argjson layers "${layer_count}" \
@@ -314,7 +367,9 @@ run_native_workload() {
       mv "${tmp_env}" "${effective_env}"
     fi
     if [[ "${arm}" == native_copy_on_forward \
-          && "${E2_C16_NATIVE_COPY_STATIC_BANK:-0}" == 1 ]]; then
+          && "${E2_C16_NATIVE_COPY_STATIC_BANK:-0}" == 1 \
+          && "${E2_C16_CUDAGRAPH_MODE:-NONE}" == NONE \
+          && "${E2_C16_FORCE_CUDAGRAPH:-0}" != 1 ]]; then
       tmp_env="${effective_env}.tmp"
       jq '. + {
         VLLM_CPU_OFFLOAD_STATIC_BANK: "1",

@@ -8,7 +8,7 @@ KT_PY="${KT_ROOT}/.venv/bin/python"
 RUNNER="${SCRIPT_DIR}/direct_batch_e3_ktransformers_runner.py"
 CONVERTER="${REPO_ROOT}/experiments/ktransformers_cpu_expert_compare/cold_plan_to_kt_stats.py"
 VERIFIER="${SCRIPT_DIR}/verify_e3_ktransformers_c1_c16.py"
-MODEL="${MODEL:-/home/ubuntu/.cache/huggingface/hub/models--Qwen--Qwen3-30B-A3B-FP8/snapshots/d206ba732169f29bb77fbf80fc2c4b81d4d30782}"
+MODEL="${MODEL:?Set MODEL to the local Qwen3-30B-A3B-FP8 snapshot directory}"
 FIXTURE_ROOT="${SCRIPT_DIR}/inputs/generated/eurosys-pa-v2-20260824/qwen3_30b_a3b_fp8"
 PLAN_LOW="${E3_KT_PLAN_LOW:-${REPO_ROOT}/experiments/qwen_decode_six_mechanism_compare/inputs/cold_decode_plan_2g.json}"
 PLAN_MID="${E3_KT_PLAN_MID:-${REPO_ROOT}/experiments/qwen_decode_six_mechanism_compare/inputs/cold_decode_plan_8g.json}"
@@ -94,10 +94,13 @@ done
   || die "GPU prefill thresholds must be non-negative integers"
 [[ ! -e "${RUN_ROOT}" ]] || die "output already exists: ${RUN_ROOT}"
 for path in "${KT_PY}" "${RUNNER}" "${CONVERTER}" "${VERIFIER}" \
-  "${MODEL}/config.json" "${PLAN_LOW}" "${PLAN_MID}" "${PLAN_HIGH}" \
-  "${D_REFERENCE}/ours/short_dialogue_b1_D/custom/b0_short_dialogue_b1_D/result.json"; do
+  "${MODEL}/config.json" "${PLAN_LOW}" "${PLAN_MID}" "${PLAN_HIGH}"; do
   [[ -f "${path}" ]] || die "missing file: ${path}"
 done
+if [[ "${SKIP_VERIFY}" != 1 ]]; then
+  [[ -f "${D_REFERENCE}/ours/short_dialogue_b1_D/custom/b0_short_dialogue_b1_D/result.json" ]] \
+    || die "Set D_REFERENCE to a completed AdaptMoE run for cross-system comparison"
+fi
 for workload in short_dialogue ordinary_chat medium_context rag_summary long_generation; do
   [[ -f "${FIXTURE_ROOT}/evaluation_${workload}.json" ]] \
     || die "missing fixture: evaluation_${workload}.json"
@@ -310,7 +313,12 @@ run_selected_cell long_generation 512 512 1 "${TIER_LOW}"
 run_selected_cell long_generation 512 512 16 "${TIER_MID}"
 
 if [[ "${SKIP_VERIFY}" == 1 ]]; then
-  echo "verification skipped for filtered continuation"
+  if [[ -z "${CELL_FILTER}" ]]; then
+    "${KT_PY}" "${VERIFIER}" --root "${RUN_ROOT}" --standalone \
+      --output "${RUN_ROOT}/verification.json" || exit 1
+  else
+    echo "cross-system verification deferred for filtered continuation"
+  fi
 else
   "${KT_PY}" "${VERIFIER}" --root "${RUN_ROOT}" --d-reference "${D_REFERENCE}" \
     --output "${RUN_ROOT}/verification.json"

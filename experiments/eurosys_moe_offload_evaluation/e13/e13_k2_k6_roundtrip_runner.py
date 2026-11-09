@@ -201,6 +201,7 @@ def main() -> int:
     args = parse_args()
     require(not args.output.exists(), f"output already exists: {args.output}")
     protocol = json.loads(args.config.read_text(encoding="utf-8"))
+    protocol["model"] = os.environ.get("MODEL") or protocol["model"]
     require(
         protocol.get("schema") == "eurosys_e13_kv_adaptive_protocol_v1",
         "bad config schema",

@@ -6,6 +6,11 @@ requests, memory budgets, process order, correctness gates and output schema.
 Build the bundled runtime and driver using [the reproduction guide](REPRODUCING_ADAPTMOE.md)
 before starting GPU experiments.
 
+For one round of the GPU experiments associated with the 21 stored tables, use
+the [figure reproduction runner](../experiments/reproduce/FIGURE_REPRODUCTION.md).
+It records fresh measurements separately and reports cell failures and performance
+claim gates in addition to launcher return codes.
+
 | Evaluation topic | Protocol / experiment entry | Figure input stems |
 |---|---|---|
 | Mixed scheduling, token thresholds, fixed/dynamic KV | [Four-mechanism comparison](../experiments/adaptmoe_token_threshold_sharegpt_compare/README.md); `run_kv1_compare.sh` in that directory | New runs produce `summary.csv`, `output_checks.csv`, `REPORT.md` |

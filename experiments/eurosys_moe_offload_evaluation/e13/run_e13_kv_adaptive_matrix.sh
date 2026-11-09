@@ -35,6 +35,9 @@ VERIFY_RAG_CONCURRENCY_SWEEP="${E13_DIR}/verify_e13_rag_concurrency_sweep.py"
 PLOT_RAG_CONCURRENCY_SWEEP="${E13_DIR}/plot_e13_rag_concurrency_sweep.py"
 VERIFY_PARTITION_MOTIVATION="${E13_DIR}/verify_e13_partition_motivation.py"
 PLOT_PARTITION_MOTIVATION="${REPO_ROOT}/evaluation/figures/scripts/fig_kv_expert_partition_crossover.py"
+if [[ -z "${FIGURE_PYTHON:-}" && -x "${REPO_ROOT}/.build/plot-venv/bin/python" ]]; then
+  FIGURE_PYTHON="${REPO_ROOT}/.build/plot-venv/bin/python"
+fi
 FIGURE_PYTHON="${FIGURE_PYTHON:-python3}"
 VERIFY_SHORT_BATCH="${E13_DIR}/verify_e13_short_batch.py"
 VERIFY_SHORT_BATCH_MATRIX="${E13_DIR}/verify_e13_short_batch_matrix.py"
@@ -982,6 +985,7 @@ EOF
   if (( verify_rc == 0 )); then
     "${FIGURE_PYTHON}" "${PLOT_PARTITION_MOTIVATION}" \
       --verification "${run_root}/verification.json" \
+      --csv "${run_root}/fig_kv_expert_partition_crossover.csv" \
       --pdf "${run_root}/fig_kv_expert_partition_crossover.pdf" \
       --png "${run_root}/fig_kv_expert_partition_crossover.png" \
       --caption "${run_root}/fig_kv_expert_partition_crossover.txt" \

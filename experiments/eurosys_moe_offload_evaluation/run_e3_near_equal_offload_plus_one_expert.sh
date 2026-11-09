@@ -8,7 +8,7 @@ PLAN_PREP="${SCRIPT_DIR}/prepare_e3_near_equal_offload_plans.py"
 NATIVE_RUNNER="${SCRIPT_DIR}/run_e3_native_copy_vs_uva_phase.sh"
 OURS_RUNNER="${SCRIPT_DIR}/run_e3_c1_c16_uva_single_round.sh"
 VERIFY="${SCRIPT_DIR}/verify_e3_near_equal_offload_plus_one_expert.py"
-SOURCE="${SCRIPT_DIR}/inputs/legacy_pilot/qwen3_30b_a3b_fp8/routing/expert_distribution.pt"
+SOURCE="${E3_CALIBRATION_SOURCE:-${SCRIPT_DIR}/inputs/frozen/qwen_decode_calibration_counts.json}"
 RUN_ROOT="${1:-${SCRIPT_DIR}/artifacts/e3-near-equal-offload-plus-one-expert-$(date -u +%Y%m%dT%H%M%SZ)}"
 
 die() { echo "E3 near-equal offload: $*" >&2; exit 1; }

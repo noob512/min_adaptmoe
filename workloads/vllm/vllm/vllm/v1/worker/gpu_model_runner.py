@@ -8336,6 +8336,17 @@ class GPUModelRunner(
         """
         if scheduler_idle is not True:
             return {"ok": False, "reason": "scheduler_not_idle"}
+        eager_plan_classes = os.environ.get(
+            "VLLM_CPU_OFFLOAD_PLAN_CLASS_EAGER_ENABLE", "0"
+        ).strip().lower() in ("1", "true", "yes", "on")
+        if eager_plan_classes:
+            mode = getattr(self.compilation_config.cudagraph_mode, "name", "")
+            if mode != "NONE" or not self.model_config.enforce_eager:
+                return {
+                    "ok": False,
+                    "reason": "eager_plan_class_requires_eager_none_mode",
+                    "cudagraph_mode": mode,
+                }
         # Future completion is the EngineCore proof; this synchronization also
         # closes work submitted on auxiliary streams before residency changes.
         torch.cuda.synchronize(self.device)
@@ -8351,9 +8362,6 @@ class GPUModelRunner(
         effective_defer_dual_refresh = bool(
             defer_dual_refresh and not preserve_remote_decode_topology
         )
-        eager_plan_classes = os.environ.get(
-            "VLLM_CPU_OFFLOAD_PLAN_CLASS_EAGER_ENABLE", "0"
-        ).strip().lower() in ("1", "true", "yes", "on")
         if eager_plan_classes:
             from vllm.model_executor.models.utils import (
                 activate_cpu_offload_uvm_original_va_prefill_topology,
@@ -8363,13 +8371,6 @@ class GPUModelRunner(
                 transition_cpu_offload_uvm_original_va_to_remote,
             )
 
-            mode = getattr(self.compilation_config.cudagraph_mode, "name", "")
-            if mode != "NONE" or not self.model_config.enforce_eager:
-                return {
-                    "ok": False,
-                    "reason": "eager_plan_class_requires_eager_none_mode",
-                    "cudagraph_mode": mode,
-                }
             registry = cpu_offload_uvm_plan_class_registry()
             normalized = str(class_name).strip().lower()
             if not bool(registry.get("enabled")):

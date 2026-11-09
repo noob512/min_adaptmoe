@@ -6,6 +6,7 @@ E5_REPO_ROOT="$(cd "${E5_SCRIPT_DIR}/../.." && pwd)"
 BASE_HARNESS="${E5_REPO_ROOT}/experiments/vllm_uvm_prefill_alias_decode_remote_graph/run_experiment.sh"
 
 export VLLM_PHASE_SWITCH_SOURCE_ONLY=1
+export KV_CACHE_BYTES="${KV_CACHE_BYTES:-134217728}"
 # shellcheck source=/dev/null
 source "${BASE_HARNESS}"
 unset VLLM_PHASE_SWITCH_SOURCE_ONLY

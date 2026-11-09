@@ -34,7 +34,10 @@ def percentile(values: list[float], quantile: float) -> float:
     return ordered[lower] * (1.0 - weight) + ordered[upper] * weight
 
 
-def timing_summary(values: list[float]) -> dict[str, float | int]:
+def timing_summary(values: list[float], *, single_round: bool = False) -> dict[str, Any]:
+    if single_round:
+        require(len(values) == 1, "single-round summary requires exactly one sample")
+        return {"count": 1, "point_ms": values[0], "median_ms": None, "p95_ms": None}
     return {
         "count": len(values),
         "mean_ms": statistics.fmean(values),
@@ -46,8 +49,14 @@ def timing_summary(values: list[float]) -> dict[str, float | int]:
 
 
 def paired_ratio(
-    numerator: list[float], denominator: list[float], *, seed: int
+    numerator: list[float], denominator: list[float], *, seed: int,
+    single_round: bool = False,
 ) -> dict[str, Any]:
+    if single_round:
+        require(len(numerator) == len(denominator) == 1, "expected one pair")
+        require(numerator[0] > 0 and denominator[0] > 0, "non-positive time")
+        return {"point_estimate": numerator[0] / denominator[0],
+                "paired_bootstrap_95_ci": None, "bootstrap_resamples": 0}
     require(
         len(numerator) == len(denominator) and len(numerator) >= 3,
         "expected at least three pairs",
@@ -75,7 +84,7 @@ def paired_ratio(
 
 
 def samples_by_label(
-    verification: dict[str, Any], *, name: str
+    verification: dict[str, Any], *, name: str, single_round: bool = False
 ) -> dict[str, dict[int, dict[str, Any]]]:
     output: dict[str, dict[int, dict[str, Any]]] = {}
     for sample in verification.get("samples", []):
@@ -88,7 +97,10 @@ def samples_by_label(
     require(set(output) == {"matched_b1", "matched_b4"}, f"{name}: labels")
     repeat_sets = [set(bucket) for bucket in output.values()]
     require(repeat_sets[0] == repeat_sets[1], f"{name}: repeat sets differ")
-    require(len(repeat_sets[0]) >= 3, f"{name}: requires at least three repeats")
+    if single_round:
+        require(len(repeat_sets[0]) == 1, f"{name}: single round requires one repeat")
+    else:
+        require(len(repeat_sets[0]) >= 3, f"{name}: requires at least three repeats")
     return output
 
 
@@ -97,6 +109,8 @@ def main() -> int:
     parser.add_argument("stable_root", type=Path)
     parser.add_argument("nonstable_root", type=Path)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--single-round", action="store_true",
+                        help="compare one process pair as point estimates without confidence intervals")
     args = parser.parse_args()
 
     stable_root = args.stable_root.resolve()
@@ -154,8 +168,8 @@ def main() -> int:
     }
     require(all(geometry_checks.values()), f"geometry mismatch: {geometry_checks}")
 
-    stable = samples_by_label(stable_verification, name="stable")
-    nonstable = samples_by_label(nonstable_verification, name="non-stable")
+    stable = samples_by_label(stable_verification, name="stable", single_round=args.single_round)
+    nonstable = samples_by_label(nonstable_verification, name="non-stable", single_round=args.single_round)
     repeat_ids = sorted(stable["matched_b1"])
     require(
         repeat_ids == sorted(stable["matched_b4"])
@@ -189,22 +203,25 @@ def main() -> int:
             )
         comparison[label] = {
             "output_sha256": stable[label][1]["output_sha256"],
-            "stable_rebuild_recapture": timing_summary(stable_total),
-            "nonstable_reallocate_recapture": timing_summary(nonstable_total),
-            "nonstable_parameter_reallocate": timing_summary(nonstable_reallocate),
+            "stable_rebuild_recapture": timing_summary(stable_total, single_round=args.single_round),
+            "nonstable_reallocate_recapture": timing_summary(nonstable_total, single_round=args.single_round),
+            "nonstable_parameter_reallocate": timing_summary(nonstable_reallocate, single_round=args.single_round),
             "nonstable_over_stable_ratio": paired_ratio(
                 nonstable_total,
                 stable_total,
                 seed=20260828 + label_index,
+                single_round=args.single_round,
             ),
-            "median_added_cost_ms": (
+            "median_added_cost_ms": None if args.single_round else (
                 statistics.median(nonstable_total) - statistics.median(stable_total)
             ),
+            "point_added_cost_ms": nonstable_total[0] - stable_total[0] if args.single_round else None,
         }
 
     payload = {
         "schema": "e5_stable_vs_nonstable_va_comparison_v2",
         "status": "ok",
+        "qualification_scope": "one_process_pair_point_estimate" if args.single_round else "repeated_process_pairs",
         "stable_root": str(stable_root),
         "nonstable_root": str(nonstable_root),
         "process_pairs_per_generation": len(repeat_ids),

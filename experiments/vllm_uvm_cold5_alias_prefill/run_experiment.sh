@@ -4,6 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 VLLM_ROOT="${REPO_ROOT}/workloads/vllm/vllm"
+export PYTHONPATH="${VLLM_ROOT}${PYTHONPATH:+:${PYTHONPATH}}"
 VLLM_PY="${VLLM_PY:-${VLLM_ROOT}/.venv/bin/python}"
 RUNNER="${SCRIPT_DIR}/benchmark_cold5_steps.py"
 VERIFY="${SCRIPT_DIR}/verify_experiment.py"
@@ -56,8 +57,15 @@ gpu_clean() {
 }
 
 wait_gpu_clean() {
-  local attempt
+  local attempt service
   for ((attempt = 0; attempt < GPU_CLEAN_TIMEOUT_SEC; ++attempt)); do
+    if (( MODULE_CYCLE_ARMED == 1 && MODULE_RESTORED == 0 )); then
+      for service in node-exporter.service gpu-exporter.service dcgm-exporter.service; do
+        if systemctl is-active --quiet "${service}" 2>/dev/null; then
+          sudo systemctl stop "${service}"
+        fi
+      done
+    fi
     gpu_clean && return 0
     sleep 1
   done
@@ -167,7 +175,7 @@ static_preflight() {
   "${VLLM_PY}" -m pytest -q \
     "${VLLM_ROOT}/tests/test_cpu_offload_exact_static.py"
   bash -n "${BASH_SOURCE[0]}"
-  modinfo -p "${CUSTOM_UVM}" | grep -q '^uvm_manual_migration_fault_mode:' \
+  modinfo -p "${CUSTOM_UVM}" | grep '^uvm_manual_migration_fault_mode:' >/dev/null \
     || die "custom UVM lacks manual migration mode"
   echo "static preflight: OK"
 }

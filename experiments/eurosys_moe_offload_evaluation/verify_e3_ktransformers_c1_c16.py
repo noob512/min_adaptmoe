@@ -74,9 +74,14 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", required=True, type=Path)
     parser.add_argument("--supplement-root", action="append", type=Path, default=[])
-    parser.add_argument("--d-reference", required=True, type=Path)
+    parser.add_argument("--d-reference", type=Path)
+    parser.add_argument("--standalone", action="store_true",
+                        help="verify local measurement gates without a cross-system reference")
     parser.add_argument("--output", required=True, type=Path)
     args = parser.parse_args()
+    if not args.standalone and args.d_reference is None:
+        parser.error("--d-reference is required unless --standalone is set")
+    run_config = load_json(args.root / "configuration.json") if args.standalone else {}
 
     errors: list[str] = []
     roots = [args.root, *args.supplement_root]
@@ -140,7 +145,20 @@ def main() -> int:
         require(config.get("prompt_tokens") == prompt, f"{prefix}: prompt config", errors)
         require(config.get("output_tokens") == output, f"{prefix}: output config", errors)
         require(config.get("gpu_experts_per_layer") == gpu_experts, f"{prefix}: placement config", errors)
-        require(config.get("attention_backend") == "triton", f"{prefix}: backend", errors)
+        expected_backend = "triton"
+        if args.standalone:
+            expected_backend = run_config.get("cell_attention_backend_overrides", {}).get(
+                prefix, run_config.get("attention_backend_overrides", {}).get(
+                    prefix, run_config["attention_backend"]))
+        require(config.get("attention_backend") == expected_backend, f"{prefix}: backend", errors)
+        if args.standalone:
+            expected_threshold = run_config.get("cell_gpu_prefill_token_threshold_overrides", {}).get(
+                prefix, run_config.get("gpu_prefill_token_threshold_overrides", {}).get(
+                    prefix, run_config["gpu_prefill_token_threshold"]))
+            require(config.get("gpu_prefill_token_threshold") == expected_threshold,
+                    f"{prefix}: GPU prefill threshold", errors)
+            require(config.get("cpu_threads") == run_config["cpu_threads"],
+                    f"{prefix}: CPU expert threads", errors)
         require(config.get("cuda_graph_enabled") is True, f"{prefix}: graph mode", errors)
         require(
             config.get("cuda_graph_batch_sizes") == sorted({1, batch}),
@@ -176,9 +194,10 @@ def main() -> int:
         require("mmu fault" not in lowered, f"{prefix}: MMU fault in kernel log", errors)
         require(not (case / "gpu_cleanup_error.txt").exists(), f"{prefix}: GPU cleanup", errors)
 
-        d_path = d_result_path(args.d_reference, workload, batch)
-        require(d_path.is_file(), f"{prefix}: D reference absent", errors)
-        d_result = load_json(d_path) if d_path.is_file() else {}
+        d_path = d_result_path(args.d_reference, workload, batch) if args.d_reference else None
+        if not args.standalone:
+            require(d_path.is_file(), f"{prefix}: D reference absent", errors)
+        d_result = load_json(d_path) if d_path and d_path.is_file() else {}
         d_timing = d_result.get("timing", {})
         d_ids = [record["output_token_ids"] for record in d_result.get("outputs", [])]
         d_hash = d_result.get("output_token_ids_sha256")
@@ -197,7 +216,7 @@ def main() -> int:
             "tier": tier,
             "gpu_experts_per_layer": gpu_experts,
             "cpu_experts_per_layer": 128 - gpu_experts,
-            "attention_backend": "TRITON_ATTN",
+            "attention_backend": config.get("attention_backend"),
             "ktransformers": {
                 "prefill_ms": kt_prefill,
                 "p_to_d_switch_ms": None,
@@ -220,7 +239,7 @@ def main() -> int:
                 "steady_decode": kt_decode / d_decode if finite_positive(d_decode) else None,
                 "e2e": kt_e2e / d_e2e if finite_positive(d_e2e) else None,
             },
-            "full_output_hash_equal_to_ours": kt_hash == d_hash,
+            "full_output_hash_equal_to_ours": kt_hash == d_hash if d_result else None,
             "first_token_equal_to_ours": bool(
                 len(ids) == len(d_ids)
                 and ids
@@ -229,7 +248,7 @@ def main() -> int:
                     and kt_request[0] == d_request[0]
                     for kt_request, d_request in zip(ids, d_ids)
                 )
-            ),
+            ) if d_result else None,
         })
 
     summary = {
@@ -241,8 +260,9 @@ def main() -> int:
             "same_frozen_prompt_token_ids": True,
             "same_prompt_output_lengths": True,
             "same_batch_coordinates": True,
-            "same_attention_backend": "TRITON_ATTN",
-            "same_exact_expert_coordinates_per_cell": True,
+            "same_attention_backend": None if args.standalone else "TRITON_ATTN",
+            "same_exact_expert_coordinates_per_cell": None if args.standalone else True,
+            "cross_system_comparison": not args.standalone,
             "one_cold_process_per_cell": True,
             "repeats": 1,
             "ktransformers_cuda_graph": True,
@@ -253,8 +273,8 @@ def main() -> int:
         "evidence_roots": [str(root.resolve()) for root in roots],
         "metrics": metrics,
         "output_checks": {
-            "full_hash_equal_cells": sum(item["full_output_hash_equal_to_ours"] for item in metrics),
-            "first_token_equal_cells": sum(item["first_token_equal_to_ours"] for item in metrics),
+            "full_hash_equal_cells": sum(bool(item["full_output_hash_equal_to_ours"]) for item in metrics) if not args.standalone else None,
+            "first_token_equal_cells": sum(bool(item["first_token_equal_to_ours"]) for item in metrics) if not args.standalone else None,
         },
         "interpretation_boundary": (
             "KTransformers is a complete CUDA Graph framework baseline. The ratios include "

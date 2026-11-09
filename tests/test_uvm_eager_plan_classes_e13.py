@@ -140,6 +140,10 @@ def test_eager_plan_class_gate_rejects_graph_execution(
 ) -> None:
     runner = _runner(eager=False, mode="FULL_DECODE_ONLY")
     monkeypatch.setenv("VLLM_CPU_OFFLOAD_PLAN_CLASS_EAGER_ENABLE", "1")
+    monkeypatch.setattr(
+        "vllm.v1.worker.gpu_model_runner.torch.cuda.synchronize",
+        lambda device=0: pytest.fail("invalid eager mode reached CUDA"),
+    )
 
     result = runner.activate_uvm_expert_graph_class_at_idle_boundary(
         "cold80", scheduler_idle=True

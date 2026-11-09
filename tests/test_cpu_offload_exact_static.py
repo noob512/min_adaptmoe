@@ -3404,8 +3404,12 @@ def test_uvm_original_profile_uses_full_parameter_shadow_cutover(
     ]
 
 
+@pytest.mark.parametrize("startup_cache_release", [False, True])
+@pytest.mark.parametrize("post_warmup", [False, True])
 def test_sealed_hot_reconcile_skips_prefetch_when_already_exact(
     monkeypatch: pytest.MonkeyPatch,
+    startup_cache_release: bool,
+    post_warmup: bool,
 ) -> None:
     from vllm.device_allocator import uvm
 
@@ -3479,15 +3483,75 @@ def test_sealed_hot_reconcile_skips_prefetch_when_already_exact(
         ),
     )
 
-    result = (
-        offload_utils.reconcile_cpu_offload_uvm_original_va_sealed_hot_residency()
-    )
+    if startup_cache_release:
+        monkeypatch.setattr(offload_utils.torch.cuda, "empty_cache",
+                            lambda: pytest.fail("released cache with hot experts"))
+        with pytest.raises(RuntimeError, match="process is poisoned") as caught:
+            offload_utils.reconcile_cpu_offload_uvm_original_va_sealed_hot_residency(
+                preserve_allocator_cache=False, require_no_hot_experts=True,
+                check_minimum_free_headroom=not post_warmup)
+        assert "requires zero managed hot-expert bytes" in str(caught.value.__cause__)
+        return
+    result = offload_utils.reconcile_cpu_offload_uvm_original_va_sealed_hot_residency()
 
     assert result["ok"] is True
     assert result["hot_prefetch_skipped_already_resident"] is True
     assert result["hot_prefetch_count"] == 0
     assert result["hot_physical_residency_before"]["gpu_bytes"] == 4096
     assert result["hot_physical_residency_after"]["gpu_bytes"] == 4096
+
+
+@pytest.mark.parametrize("free_after_mb", [128, 512])
+@pytest.mark.parametrize("check_headroom", [False, True])
+def test_all_alias_startup_cache_release_keeps_headroom_gate(
+    monkeypatch: pytest.MonkeyPatch, free_after_mb: int, check_headroom: bool,
+) -> None:
+    from vllm.device_allocator import uvm
+
+    monkeypatch.setattr(offload_utils, "_CPU_OFFLOAD_GRAPH_STATIC_ALIAS", True)
+    monkeypatch.setattr(offload_utils, "_CPU_OFFLOAD_GRAPH_STATIC_ALIAS_BACKEND", "uvm_original_va")
+    monkeypatch.setattr(offload_utils, "_CPU_OFFLOAD_UVM_STATIC_ALIAS_STATE", "sealed")
+    monkeypatch.setattr(offload_utils, "_CPU_OFFLOAD_UVM_REMOTE_MAP_ACTIVE", False)
+    monkeypatch.setattr(offload_utils, "_CPU_OFFLOAD_UVM_STATIC_ALIAS_BINDINGS", {})
+    monkeypatch.setattr(offload_utils, "_CPU_OFFLOAD_UVM_PHASE_TRANSITION_HISTORY", [])
+    monkeypatch.setattr(offload_utils, "_uvm_original_parameter_va_snapshot", lambda: (0x400000,))
+    monkeypatch.setenv("VLLM_UVM_ORIGINAL_VA_GRAPH_MIN_FREE_BYTES", str(256 * 1024**2))
+    released = []
+    monkeypatch.setattr(offload_utils.torch.cuda, "synchronize", lambda _=0: None)
+    monkeypatch.setattr(offload_utils.torch.cuda, "empty_cache", lambda: released.append(True))
+    monkeypatch.setattr(offload_utils.torch.cuda, "memory_reserved",
+                        lambda _=0: (100 if released else 300) * 1024**2)
+    monkeypatch.setattr(offload_utils.torch.cuda, "memory_allocated", lambda _=0: 100 * 1024**2)
+    monkeypatch.setattr(offload_utils.torch.cuda, "memory_stats", lambda _=0: {})
+    monkeypatch.setattr(offload_utils.torch.cuda, "mem_get_info",
+                        lambda _=0: ((free_after_mb if released else 64) * 1024**2, 32 * 1024**3))
+    monkeypatch.setattr(uvm, "driver_batch_query_ranges_residency_bytes",
+                        lambda ranges, **kwargs: {"ok": True, "queried_bytes": 0,
+                            "cpu_bytes": 0, "gpu_bytes": 0, "any_bytes": 0, "unknown_bytes": 0})
+    if check_headroom and free_after_mb < 256:
+        with pytest.raises(RuntimeError, match="process is poisoned") as caught:
+            offload_utils.reconcile_cpu_offload_uvm_original_va_sealed_hot_residency(
+                preserve_allocator_cache=False, require_no_hot_experts=True,
+                check_minimum_free_headroom=check_headroom)
+        assert "Insufficient GPU headroom" in str(caught.value.__cause__)
+    else:
+        result = offload_utils.reconcile_cpu_offload_uvm_original_va_sealed_hot_residency(
+            preserve_allocator_cache=False, require_no_hot_experts=True,
+            check_minimum_free_headroom=check_headroom)
+        assert result["allocator_reserved_before"] > result["allocator_reserved_after"]
+        assert result["parameter_vas_before"] == result["parameter_vas_after"]
+        assert result["minimum_free_headroom_checked"] is check_headroom
+        assert result["minimum_free_bytes"] == 256 * 1024**2
+        if check_headroom:
+            assert result["free_bytes_after"] >= result["minimum_free_bytes"]
+    assert released == [True]
+
+
+def test_post_warmup_exemption_requires_zero_hot_audit(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(offload_utils, "cpu_offload_uvm_original_va_static_alias_enabled", lambda: True)
+    with pytest.raises(ValueError, match="zero-hot-expert audit"):
+        offload_utils.reconcile_cpu_offload_uvm_original_va_sealed_hot_residency(
+            check_minimum_free_headroom=False)
 
 
 def test_sealed_hot_reconcile_excludes_runtime_remote_ranges(

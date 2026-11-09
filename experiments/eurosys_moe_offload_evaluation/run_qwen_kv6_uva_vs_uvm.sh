@@ -3,11 +3,12 @@ set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+export PYTHONPATH="${REPO_ROOT}/workloads/vllm/vllm${PYTHONPATH:+:${PYTHONPATH}}"
 VLLM_PY="${REPO_ROOT}/workloads/vllm/vllm/.venv/bin/python"
 RUNNER="${SCRIPT_DIR}/direct_batch_c16_vllm_runner.py"
 SUMMARIZER="${SCRIPT_DIR}/summarize_qwen_kv6_uva_vs_uvm.py"
 FIXTURE_ROOT="${SCRIPT_DIR}/inputs/generated/eurosys-pa-v2-20260824/qwen3_30b_a3b_fp8"
-MODEL="/home/ubuntu/.cache/huggingface/hub/models--Qwen--Qwen3-30B-A3B-FP8/snapshots/d206ba732169f29bb77fbf80fc2c4b81d4d30782"
+MODEL="${MODEL:?Set MODEL to the local Qwen3-30B-A3B-FP8 snapshot directory}"
 RUN_ROOT="${1:-${REPO_ROOT}/my_paper/data/runs/Qwen_kv6_uva_vs_stock_uvm_$(date -u +%Y%m%dT%H%M%SZ)}"
 CPUSET="${CPUSET:-0-13}"
 CASE_TIMEOUT_SECONDS="${CASE_TIMEOUT_SECONDS:-7200}"
